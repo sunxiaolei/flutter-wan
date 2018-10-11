@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:wan/model/homedata.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -11,9 +15,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future<Null> loadData() async {
-    return null;
-  }
+  Future<Null> loadData() async {}
 }
 
 class ItemListWidget extends StatefulWidget {
@@ -24,25 +26,38 @@ class ItemListWidget extends StatefulWidget {
 }
 
 class ItemList extends State<ItemListWidget> {
+  List<Datas> listDatas = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    String dataUrl = "http://www.wanandroid.com/article/list/0/json";
+    http.Response response = await http.get(dataUrl);
+    HomeData data = HomeData.fromJson(json.decode(response.body));
+    setState(() {
+      listDatas = data.data.datas;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<ListTile> items = new List();
-    for (var i = 0; i < 10; i++) {
-      items.add(buildItem(i));
-    }
     return new ListView.builder(
       itemBuilder: (context, index) {
-        return items[index];
+        return buildItem(listDatas[index]);
       },
-      itemCount: items.length,
+      itemCount: listDatas.length,
     );
   }
 
-  ListTile buildItem(pos) {
+  ListTile buildItem(Datas data) {
     return new ListTile(
       leading: new CircleAvatar(),
-      title: new Text('Item' + pos.toString()),
-      subtitle: new Text('ItemSubTitle'),
+      title: new Text(data.title),
+      subtitle: new Text(data.desc),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {},
     );
