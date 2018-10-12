@@ -1,10 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:wan/model/homedata.dart';
+import 'package:wan/net/request.dart';
 import 'package:wan/ui/article.dart';
 
 class HomePage extends StatelessWidget {
@@ -27,16 +24,21 @@ class ItemList extends State<ItemListWidget> {
   @override
   void initState() {
     super.initState();
-    loadData();
+    loadData(1);
   }
 
-  //异步加载数据
-  Future<Null> loadData() async {
-    String dataUrl = "http://www.wanandroid.com/article/list/0/json";
-    http.Response response = await http.get(dataUrl);
-    HomeData resData = HomeData.fromJson(json.decode(response.body));
+  Future<Null> refresh() async {
+    HomeData data = await Request.getHomeList(0);
     setState(() {
-      listDatas = resData.data.datas;
+      listDatas = data.data.datas;
+    });
+    return null;
+  }
+
+  void loadData(int index) async {
+    HomeData data = await Request.getHomeList(index);
+    setState(() {
+      listDatas = data.data.datas;
     });
   }
 
@@ -49,7 +51,7 @@ class ItemList extends State<ItemListWidget> {
         },
         itemCount: listDatas.length,
       ),
-      onRefresh: loadData,
+      onRefresh: refresh, //下拉刷新
     );
   }
 
@@ -84,7 +86,8 @@ class ItemList extends State<ItemListWidget> {
       ),
       trailing: new Icon(Icons.keyboard_arrow_right),
       onTap: () {
-        Navigator.of(context).push(new MaterialPageRoute<Null>(builder: (context) {
+        Navigator.of(context)
+            .push(new MaterialPageRoute<Null>(builder: (context) {
           return new ArticlePage(data.link);
         }));
       },
