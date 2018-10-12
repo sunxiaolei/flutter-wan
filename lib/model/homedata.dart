@@ -1,3 +1,45 @@
+///{
+//    "data":{
+//        "curPage":2,
+//        "datas":[
+//            {
+//                "apkLink":"",
+//                "author":"minmin_1123",
+//                "chapterId":73,
+//                "chapterName":"面试相关",
+//                "collect":false,
+//                "courseId":13,
+//                "desc":"",
+//                "envelopePic":"",
+//                "fresh":false,
+//                "id":3458,
+//                "link":"https://www.jianshu.com/p/718aa3c1a70b",
+//                "niceDate":"2018-10-06",
+//                "origin":"",
+//                "projectLink":"",
+//                "publishTime":1538818273000,
+//                "superChapterId":186,
+//                "superChapterName":"热门专题",
+//                "tags":[
+//
+//                ],
+//                "title":"2019校招Android面试题解1.0（上篇）",
+//                "type":0,
+//                "userId":-1,
+//                "visible":1,
+//                "zan":0
+//            }
+//        ],
+//        "offset":20,
+//        "over":false,
+//        "pageCount":86,
+//        "size":20,
+//        "total":1704
+//    },
+//    "errorCode":0,
+//    "errorMsg":""
+//}
+
 class HomeData {
   Data data;
   int errorCode;

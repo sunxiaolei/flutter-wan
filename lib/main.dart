@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:wan/ui/category/category.dart';
-import 'package:wan/ui/home/home.dart';
-import 'package:wan/ui/mine/mine.dart';
-import 'package:wan/ui/navi/navi.dart';
+import 'package:wan/ui/category.dart';
+import 'package:wan/ui/home.dart';
+import 'package:wan/ui/mine.dart';
+import 'package:wan/ui/navi.dart';
 
 void main() => runApp(new Wan());
 
