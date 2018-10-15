@@ -20,13 +20,25 @@ class ItemListWidget extends StatefulWidget {
 
 class ItemList extends State<ItemListWidget> {
   List<Datas> listDatas = [];
+  ScrollController scrollController = new ScrollController();
+  int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    loadData(1);
+    refresh();
+    scrollController.addListener(() {
+      //上拉刷新
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        // 滑动到最底部了
+        currentPage++;
+        loadData(currentPage);
+      }
+    });
   }
 
+  //刷新
   Future<Null> refresh() async {
     HomeData data = await Request.getHomeList(0);
     setState(() {
@@ -35,11 +47,11 @@ class ItemList extends State<ItemListWidget> {
     return null;
   }
 
+  //加载数据
   void loadData(int index) async {
     HomeData data = await Request.getHomeList(index);
-    setState(() {
-      listDatas = data.data.datas;
-    });
+    listDatas.addAll(data.data.datas);
+    setState(() {});
   }
 
   @override
@@ -50,6 +62,7 @@ class ItemList extends State<ItemListWidget> {
           return buildItem(listDatas[index]);
         },
         itemCount: listDatas.length,
+        controller: scrollController,
       ),
       onRefresh: refresh, //下拉刷新
     );
