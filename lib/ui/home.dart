@@ -59,7 +59,7 @@ class ItemList extends State<ItemListWidget> {
     return new RefreshIndicator(
       child: new ListView.builder(
         itemBuilder: (context, index) {
-          return buildItem(listDatas[index]);
+          return buildItem(index);
         },
         itemCount: listDatas.length,
         controller: scrollController,
@@ -69,42 +69,48 @@ class ItemList extends State<ItemListWidget> {
   }
 
   //创建item
-  ListTile buildItem(Datas data) {
-    return new ListTile(
-      leading: new CircleAvatar(
-        child: new Text(
-          data.chapterName,
-          style: new TextStyle(fontSize: 9.0, color: new Color(0xffffffff)),
-        ),
-        backgroundColor: new Color(0xff1E88E5),
-      ),
-      title: new Text(
-        data.title,
-        style: titleTextStyle,
-        softWrap: false, //是否自动换行
-        overflow: TextOverflow.ellipsis, //截断处理
-      ),
-      subtitle: new Row(
-        children: <Widget>[
-          new Expanded(
-              child: new Text(
-            "作者:" + data.author,
-            style: subTextStyle,
-          )),
-          new Text(
-            "时间:" + data.niceDate,
-            style: subTextStyle,
+  Widget buildItem(int index) {
+    if (index == 0) {
+      return new Image.network(
+          "http://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png");
+    } else {
+      Datas data = listDatas[index - 1];
+      return new ListTile(
+        leading: new CircleAvatar(
+          child: new Text(
+            data.chapterName,
+            style: new TextStyle(fontSize: 9.0, color: new Color(0xffffffff)),
           ),
-        ],
-      ),
-      trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () {
-        Navigator.of(context)
-            .push(new MaterialPageRoute<Null>(builder: (context) {
-          return new ArticlePage(data.link);
-        }));
-      },
-    );
+          backgroundColor: new Color(0xff1E88E5),
+        ),
+        title: new Text(
+          data.title,
+          style: titleTextStyle,
+          softWrap: false, //是否自动换行
+          overflow: TextOverflow.ellipsis, //截断处理
+        ),
+        subtitle: new Row(
+          children: <Widget>[
+            new Expanded(
+                child: new Text(
+              "作者:" + data.author,
+              style: subTextStyle,
+            )),
+            new Text(
+              "时间:" + data.niceDate,
+              style: subTextStyle,
+            ),
+          ],
+        ),
+        trailing: new Icon(Icons.keyboard_arrow_right),
+        onTap: () {
+          Navigator.of(context)
+              .push(new MaterialPageRoute<Null>(builder: (context) {
+            return new ArticlePage(data.link);
+          }));
+        },
+      );
+    }
   }
 
   TextStyle titleTextStyle =
