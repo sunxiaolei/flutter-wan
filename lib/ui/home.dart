@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:wan/model/homebanner.dart';
 import 'package:wan/model/homedata.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/ui/article.dart';
@@ -19,9 +20,11 @@ class ItemListWidget extends StatefulWidget {
 }
 
 class ItemList extends State<ItemListWidget> {
-  List<Datas> listDatas = [];
+  List<Datas> listDatas;
+  List<BannerData> listBanners;
   ScrollController scrollController = new ScrollController();
   int currentPage = 0;
+  PageView bannerViews;
 
   @override
   void initState() {
@@ -41,7 +44,9 @@ class ItemList extends State<ItemListWidget> {
   //刷新
   Future<Null> refresh() async {
     HomeData data = await Request.getHomeList(0);
+    HomeBanner banner = await Request.getHomeBanner();
     setState(() {
+      listBanners = banner.data;
       listDatas = data.data.datas;
     });
     return null;
@@ -56,23 +61,41 @@ class ItemList extends State<ItemListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new RefreshIndicator(
-      child: new ListView.builder(
-        itemBuilder: (context, index) {
-          return buildItem(index);
+    if (listBanners != null) {
+      bannerViews = PageView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return buildBanner(index);
         },
-        itemCount: listDatas.length,
-        controller: scrollController,
-      ),
-      onRefresh: refresh, //下拉刷新
-    );
+        itemCount: listBanners.length,
+      );
+    }
+
+    if (listDatas == null) {
+      return new Center(
+        // Loading
+        child: new CircularProgressIndicator(),
+      );
+    } else {
+      return new RefreshIndicator(
+        child: new ListView.builder(
+          itemBuilder: (context, index) {
+            return buildItem(index);
+          },
+          itemCount: listDatas.length,
+          controller: scrollController,
+        ),
+        onRefresh: refresh, //下拉刷新
+      );
+    }
   }
 
   //创建item
   Widget buildItem(int index) {
     if (index == 0) {
-      return new Image.network(
-          "http://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png");
+      return Container(
+        height: 200.0,
+        child: bannerViews,
+      );
     } else {
       Datas data = listDatas[index - 1];
       return new ListTile(
@@ -111,6 +134,10 @@ class ItemList extends State<ItemListWidget> {
         },
       );
     }
+  }
+
+  Widget buildBanner(int index) {
+    return Image.network(listBanners[index].imagePath);
   }
 
   TextStyle titleTextStyle =
