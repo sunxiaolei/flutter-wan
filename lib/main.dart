@@ -50,7 +50,10 @@ class HomeState extends State<HomeWidget> {
           });
         },
       ),
-      body: pages[tabIndex],
+      body: IndexedStack(
+        children: <Widget>[HomePage(), CategoryPage(), NaviPage(), MinePage()],
+        index: tabIndex,
+      ),
     );
   }
 
@@ -65,12 +68,6 @@ class HomeState extends State<HomeWidget> {
     'images/home.png',
     'images/home.png',
     'images/home.png'
-  ];
-  var pages = [
-    new HomePage(),
-    new CategoryPage(),
-    new NaviPage(),
-    new MinePage()
   ];
 
   Text getBottomText(data) {
