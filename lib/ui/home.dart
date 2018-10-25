@@ -134,6 +134,7 @@ class ItemList extends State<ItemListWidget> {
         ),
         trailing: new Icon(Icons.keyboard_arrow_right),
         onTap: () {
+          //点击跳转详情
           Navigator.of(context)
               .push(new MaterialPageRoute<Null>(builder: (context) {
             return new ArticlePage(data.link);
@@ -144,7 +145,15 @@ class ItemList extends State<ItemListWidget> {
   }
 
   Widget buildBanner(int index) {
-    return Image.network(listBanners[index].imagePath);
+    return GestureDetector(//可以处理手势事件
+      child: Image.network(listBanners[index].imagePath),
+      onTap: () {
+        Navigator.of(context)
+            .push(new MaterialPageRoute<Null>(builder: (context) {
+          return new ArticlePage(listBanners[index].url);
+        }));
+      },
+    );
   }
 
   TextStyle titleTextStyle =
