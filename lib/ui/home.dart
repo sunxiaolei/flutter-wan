@@ -4,6 +4,7 @@ import 'package:wan/model/homebanner.dart';
 import 'package:wan/model/homedata.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/ui/article.dart';
+import 'package:wan/utils/toastutils.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -43,12 +44,18 @@ class ItemList extends State<ItemListWidget> {
 
   //刷新
   Future<Null> refresh() async {
-    HomeData data = await Request.getHomeList(0);
-    HomeBanner banner = await Request.getHomeBanner();
-    setState(() {
-      listBanners = banner.data;
+    await Request.getHomeList(0).then((HomeData data) {
       listDatas = data.data.datas;
+    }).catchError((e) {
+      ToastUtils.showShort("获取数据失败，请检查网路");
     });
+    //banner
+    await Request.getHomeBanner().then((HomeBanner data) {
+      listBanners = data.data;
+    }).catchError((e) {
+      print(e.toString());
+    });
+    setState(() {});
     return null;
   }
 
