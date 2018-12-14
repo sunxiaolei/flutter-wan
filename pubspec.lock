@@ -5,28 +5,28 @@ packages:
     dependency: transitive
     description:
       name: async
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.8"
   charcode:
     dependency: transitive
     description:
       name: charcode
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.2"
   collection:
     dependency: transitive
     description:
       name: collection
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.14.11"
   cupertino_icons:
     dependency: "direct main"
     description:
       name: cupertino_icons
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.2"
   flutter:
@@ -38,42 +38,42 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_webview_plugin
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.1+2"
   fluttertoast:
     dependency: "direct dev"
     description:
       name: fluttertoast
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.9"
+    version: "2.1.5"
   http:
     dependency: "direct dev"
     description:
       name: http
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.12.0"
   http_parser:
     dependency: transitive
     description:
       name: http_parser
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.3"
   meta:
     dependency: transitive
     description:
       name: meta
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.6"
   path:
     dependency: transitive
     description:
       name: path
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.6.2"
   sky_engine:
@@ -85,30 +85,29 @@ packages:
     dependency: transitive
     description:
       name: source_span
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.4.1"
   string_scanner:
     dependency: transitive
     description:
       name: string_scanner
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
   typed_data:
     dependency: transitive
     description:
       name: typed_data
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.6"
   vector_math:
     dependency: transitive
     description:
       name: vector_math
-      url: "https://dart-pub.mirrors.sjtug.sjtu.edu.cn"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.8"
 sdks:
   dart: ">=2.0.0-dev.68.0 <3.0.0"
-  flutter: ">=0.1.4 <2.0.0"

@@ -6,8 +6,6 @@ class ToastUtils {
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        bgcolor: "#000000",
-        textcolor: '#ffffff');
+        timeInSecForIos: 1);
   }
 }
