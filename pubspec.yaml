@@ -14,6 +14,8 @@ dev_dependencies:
   http: ^0.12.0
   flutter_webview_plugin: ^0.2.1+2
   fluttertoast: ^2.0.9
+  #事件
+  event_bus: ^1.0.1
 
 
 # For information on the generic Dart part of this file, see the
@@ -29,7 +31,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/home.png
+    - images/avatar.png
+    - images/ic_dark.png
+    - images/ic_setting.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
