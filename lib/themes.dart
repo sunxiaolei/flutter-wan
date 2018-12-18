@@ -11,6 +11,15 @@ class WanTheme {
 final WanTheme darkTheme = WanTheme('Dark', _buildDarkTheme());
 final WanTheme lightTheme = WanTheme('Dark', _buildLightTheme());
 
+//字体样式
+class WanTextTheme {
+  final TextTheme theme;
+
+  WanTextTheme(this.theme);
+}
+
+final WanTextTheme wanTextTheme = WanTextTheme(TextTheme().copyWith());
+
 ///文字样式
 TextTheme _buildTextTheme(TextTheme base) {
   return base;

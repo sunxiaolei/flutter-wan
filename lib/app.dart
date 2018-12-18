@@ -17,7 +17,7 @@ class WanApp extends StatefulWidget {
 
 class _WanAppState extends State<WanApp> {
   int _tabIndex = 0; //当前页面
-  var titles = ['首页', '分类', '导航', '我的']; //导航栏标题
+  var _titles = ['首页', '分类', '导航', '我的']; //导航栏标题
 
   @override
   void initState() {
@@ -52,13 +52,13 @@ class _WanAppState extends State<WanApp> {
           //导航栏元素
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: _getNavText(titles[0])),
+                icon: Icon(Icons.home), title: _getNavText(_titles[0])),
             BottomNavigationBarItem(
-                icon: Icon(Icons.category), title: _getNavText(titles[1])),
+                icon: Icon(Icons.category), title: _getNavText(_titles[1])),
             BottomNavigationBarItem(
-                icon: Icon(Icons.navigation), title: _getNavText(titles[2])),
+                icon: Icon(Icons.navigation), title: _getNavText(_titles[2])),
             BottomNavigationBarItem(
-                icon: Icon(Icons.account_box), title: _getNavText(titles[3])),
+                icon: Icon(Icons.account_box), title: _getNavText(_titles[3])),
           ],
           type: BottomNavigationBarType.fixed, //显示方式
           currentIndex: _tabIndex,
