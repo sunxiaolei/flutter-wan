@@ -3,7 +3,7 @@ import 'package:wan/model/homebanner.dart';
 import 'package:wan/model/homedata.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/themes.dart';
-import 'package:wan/ui/article.dart';
+import 'package:wan/page/article.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'dart:ui' as ui;
 
@@ -196,7 +196,6 @@ class _ArticleListItemState extends State<_ArticleListItemWidget> {
         ),
         title: new Text(
           widget.data.title,
-          style: wanTextTheme.theme.title,
           softWrap: false, //是否自动换行
           overflow: TextOverflow.ellipsis, //截断处理
         ),
@@ -205,11 +204,9 @@ class _ArticleListItemState extends State<_ArticleListItemWidget> {
             new Expanded(
                 child: new Text(
               "作者:" + widget.data.author,
-              style: wanTextTheme.theme.subtitle,
             )),
             new Text(
               "时间:" + widget.data.niceDate,
-              style: wanTextTheme.theme.subtitle,
             ),
           ],
         ),

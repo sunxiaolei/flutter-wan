@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wan/themes.dart';
-import 'package:wan/ui/category.dart';
-import 'package:wan/ui/home.dart';
-import 'package:wan/ui/mine.dart';
-import 'package:wan/ui/navi.dart';
+import 'package:wan/page/category.dart';
+import 'package:wan/page/home.dart';
+import 'package:wan/page/mine.dart';
+import 'package:wan/page/navi.dart';
 import 'package:wan/event/event.dart';
 
 ///主页

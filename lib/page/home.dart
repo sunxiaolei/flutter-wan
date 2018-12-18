@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wan/ui/articlelist.dart';
+import 'package:wan/page/articlelist.dart';
 
 ///首页列表
 class HomePage extends StatelessWidget {

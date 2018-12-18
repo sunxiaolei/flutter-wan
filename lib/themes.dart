@@ -11,15 +11,6 @@ class WanTheme {
 final WanTheme darkTheme = WanTheme('Dark', _buildDarkTheme());
 final WanTheme lightTheme = WanTheme('Dark', _buildLightTheme());
 
-//字体样式
-class WanTextTheme {
-  final TextTheme theme;
-
-  WanTextTheme(this.theme);
-}
-
-final WanTextTheme wanTextTheme = WanTextTheme(TextTheme().copyWith());
-
 ///文字样式
 TextTheme _buildTextTheme(TextTheme base) {
   return base;
@@ -27,8 +18,8 @@ TextTheme _buildTextTheme(TextTheme base) {
 
 ///Dark主题
 ThemeData _buildDarkTheme() {
-  const Color primaryColor = Color(0xFF0175C2);
-  const Color secondaryColor = Color(0xFF13B9FD);
+  const Color primaryColor = Color(0xFF263238);
+  const Color secondaryColor = Color(0xFF607D8B);
   final ThemeData base = ThemeData.dark();
   final ColorScheme colorScheme = const ColorScheme.dark().copyWith(
     primary: primaryColor,

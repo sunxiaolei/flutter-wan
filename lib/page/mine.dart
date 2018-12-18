@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan/page/login.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/event/event.dart';
 
@@ -37,7 +38,8 @@ class _Mine extends State<_MineState> {
               ],
             ),
             onTap: () {
-              ToastUtils.showShort("登录");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             },
           )),
           margin: EdgeInsets.only(top: 40, bottom: 20),
