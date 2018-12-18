@@ -5,7 +5,6 @@ import 'package:wan/ui/home.dart';
 import 'package:wan/ui/mine.dart';
 import 'package:wan/ui/navi.dart';
 import 'package:wan/event/event.dart';
-import 'package:wan/utils/toastutils.dart';
 
 ///主页
 class WanApp extends StatefulWidget {
@@ -42,10 +41,6 @@ class _WanAppState extends State<WanApp> {
         //标题栏
         appBar: AppBar(
           title: Text('WanFlutter'),
-        ),
-        //悬浮按钮
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
         ),
         //底部导航栏
         bottomNavigationBar: BottomNavigationBar(

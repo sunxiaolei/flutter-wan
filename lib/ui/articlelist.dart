@@ -5,6 +5,9 @@ import 'package:wan/net/request.dart';
 import 'package:wan/themes.dart';
 import 'package:wan/ui/article.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'dart:ui' as ui;
+
+import 'package:wan/widget/totopfab.dart';
 
 class ArticleListWidget extends StatefulWidget {
   final bool hasBanner;
@@ -22,8 +25,10 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
   List<BannerData> _listBanners;
   PageView _bannerViews;
   List<Datas> _listDatas;
-  ScrollController _scrollController = new ScrollController();
   int _currentPage = 0;
+  double _screenHeight;
+  ScrollController _controller = ScrollController();
+  GlobalKey<ToTopFloatActionState> _toTopKey = GlobalKey();
 
 //  _ArticleListWidgetState(this.hasBanner);
 
@@ -31,38 +36,51 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
   void initState() {
     super.initState();
     _refresh();
-    _scrollController.addListener(() {
-      //上拉刷新
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        // 滑动到最底部了
-        _currentPage++;
-        _loadData(_currentPage);
-      }
-    });
   }
 
   //刷新
   Future<Null> _refresh() async {
-    await Request.getHomeList(0).then((HomeData data) {
+    await Request.getHomeList(0).then((data) {
       _listDatas = data.data.datas;
+      setState(() {});
     }).catchError((e) {
       ToastUtils.showShort("获取数据失败，请检查网路");
     });
-    await Request.getHomeBanner().then((HomeBanner data) {
+    await Request.getHomeBanner().then((data) {
       _listBanners = data.data;
+      setState(() {});
     }).catchError((e) {
       print(e.toString());
     });
-    setState(() {});
     return null;
   }
 
   //加载数据
-  void _loadData(int index) async {
-    HomeData data = await Request.getHomeList(index);
-    _listDatas.addAll(data.data.datas);
-    setState(() {});
+  Future<Null> _loadData(int index) {
+    return Request.getHomeList(index).then((data) {
+      _listDatas.addAll(data.data.datas);
+      setState(() {});
+    });
+  }
+
+  bool onScrollNotification(ScrollNotification scrollNotification) {
+    if (scrollNotification.metrics.pixels >=
+        scrollNotification.metrics.maxScrollExtent) {
+      // 滑动到最底部了
+      _currentPage++;
+      _loadData(_currentPage);
+    }
+    if (null == _screenHeight || _screenHeight <= 0) {
+      _screenHeight = MediaQueryData.fromWindow(ui.window).size.height;
+    }
+    if (scrollNotification.metrics.axisDirection == AxisDirection.down &&
+        _screenHeight >= 10 &&
+        scrollNotification.metrics.pixels >= _screenHeight) {
+      _toTopKey.currentState.setVisible(true);
+    } else {
+      _toTopKey.currentState.setVisible(false);
+    }
+    return false;
   }
 
   @override
@@ -70,7 +88,7 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
     if (_listBanners != null) {
       _bannerViews = PageView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return buildBanner(index);
+          return _buildBanner(index);
         },
         itemCount: _listBanners.length,
       );
@@ -81,20 +99,47 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
         child: new CircularProgressIndicator(),
       );
     } else {
-      return RefreshIndicator(
-        child: new ListView.builder(
-          itemBuilder: (context, index) {
-            return buildItem(index);
-          },
-          itemCount: _listDatas.length,
-          controller: _scrollController,
+      var body = NotificationListener<ScrollNotification>(
+        onNotification: onScrollNotification,
+        child: RefreshIndicator(
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              return _buildItem(index);
+            },
+            itemCount: _listDatas.length,
+            //如果ListView的内容不足一屏，要设置ListView的physics属性为const AlwaysScrollableScrollPhysics()
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: _controller,
+          ),
+          onRefresh: _refresh, //下拉刷新
         ),
-        onRefresh: _refresh, //下拉刷新
+      );
+      return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: body,
+        floatingActionButton: ToTopFloatActionButton(
+          key: _toTopKey,
+          onPressed: () {
+            _toTop();
+          },
+        ),
       );
     }
   }
 
-  Widget buildBanner(int index) {
+  void _toTop() {
+    _controller?.animateTo(0,
+        duration: Duration(milliseconds: 500), curve: Curves.elasticInOut);
+  }
+
+  @override
+  void dispose() {
+    _listBanners.clear();
+    _listDatas.clear();
+    super.dispose();
+  }
+
+  Widget _buildBanner(int index) {
     return GestureDetector(
       //可以处理手势事件
       child: Image.network(_listBanners[index].imagePath),
@@ -108,7 +153,7 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
   }
 
   //创建item
-  Widget buildItem(int index) {
+  Widget _buildItem(int index) {
     if (widget.hasBanner) {
       if (index == 0) {
         return Container(
@@ -133,28 +178,24 @@ class _ArticleListItemWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _ArticleListItemState(data);
+    return _ArticleListItemState();
   }
 }
 
 class _ArticleListItemState extends State<_ArticleListItemWidget> {
-  final Datas data;
-
-  _ArticleListItemState(this.data);
-
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
         leading: new CircleAvatar(
           child: new Text(
-            data.chapterName,
+            widget.data.chapterName,
             style: new TextStyle(fontSize: 9.0, color: new Color(0xffffffff)),
           ),
           backgroundColor: new Color(0xff1E88E5),
         ),
         title: new Text(
-          data.title,
+          widget.data.title,
           style: wanTextTheme.theme.title,
           softWrap: false, //是否自动换行
           overflow: TextOverflow.ellipsis, //截断处理
@@ -163,11 +204,11 @@ class _ArticleListItemState extends State<_ArticleListItemWidget> {
           children: <Widget>[
             new Expanded(
                 child: new Text(
-              "作者:" + data.author,
+              "作者:" + widget.data.author,
               style: wanTextTheme.theme.subtitle,
             )),
             new Text(
-              "时间:" + data.niceDate,
+              "时间:" + widget.data.niceDate,
               style: wanTextTheme.theme.subtitle,
             ),
           ],
@@ -177,7 +218,7 @@ class _ArticleListItemState extends State<_ArticleListItemWidget> {
           //点击跳转详情
           Navigator.of(context)
               .push(new MaterialPageRoute<Null>(builder: (context) {
-            return new ArticlePage(data.link);
+            return new ArticlePage(widget.data.link);
           }));
         },
       ),
