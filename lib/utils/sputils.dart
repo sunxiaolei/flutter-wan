@@ -8,7 +8,7 @@ class SpUtils {
 
   static Future<bool> getBool(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key);
+    return prefs.getBool(key) == null ? false : prefs.getBool(key);
   }
 
   static Future<bool> setInt(String key, int value) async {
