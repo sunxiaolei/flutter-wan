@@ -8,4 +8,7 @@ class Api {
 
   //首页banner
   static String homebanner = 'banner/json/';
+
+  //导航
+  static String navi = 'navi/json';
 }

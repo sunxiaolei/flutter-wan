@@ -46,6 +46,7 @@ class LoginState extends State<LoginPage> {
             //密码
             PasswordField(
               labelText: '用户密码',
+              border: OutlineInputBorder(),
             ),
             const SizedBox(
               height: 30,

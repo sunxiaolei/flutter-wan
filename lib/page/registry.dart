@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wan/themes.dart';
 import 'package:wan/widget/pwdfield.dart';
 
-///登录
+///注册
 class RegistryPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -119,7 +119,7 @@ class RegistryState extends State<RegistryPage> {
       form.save();
       Navigator.pop(context);
     } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('请检查')));
+      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('请检查必填信息')));
     }
   }
 }

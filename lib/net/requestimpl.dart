@@ -1,6 +1,7 @@
 import 'package:wan/model/homebanner.dart';
 import 'package:wan/model/homedata.dart';
 import 'package:dio/dio.dart';
+import 'package:wan/model/navi.dart';
 import 'package:wan/net/api.dart';
 import 'package:wan/net/interceptor.dart';
 import 'package:wan/net/request.dart';
@@ -29,8 +30,14 @@ class RequestImpl extends Request {
   //获取banner
   @override
   Future<HomeBanner> getHomeBanner() async {
-    String reqAPi = Api.homebanner;
-    Response response = await _dio.get(reqAPi);
+    Response response = await _dio.get(Api.homebanner);
     return HomeBanner.fromJson(response.data);
+  }
+
+  //获取导航数据
+  @override
+  Future<Navi> getNavi() async {
+    Response response = await _dio.get(Api.navi);
+    return Navi.fromJson(response.data);
   }
 }

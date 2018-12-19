@@ -46,8 +46,8 @@ ThemeData _buildDarkTheme() {
 
 ///Light主题
 ThemeData _buildLightTheme() {
-  const Color primaryColor = Color(0xFF0175C2);
-  const Color secondaryColor = Color(0xFF13B9FD);
+  const Color primaryColor = Color(0xFF0097A7);
+  const Color secondaryColor = Color(0xFF00BCD4);
   final ThemeData base = ThemeData.light();
   final ColorScheme colorScheme = const ColorScheme.light().copyWith(
     primary: primaryColor,
