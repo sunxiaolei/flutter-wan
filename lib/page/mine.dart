@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan/page/login.dart';
+import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/event/event.dart';
 
@@ -20,6 +21,20 @@ class _MineState extends StatefulWidget {
 
 class _Mine extends State<_MineState> {
   bool _switchValue = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTheme();
+  }
+
+  void getTheme() async {
+    SpUtils.getBool('DarkTheme').then((bool) {
+      _switchValue = bool;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +87,7 @@ class _Mine extends State<_MineState> {
                         setState(() {
                           _switchValue = bool;
                           bus.fire(new DarkThemeEvent(bool));
+                          SpUtils.setBool("DarkTheme", bool);
                         });
                       }),
                 ),

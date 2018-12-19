@@ -18,6 +18,8 @@ dev_dependencies:
   dio: ^1.0.9
   #事件
   event_bus: ^1.0.1
+  #本地存储
+  shared_preferences: ^0.4.3
 
 
 # For information on the generic Dart part of this file, see the

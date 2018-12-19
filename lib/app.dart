@@ -5,6 +5,7 @@ import 'package:wan/page/home.dart';
 import 'package:wan/page/mine.dart';
 import 'package:wan/page/navi.dart';
 import 'package:wan/event/event.dart';
+import 'package:wan/utils/sputils.dart';
 
 ///主页
 class WanApp extends StatefulWidget {
@@ -21,11 +22,16 @@ class _WanAppState extends State<WanApp> {
   @override
   void initState() {
     super.initState();
+    getTheme();
     bus.on<DarkThemeEvent>().listen((event) {
-      setState(() {
-        //切换主题
-        dark = event.darkTheme;
-      });
+      getTheme();
+    });
+  }
+
+  void getTheme() async {
+    SpUtils.getBool('DarkTheme').then((bool) {
+      dark = bool;
+      setState(() {});
     });
   }
 
