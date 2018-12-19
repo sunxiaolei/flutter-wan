@@ -14,6 +14,8 @@ dev_dependencies:
   http: ^0.12.0
   flutter_webview_plugin: ^0.2.1+2
   fluttertoast: ^2.0.9
+  #网络
+  dio: ^1.0.9
   #事件
   event_bus: ^1.0.1
 

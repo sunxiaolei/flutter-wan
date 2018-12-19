@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:wan/model/homebanner.dart';
 import 'package:wan/model/homedata.dart';
 import 'package:wan/net/request.dart';
-import 'package:wan/themes.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'dart:ui' as ui;
@@ -21,7 +20,6 @@ class ArticleListWidget extends StatefulWidget {
 }
 
 class _ArticleListWidgetState extends State<ArticleListWidget> {
-//  bool hasBanner;
   List<BannerData> _listBanners;
   PageView _bannerViews;
   List<Datas> _listDatas;
@@ -29,8 +27,6 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
   double _screenHeight;
   ScrollController _controller = ScrollController();
   GlobalKey<ToTopFloatActionState> _toTopKey = GlobalKey();
-
-//  _ArticleListWidgetState(this.hasBanner);
 
   @override
   void initState() {
@@ -40,13 +36,14 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
 
   //刷新
   Future<Null> _refresh() async {
-    await Request.getHomeList(0).then((data) {
+    await Request().getHomeList(0).then((data) {
       _listDatas = data.data.datas;
       setState(() {});
     }).catchError((e) {
+      debugPrint('error::' + e.toString());
       ToastUtils.showShort("获取数据失败，请检查网路");
     });
-    await Request.getHomeBanner().then((data) {
+    await Request().getHomeBanner().then((data) {
       _listBanners = data.data;
       setState(() {});
     }).catchError((e) {
@@ -57,7 +54,7 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
 
   //加载数据
   Future<Null> _loadData(int index) {
-    return Request.getHomeList(index).then((data) {
+    return Request().getHomeList(index).then((data) {
       _listDatas.addAll(data.data.datas);
       setState(() {});
     });
