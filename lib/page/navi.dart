@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:wan/model/navi.dart';
 import 'package:wan/net/request.dart';
+import 'package:wan/page/article.dart';
 
 ///导航
 class NaviPage extends StatelessWidget {
@@ -110,7 +111,12 @@ class _TabState extends State<_TabWidget> {
     List<Widget> _tags = widget.articles
         .map((article) => RaisedButton(
               child: Text(article.title),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute<Null>(builder: (context) {
+                  return ArticlePage(article.link);
+                }));
+              },
               color: _randomColor(article.title),
               shape: StadiumBorder(),
             ))

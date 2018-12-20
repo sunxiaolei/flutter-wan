@@ -4,6 +4,7 @@ import 'package:wan/model/homedata.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/tags.dart';
 import 'dart:ui' as ui;
 
 import 'package:wan/widget/totopfab.dart';
@@ -184,30 +185,32 @@ class _ArticleListItemState extends State<_ArticleListItemWidget> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: new CircleAvatar(
-          child: new Text(
-            widget.data.chapterName,
-            style: new TextStyle(fontSize: 9.0, color: new Color(0xffffffff)),
+        title: Container(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+            widget.data.title,
+            softWrap: true, //是否自动换行
+            overflow: TextOverflow.ellipsis, //截断处理
+            maxLines: 2,
+            style: TextStyle(fontSize: 17),
           ),
-          backgroundColor: new Color(0xff1E88E5),
         ),
-        title: new Text(
-          widget.data.title,
-          softWrap: false, //是否自动换行
-          overflow: TextOverflow.ellipsis, //截断处理
-        ),
-        subtitle: new Row(
+        subtitle: Row(
           children: <Widget>[
-            new Expanded(
+            TagsWidget(widget.data.tags),
+            Text(
+              '作者：',
+            ),
+            Expanded(
                 child: new Text(
-              "作者:" + widget.data.author,
+              widget.data.author,
+              style: TextStyle(color: Theme.of(context).textTheme.body1.color),
             )),
-            new Text(
+            Text(
               "时间:" + widget.data.niceDate,
             ),
           ],
         ),
-        trailing: new Icon(Icons.keyboard_arrow_right),
         onTap: () {
           //点击跳转详情
           Navigator.of(context)
@@ -215,6 +218,8 @@ class _ArticleListItemState extends State<_ArticleListItemWidget> {
             return new ArticlePage(widget.data.link);
           }));
         },
+        contentPadding:
+            EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
       ),
       elevation: 3,
       margin: EdgeInsets.only(bottom: 15),
