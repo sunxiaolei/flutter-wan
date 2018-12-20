@@ -11,4 +11,10 @@ class Api {
 
   //导航
   static String navi = 'navi/json';
+
+  //搜索热词
+  static String hotkey = '/hotkey/json';
+
+  //搜索
+  static String search = 'article/query/';
 }

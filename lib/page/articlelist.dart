@@ -3,7 +3,6 @@ import 'package:wan/model/homebanner.dart';
 import 'package:wan/model/homedata.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
-import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/tags.dart';
 import 'dart:ui' as ui;
 
@@ -11,16 +10,17 @@ import 'package:wan/widget/totopfab.dart';
 
 class ArticleListWidget extends StatefulWidget {
   final bool hasBanner;
+  final LoadCallBack onLoad;
 
-  ArticleListWidget(this.hasBanner);
+  ArticleListWidget({Key key, this.hasBanner, this.onLoad}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _ArticleListWidgetState();
+    return ArticleListWidgetState();
   }
 }
 
-class _ArticleListWidgetState extends State<ArticleListWidget> {
+class ArticleListWidgetState extends State<ArticleListWidget> {
   List<BannerData> _listBanners;
   PageView _bannerViews;
   List<Datas> _listDatas;
@@ -32,33 +32,33 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
   @override
   void initState() {
     super.initState();
-    _refresh();
+    if (widget.hasBanner) {
+      _getbanner();
+    }
   }
 
-  //刷新
-  Future<Null> _refresh() async {
-    await Request().getHomeList(0).then((data) {
-      _listDatas = data.data.datas;
-      setState(() {});
-    }).catchError((e) {
-      debugPrint('error::' + e.toString());
-      ToastUtils.showShort("获取数据失败，请检查网路");
-    });
-    await Request().getHomeBanner().then((data) {
+  setData(List<Datas> data) {
+    _listDatas = data;
+    setState(() {});
+  }
+
+  addData(List<Datas> data) {
+    _listDatas.addAll(data);
+    setState(() {});
+  }
+
+  //banner
+  Future<Null> _getbanner() async {
+    Request().getHomeBanner().then((data) {
       _listBanners = data.data;
-      setState(() {});
     }).catchError((e) {
       print(e.toString());
     });
-    return null;
+    setState(() {});
   }
 
-  //加载数据
-  Future<Null> _loadData(int index) {
-    return Request().getHomeList(index).then((data) {
-      _listDatas.addAll(data.data.datas);
-      setState(() {});
-    });
+  Future<Null> _refresh() async {
+    widget.onLoad(true);
   }
 
   bool onScrollNotification(ScrollNotification scrollNotification) {
@@ -66,7 +66,7 @@ class _ArticleListWidgetState extends State<ArticleListWidget> {
         scrollNotification.metrics.maxScrollExtent) {
       // 滑动到最底部了
       _currentPage++;
-      _loadData(_currentPage);
+      widget.onLoad(false);
     }
     if (null == _screenHeight || _screenHeight <= 0) {
       _screenHeight = MediaQueryData.fromWindow(ui.window).size.height;
@@ -226,3 +226,5 @@ class _ArticleListItemState extends State<_ArticleListItemWidget> {
     );
   }
 }
+
+typedef LoadCallBack = void Function(bool refresh);

@@ -1,5 +1,6 @@
 import 'package:wan/model/homebanner.dart';
 import 'package:wan/model/homedata.dart';
+import 'package:wan/model/hotkey.dart';
 import 'package:wan/model/navi.dart';
 import 'package:wan/net/requestimpl.dart';
 
@@ -23,4 +24,10 @@ abstract class Request {
 
   //获取导航数据
   Future<Navi> getNavi();
+
+  //获取搜索热词
+  Future<HotKey> getHotKey();
+
+  //搜索
+  Future<HomeData> search(int page, String keyword);
 }

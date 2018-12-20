@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan/page/search.dart';
 import 'package:wan/themes.dart';
 import 'package:wan/page/category.dart';
 import 'package:wan/page/home.dart';
@@ -44,10 +45,6 @@ class _WanAppState extends State<WanApp> {
       // Scaffold:Material Design布局结构的基本实现。
       // 此类提供了用于显示drawer、snackbar和底部sheet的API
       home: Scaffold(
-        //标题栏
-        appBar: AppBar(
-          title: Text('WanFlutter'),
-        ),
         //底部导航栏
         bottomNavigationBar: BottomNavigationBar(
           //导航栏元素
