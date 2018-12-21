@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 
-class FlowItemBtns extends StatefulWidget {
+class FlowItemsWidget extends StatefulWidget {
   final List<FlowItemVO> items;
   final PressCallBack onPress;
 
-  FlowItemBtns({Key key, this.items, this.onPress}) : super(key: key);
+  FlowItemsWidget({Key key, this.items, this.onPress}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -13,7 +13,7 @@ class FlowItemBtns extends StatefulWidget {
   }
 }
 
-class FlowItemState extends State<FlowItemBtns> {
+class FlowItemState extends State<FlowItemsWidget> {
   final List<Widget> children = <Widget>[];
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan/conf/constant.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/themes.dart';
 import 'package:wan/page/category.dart';
@@ -23,25 +24,47 @@ class _WanAppState extends State<WanApp> {
   @override
   void initState() {
     super.initState();
-    getTheme();
-    bus.on<DarkThemeEvent>().listen((event) {
-      getTheme();
+    _getTheme(null);
+    bus.on<ThemeEvent>().listen((event) {
+      _getTheme(event);
     });
   }
 
-  void getTheme() async {
-    SpUtils.getBool('DarkTheme').then((bool) {
-      dark = bool;
+  void _getTheme(ThemeEvent event) async {
+    if (event != null) {
+      _dark = event.darkTheme;
+      _theme = event.theme;
       setState(() {});
-    });
+    } else {
+      SpUtils.getBool(Constant.spDarkTheme).then((bool) {
+        if (bool) {
+          _dark = bool;
+          setState(() {});
+        } else {
+          SpUtils.getInt(Constant.spCurTheme).then((int) {
+            _theme = int;
+            setState(() {});
+          });
+        }
+      });
+    }
   }
 
-  bool dark = false;
+  bool _dark = false;
+  int _theme = 0;
+
+  ThemeData _setTheme() {
+    if (_dark) {
+      return darkTheme.data;
+    } else {
+      return themes[_theme].data;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: dark ? darkTheme.data : lightTheme.data,
+      theme: _setTheme(),
       // Scaffold:Material Design布局结构的基本实现。
       // 此类提供了用于显示drawer、snackbar和底部sheet的API
       home: Scaffold(

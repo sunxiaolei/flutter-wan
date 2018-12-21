@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wan/model/navi.dart';
+import 'package:wan/model/navi_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/page/search.dart';
-import 'package:wan/widget/flowbtn.dart';
+import 'package:wan/widget/flowitems.dart';
 
 ///导航
 class NaviPage extends StatelessWidget {
@@ -28,8 +28,8 @@ class _NaviState extends State<_NaviWidget>
   TabController _controller;
 
   List<Tab> _tabs = List();
-  List<FlowItemBtns> _tabpages = List();
-  FlowItemBtns _selectedPage;
+  List<FlowItemsWidget> _tabpages = List();
+  FlowItemsWidget _selectedPage;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _NaviState extends State<_NaviWidget>
               ))
           .toList();
       _tabpages = navi.data
-          .map<FlowItemBtns>((Data d) => FlowItemBtns(
+          .map<FlowItemsWidget>((Data d) => FlowItemsWidget(
               items: d.articles
                   .map((a) => FlowItemVO(a.id, a.title, a.link))
                   .toList(),

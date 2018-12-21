@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan/net/request.dart';
-import 'package:wan/page/articlelist.dart';
+import 'package:wan/widget/articlelist.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/utils/toastutils.dart';
 
@@ -73,7 +73,7 @@ class _HomeState extends State<_HomeWidget> {
       body: ArticleListWidget(
         key: _listKey,
         hasBanner: true,
-        onLoad: (refresh) {
+        onLoadRefresh: (refresh) {
           if (refresh) {
             _refresh();
           } else {

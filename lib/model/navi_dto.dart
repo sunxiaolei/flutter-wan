@@ -1,7 +1,7 @@
-import 'package:wan/model/tags.dart';
+import 'package:wan/model/tags_dto.dart';
 
+///导航
 class Navi {
-
   ///{
   //    "data":[
   //        {
@@ -101,7 +101,6 @@ class Navi {
   //    "errorCode":0,
   //    "errorMsg":""
   //}
-
 
   List<Data> data;
   int errorCode;

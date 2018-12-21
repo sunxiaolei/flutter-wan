@@ -9,7 +9,32 @@ class WanTheme {
 }
 
 final WanTheme darkTheme = WanTheme('Dark', _buildDarkTheme());
-final WanTheme lightTheme = WanTheme('Dark', _buildLightTheme());
+final WanTheme lightTheme = WanTheme('默认',
+    _buildLightTheme(Color(0xFF0097A7), Color(0xFF0097A7), Color(0xFF00ACC1)));
+final WanTheme anyuziTheme = WanTheme('暗玉紫',
+    _buildLightTheme(Color(0xFF5c2223), Color(0xFF5c2223), Color(0xFF5c2223)));
+final WanTheme xiaguanghongTheme = WanTheme('霞光红',
+    _buildLightTheme(Color(0xFFef82a0), Color(0xFFef82a0), Color(0xFFef82a0)));
+final WanTheme fengyehongTheme = WanTheme('枫叶红',
+    _buildLightTheme(Color(0xFFc21f30), Color(0xFFc21f30), Color(0xFFc21f30)));
+final WanTheme haitaolanTheme = WanTheme('海涛蓝',
+    _buildLightTheme(Color(0xFF15559a), Color(0xFF15559a), Color(0xFF15559a)));
+final WanTheme qingshanTheme = WanTheme('晴山蓝',
+    _buildLightTheme(Color(0xFF8fb2c9), Color(0xFF8fb2c9), Color(0xFF8fb2c9)));
+final WanTheme jinyehuangTheme = WanTheme('金叶黄',
+    _buildLightTheme(Color(0xFFffa60f), Color(0xFFffa60f), Color(0xFFffa60f)));
+final WanTheme bohelvTheme = WanTheme('薄荷绿',
+    _buildLightTheme(Color(0xFF207f4c), Color(0xFF207f4c), Color(0xFF207f4c)));
+final themes = [
+  lightTheme,
+  fengyehongTheme,
+  xiaguanghongTheme,
+  jinyehuangTheme,
+  bohelvTheme,
+  qingshanTheme,
+  haitaolanTheme,
+  anyuziTheme,
+];
 
 ///文字样式
 TextTheme _buildTextTheme(TextTheme base) {
@@ -47,10 +72,7 @@ ThemeData _buildDarkTheme() {
 }
 
 ///Light主题
-ThemeData _buildLightTheme() {
-  const Color primaryColor = Color(0xFF0097A7);
-  const Color secondaryColor = Color(0xFF00BCD4);
-  const Color primaryColorLight = Color(0xFF00ACC1);
+ThemeData _buildLightTheme(primaryColor, secondaryColor, primaryColorLight) {
   final ThemeData base = ThemeData.light();
   final ColorScheme colorScheme = const ColorScheme.light().copyWith(
     primary: primaryColor,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:wan/model/homedata.dart';
-import 'package:wan/model/hotkey.dart';
+import 'package:wan/model/articledatas_dto.dart';
+import 'package:wan/model/hotkey_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
-import 'package:wan/page/articlelist.dart';
+import 'package:wan/widget/articlelist.dart';
 import 'package:wan/utils/toastutils.dart';
-import 'package:wan/widget/flowbtn.dart';
+import 'package:wan/widget/flowitems.dart';
 
 ///搜索页
 class SearchPage extends StatelessWidget {
@@ -25,7 +25,7 @@ class _SearchWidget extends StatefulWidget {
 
 class _SearchState extends State<_SearchWidget> {
   List<FlowItemVO> _hotkeys = List();
-  FlowItemBtns _hotkeyWidget;
+  FlowItemsWidget _hotkeyWidget;
   ArticleListWidget _alist;
   GlobalKey<ArticleListWidgetState> _listKey = GlobalKey();
   int index = 1;
@@ -40,11 +40,11 @@ class _SearchState extends State<_SearchWidget> {
   ///获取热词
   Future<Null> getHotKey() async {
     return Request().getHotKey().then((data) {
-      HotKey hk = data;
+      HotKeyDTO hk = data;
       _hotkeys = hk.data
           .map((data) => FlowItemVO(data.id, data.name, data.link))
           .toList();
-      _hotkeyWidget = FlowItemBtns(
+      _hotkeyWidget = FlowItemsWidget(
         items: _hotkeys,
         onPress: (item) {
           _keyword = item.name;
@@ -60,7 +60,7 @@ class _SearchState extends State<_SearchWidget> {
     _alist = ArticleListWidget(
       hasBanner: false,
       key: _listKey,
-      onLoad: (refresh) {
+      onLoadRefresh: (refresh) {
         if (refresh) {
           _refresh(_keyword);
         } else {
@@ -78,7 +78,7 @@ class _SearchState extends State<_SearchWidget> {
               }),
           title: Theme(
               data: Theme.of(context).copyWith(
-                  hintColor: Colors.grey,
+                  hintColor: Colors.white70,
                   textTheme:
                       TextTheme(subhead: TextStyle(color: Colors.white))),
               child: TextField(
@@ -110,7 +110,7 @@ class _SearchState extends State<_SearchWidget> {
     FocusScope.of(context).requestFocus(FocusNode());
     index = 0;
     Request().search(index, keyword).then((data) {
-      HomeData d = data;
+      ArticleDatasDTO d = data;
       _listKey.currentState.setData(d.data.datas);
     });
     setState(() {});

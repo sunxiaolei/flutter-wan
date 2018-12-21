@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wan/model/tags.dart';
+import 'package:wan/model/tags_dto.dart';
 
 class TagsWidget extends StatefulWidget {
   final List<Tags> tags;

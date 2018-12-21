@@ -1,8 +1,8 @@
-import 'package:wan/model/homebanner.dart';
-import 'package:wan/model/homedata.dart';
+import 'package:wan/model/homebanner_dto.dart';
+import 'package:wan/model/articledatas_dto.dart';
 import 'package:dio/dio.dart';
-import 'package:wan/model/hotkey.dart';
-import 'package:wan/model/navi.dart';
+import 'package:wan/model/hotkey_dto.dart';
+import 'package:wan/model/navi_dto.dart';
 import 'package:wan/net/api.dart';
 import 'package:wan/net/interceptor.dart';
 import 'package:wan/net/request.dart';
@@ -22,17 +22,17 @@ class RequestImpl extends Request {
 
   //获取首页列表
   @override
-  Future<HomeData> getHomeList(int page) async {
+  Future<ArticleDatasDTO> getHomeList(int page) async {
     String reqAPi = '${Api.homelist}$page/json';
     Response response = await _dio.get(reqAPi);
-    return HomeData.fromJson(response.data);
+    return ArticleDatasDTO.fromJson(response.data);
   }
 
   //获取banner
   @override
-  Future<HomeBanner> getHomeBanner() async {
+  Future<HomeBannerDTO> getHomeBanner() async {
     Response response = await _dio.get(Api.homebanner);
-    return HomeBanner.fromJson(response.data);
+    return HomeBannerDTO.fromJson(response.data);
   }
 
   //获取导航数据
@@ -44,16 +44,16 @@ class RequestImpl extends Request {
 
   //获取搜索热词
   @override
-  Future<HotKey> getHotKey() async {
+  Future<HotKeyDTO> getHotKey() async {
     Response response = await _dio.get(Api.hotkey);
-    return HotKey.fromJson(response.data);
+    return HotKeyDTO.fromJson(response.data);
   }
 
   //搜索
   @override
-  Future<HomeData> search(int page, String keyword) async {
+  Future<ArticleDatasDTO> search(int page, String keyword) async {
     Response response = await _dio.post('${Api.search}$page/json',
         data: FormData.from({'k': keyword}));
-    return HomeData.fromJson(response.data);
+    return ArticleDatasDTO.fromJson(response.data);
   }
 }

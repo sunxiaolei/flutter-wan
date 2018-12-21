@@ -1,4 +1,4 @@
-import 'package:wan/model/tags.dart';
+import 'package:wan/model/tags_dto.dart';
 
 ///{
 //    "data":{
@@ -41,15 +41,15 @@ import 'package:wan/model/tags.dart';
 //    "errorCode":0,
 //    "errorMsg":""
 //}
-
-class HomeData {
+///文章列表
+class ArticleDatasDTO {
   Data data;
   int errorCode;
   String errorMsg;
 
-  HomeData({this.data, this.errorCode, this.errorMsg});
+  ArticleDatasDTO({this.data, this.errorCode, this.errorMsg});
 
-  HomeData.fromJson(Map<String, dynamic> json) {
+  ArticleDatasDTO.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     errorCode = json['errorCode'];
     errorMsg = json['errorMsg'];
@@ -225,5 +225,3 @@ class Datas {
     return data;
   }
 }
-
-

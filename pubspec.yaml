@@ -38,6 +38,10 @@ flutter:
     - images/avatar.png
     - images/ic_dark.png
     - images/ic_setting.png
+    - images/ic_theme.png
+    - images/ic_favorite.png
+    - images/ic_todo.png
+    - images/ic_about.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

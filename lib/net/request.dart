@@ -1,7 +1,7 @@
-import 'package:wan/model/homebanner.dart';
-import 'package:wan/model/homedata.dart';
-import 'package:wan/model/hotkey.dart';
-import 'package:wan/model/navi.dart';
+import 'package:wan/model/homebanner_dto.dart';
+import 'package:wan/model/articledatas_dto.dart';
+import 'package:wan/model/hotkey_dto.dart';
+import 'package:wan/model/navi_dto.dart';
 import 'package:wan/net/requestimpl.dart';
 
 abstract class Request {
@@ -17,17 +17,17 @@ abstract class Request {
   }
 
   //获取首页列表
-  Future<HomeData> getHomeList(int index);
+  Future<ArticleDatasDTO> getHomeList(int index);
 
   //获取banner
-  Future<HomeBanner> getHomeBanner();
+  Future<HomeBannerDTO> getHomeBanner();
 
   //获取导航数据
   Future<Navi> getNavi();
 
   //获取搜索热词
-  Future<HotKey> getHotKey();
+  Future<HotKeyDTO> getHotKey();
 
   //搜索
-  Future<HomeData> search(int page, String keyword);
+  Future<ArticleDatasDTO> search(int page, String keyword);
 }

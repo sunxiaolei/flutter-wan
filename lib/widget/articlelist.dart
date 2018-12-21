@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wan/model/homebanner.dart';
-import 'package:wan/model/homedata.dart';
+import 'package:wan/model/homebanner_dto.dart';
+import 'package:wan/model/articledatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/widget/tags.dart';
@@ -10,9 +10,9 @@ import 'package:wan/widget/totopfab.dart';
 
 class ArticleListWidget extends StatefulWidget {
   final bool hasBanner;
-  final LoadCallBack onLoad;
+  final LoadCallBack onLoadRefresh;
 
-  ArticleListWidget({Key key, this.hasBanner, this.onLoad}) : super(key: key);
+  ArticleListWidget({Key key, this.hasBanner, this.onLoadRefresh}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +24,6 @@ class ArticleListWidgetState extends State<ArticleListWidget> {
   List<BannerData> _listBanners;
   PageView _bannerViews;
   List<Datas> _listDatas;
-  int _currentPage = 0;
   double _screenHeight;
   ScrollController _controller = ScrollController();
   GlobalKey<ToTopFloatActionState> _toTopKey = GlobalKey();
@@ -58,15 +57,14 @@ class ArticleListWidgetState extends State<ArticleListWidget> {
   }
 
   Future<Null> _refresh() async {
-    widget.onLoad(true);
+    widget.onLoadRefresh(true);
   }
 
   bool onScrollNotification(ScrollNotification scrollNotification) {
     if (scrollNotification.metrics.pixels >=
         scrollNotification.metrics.maxScrollExtent) {
       // 滑动到最底部了
-      _currentPage++;
-      widget.onLoad(false);
+      widget.onLoadRefresh(false);
     }
     if (null == _screenHeight || _screenHeight <= 0) {
       _screenHeight = MediaQueryData.fromWindow(ui.window).size.height;
@@ -183,6 +181,18 @@ class _ArticleListItemWidget extends StatefulWidget {
 class _ArticleListItemState extends State<_ArticleListItemWidget> {
   @override
   Widget build(BuildContext context) {
+    //去掉html中的高亮
+    widget.data.title = widget.data.title
+        .replaceAll(RegExp("(<em[^>]*>)|(</em>)"), "")
+        .replaceAll("&mdash;", "-");
+
+    widget.data.desc = (null == widget.data.desc)
+        ? ""
+        : widget.data.desc
+            .replaceAll(RegExp("(<em[^>]*>)|(</em>)"), "")
+            .replaceAll("&mdash;", "-")
+            .replaceAll(RegExp("\n{2,}"), "\n")
+            .replaceAll(RegExp("\s{2,}"), " ");
     return Card(
       child: ListTile(
         title: Container(

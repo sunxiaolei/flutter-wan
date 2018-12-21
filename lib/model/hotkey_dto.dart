@@ -1,11 +1,12 @@
-class HotKey {
+///搜索热词
+class HotKeyDTO {
   List<Data> data;
   int errorCode;
   String errorMsg;
 
-  HotKey({this.data, this.errorCode, this.errorMsg});
+  HotKeyDTO({this.data, this.errorCode, this.errorMsg});
 
-  HotKey.fromJson(Map<String, dynamic> json) {
+  HotKeyDTO.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = new List<Data>();
       json['data'].forEach((v) {

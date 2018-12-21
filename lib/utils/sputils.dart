@@ -18,7 +18,7 @@ class SpUtils {
 
   static Future<int> getInt(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(key);
+    return prefs.getInt(key) == null ? 0 : prefs.getInt(key);
   }
 
   static Future<bool> setDouble(String key, double value) async {

@@ -1,11 +1,12 @@
-class HomeBanner {
+///主页banner
+class HomeBannerDTO {
   List<BannerData> data;
   int errorCode;
   String errorMsg;
 
-  HomeBanner({this.data, this.errorCode, this.errorMsg});
+  HomeBannerDTO({this.data, this.errorCode, this.errorMsg});
 
-  HomeBanner.fromJson(Map<String, dynamic> json) {
+  HomeBannerDTO.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = new List<BannerData>();
       json['data'].forEach((v) {
