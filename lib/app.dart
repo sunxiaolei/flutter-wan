@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/page/search.dart';
-import 'package:wan/themes.dart';
-import 'package:wan/page/category.dart';
+import 'package:wan/conf/themes.dart';
+import 'package:wan/page/subscriptions.dart';
 import 'package:wan/page/home.dart';
 import 'package:wan/page/mine.dart';
 import 'package:wan/page/navi.dart';
@@ -19,7 +19,7 @@ class WanApp extends StatefulWidget {
 
 class _WanAppState extends State<WanApp> {
   int _tabIndex = 0; //当前页面
-  var _titles = ['首页', '分类', '导航', '我的']; //导航栏标题
+  var _titles = ['首页', '导航', '公众号', '我的']; //导航栏标题
 
   @override
   void initState() {
@@ -77,7 +77,7 @@ class _WanAppState extends State<WanApp> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.category), title: _getNavText(_titles[1])),
             BottomNavigationBarItem(
-                icon: Icon(Icons.navigation), title: _getNavText(_titles[2])),
+                icon: Icon(Icons.chat), title: _getNavText(_titles[2])),
             BottomNavigationBarItem(
                 icon: Icon(Icons.account_box), title: _getNavText(_titles[3])),
           ],
@@ -94,8 +94,8 @@ class _WanAppState extends State<WanApp> {
         body: IndexedStack(
           children: <Widget>[
             HomePage(),
-            CategoryPage(),
             NaviPage(),
+            SubscriptionsPage(),
             MinePage()
           ],
           index: _tabIndex,

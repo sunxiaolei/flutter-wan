@@ -1,3 +1,4 @@
+import 'package:wan/model/dto/subscriptions_dto.dart';
 import 'package:wan/model/homebanner_dto.dart';
 import 'package:wan/model/articledatas_dto.dart';
 import 'package:dio/dio.dart';
@@ -55,5 +56,11 @@ class RequestImpl extends Request {
     Response response = await _dio.post('${Api.search}$page/json',
         data: FormData.from({'k': keyword}));
     return ArticleDatasDTO.fromJson(response.data);
+  }
+
+  @override
+  Future<Subscriptions> getSubscriptions() async {
+    Response response = await _dio.get(Api.subscriptions);
+    return Subscriptions.fromJson(response.data);
   }
 }

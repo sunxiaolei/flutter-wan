@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/page/login.dart';
-import 'package:wan/themes.dart';
+import 'package:wan/conf/themes.dart';
 import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/event/event.dart';
@@ -69,30 +69,38 @@ class _Mine extends State<_MineState> {
         .toList();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  _buildHead() {
+    return Container(
+      child: Center(
+          child: GestureDetector(
+        child: Column(
+          children: <Widget>[
+            Image.asset(
+              'images/avatar.png',
+              width: 80,
+            ),
+            Text(
+              '未登录',
+              style: TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
+        },
+      )),
+      padding: EdgeInsets.only(top: 20, bottom: 20),
+      color: Theme.of(context).primaryColor,
+    );
+  }
+
+  _buildItems() {
     return Column(
       children: <Widget>[
-        Container(
-          child: Center(
-              child: GestureDetector(
-            child: Column(
-              children: <Widget>[
-                Image.asset(
-                  'images/avatar.png',
-                  width: 80,
-                ),
-                Text('未登录')
-              ],
-            ),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-          )),
-          margin: EdgeInsets.only(top: 40, bottom: 20),
+        SizedBox(
+          height: 5,
         ),
-        Divider(), //分割线
         Container(
           child: Row(
             children: <Widget>[
@@ -171,7 +179,7 @@ class _Mine extends State<_MineState> {
                 Expanded(
                   child: Container(
                     child: Text(
-                      '收藏',
+                      '我的收藏',
                       style: TextStyle(fontSize: 16),
                     ),
                     margin: EdgeInsets.only(left: 5),
@@ -278,6 +286,29 @@ class _Mine extends State<_MineState> {
         ),
         Divider(),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('WanFlutter'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {},
+          )
+        ],
+        elevation: 0,
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          _buildHead(),
+          _buildItems(),
+        ],
+      ),
     );
   }
 }

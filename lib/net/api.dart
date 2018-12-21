@@ -17,4 +17,7 @@ class Api {
 
   //搜索
   static String search = 'article/query/';
+
+  //公众号列表
+  static String subscriptions = 'wxarticle/chapters/json';
 }

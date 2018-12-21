@@ -11,6 +11,8 @@ class PasswordField extends StatefulWidget {
     this.onFieldSubmitted,
     this.maxLength,
     this.border,
+    this.icon,
+    this.fillColor,
   });
 
   final Key fieldKey;
@@ -19,6 +21,8 @@ class PasswordField extends StatefulWidget {
   final String helperText;
   final int maxLength;
   final InputBorder border;
+  final Widget icon;
+  final Color fillColor;
   final FormFieldSetter<String> onSaved;
   final FormFieldValidator<String> validator;
   final ValueChanged<String> onFieldSubmitted;
@@ -41,11 +45,12 @@ class _PasswordFieldState extends State<PasswordField> {
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: InputDecoration(
         border: widget.border,
+        fillColor: widget.fillColor,
         filled: true,
         hintText: widget.hintText,
         labelText: widget.labelText,
         helperText: widget.helperText,
-        icon: Icon(Icons.lock),
+        icon: widget.icon,
         suffixIcon: GestureDetector(
           onTap: () {
             setState(() {

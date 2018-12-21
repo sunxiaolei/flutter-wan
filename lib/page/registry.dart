@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wan/themes.dart';
+import 'package:wan/conf/themes.dart';
 import 'package:wan/widget/pwdfield.dart';
 
 ///注册
@@ -52,7 +52,7 @@ class RegistryState extends State<RegistryPage> {
                     //用户名
                     TextFormField(
                       decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
+                        border: OutlineInputBorder(),
                         filled: true,
                         icon: Icon(Icons.person),
                         hintText: '请输入用户名',
@@ -69,6 +69,8 @@ class RegistryState extends State<RegistryPage> {
                     //密码
                     PasswordField(
                       labelText: '用户密码',
+                      border: OutlineInputBorder(),
+                      icon: Icon(Icons.lock),
                       validator: _validatePassword,
                     ),
                     const SizedBox(
@@ -77,6 +79,8 @@ class RegistryState extends State<RegistryPage> {
                     //重复密码
                     PasswordField(
                       labelText: '重复密码',
+                      border: OutlineInputBorder(),
+                      icon: Icon(Icons.lock),
                       validator: _validatePassword,
                     ),
                   ],
@@ -119,7 +123,8 @@ class RegistryState extends State<RegistryPage> {
       form.save();
       Navigator.pop(context);
     } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('请检查必填信息')));
+      _scaffoldKey.currentState
+          .showSnackBar(SnackBar(content: Text('请检查必填信息')));
     }
   }
 }
