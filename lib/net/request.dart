@@ -1,4 +1,5 @@
 import 'package:wan/model/dto/subscriptions_dto.dart';
+import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/homebanner_dto.dart';
 import 'package:wan/model/articledatas_dto.dart';
 import 'package:wan/model/hotkey_dto.dart';
@@ -33,5 +34,8 @@ abstract class Request {
   Future<ArticleDatasDTO> search(int page, String keyword);
 
   //获取公众号列表
-  Future<Subscriptions> getSubscriptions();
+  Future<SubscriptionsList> getSubscriptions();
+
+  //获取某个公众号历史文章
+  Future<ArticleDatasDTO> getSubscriptionsHis();
 }

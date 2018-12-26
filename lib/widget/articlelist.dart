@@ -3,6 +3,7 @@ import 'package:wan/model/homebanner_dto.dart';
 import 'package:wan/model/articledatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
+import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/tags.dart';
 import 'dart:ui' as ui;
 
@@ -12,7 +13,8 @@ class ArticleListWidget extends StatefulWidget {
   final bool hasBanner;
   final LoadCallBack onLoadRefresh;
 
-  ArticleListWidget({Key key, this.hasBanner, this.onLoadRefresh}) : super(key: key);
+  ArticleListWidget({Key key, this.hasBanner, this.onLoadRefresh})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -92,7 +94,7 @@ class ArticleListWidgetState extends State<ArticleListWidget> {
     if (_listDatas == null) {
       return new Center(
         // Loading
-        child: new CircularProgressIndicator(),
+        child: Loading(),
       );
     } else {
       var body = NotificationListener<ScrollNotification>(

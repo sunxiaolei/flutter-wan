@@ -1,4 +1,5 @@
 import 'package:wan/model/dto/subscriptions_dto.dart';
+import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/homebanner_dto.dart';
 import 'package:wan/model/articledatas_dto.dart';
 import 'package:dio/dio.dart';
@@ -59,8 +60,14 @@ class RequestImpl extends Request {
   }
 
   @override
-  Future<Subscriptions> getSubscriptions() async {
+  Future<SubscriptionsList> getSubscriptions() async {
     Response response = await _dio.get(Api.subscriptions);
-    return Subscriptions.fromJson(response.data);
+    return SubscriptionsList.fromJson(response.data);
+  }
+
+  @override
+  Future<ArticleDatasDTO> getSubscriptionsHis() async {
+    Response response = await _dio.get(Api.subscriptionsHis);
+    return ArticleDatasDTO.fromJson(response.data);
   }
 }

@@ -20,4 +20,7 @@ class Api {
 
   //公众号列表
   static String subscriptions = 'wxarticle/chapters/json';
+
+  //查看某个公众号历史数据
+  static String subscriptionsHis = 'wxarticle/list/405/1/json';
 }

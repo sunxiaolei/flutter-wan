@@ -5,6 +5,7 @@ import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/widget/flowitems.dart';
+import 'package:wan/widget/loading.dart';
 
 ///导航
 class NaviPage extends StatelessWidget {
@@ -34,20 +35,13 @@ class _NaviState extends State<_NaviWidget>
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 10, vsync: this);
-    _controller.addListener(_handleTabSelection);
     getData();
-  }
-
-  _handleTabSelection() {
-    setState(() {
-      _selectedPage = _tabpages.elementAt(_controller.index);
-    });
   }
 
   Future<Null> getData() async {
     return Request().getNavi().then((data) {
       Navi navi = data;
+      _controller = TabController(length: navi.data.length, vsync: this);
       _tabs = navi.data
           .map<Tab>((Data d) => Tab(
                 text: d.name,
@@ -97,7 +91,7 @@ class _NaviState extends State<_NaviWidget>
         ),
         body: Center(
           // Loading
-          child: new CircularProgressIndicator(),
+          child: Loading(),
         ),
       );
     } else {
