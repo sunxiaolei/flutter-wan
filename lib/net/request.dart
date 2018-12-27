@@ -37,5 +37,5 @@ abstract class Request {
   Future<SubscriptionsList> getSubscriptions();
 
   //获取某个公众号历史文章
-  Future<ArticleDatasDTO> getSubscriptionsHis();
+  Future<ArticleDatasDTO> getSubscriptionsHis(int page, int id);
 }

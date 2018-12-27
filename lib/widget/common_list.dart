@@ -5,7 +5,7 @@ mixin CommonListState<T extends StatefulWidget>
     on State<T>, AutomaticKeepAliveClientMixin<T> {
   bool isShow = false;
   bool isLoading = false;
-  int page = 1;
+  int page = 0;
   final List dataList = List();
 
   final PullLoadWidgetControl pullLoadWidgetControl = PullLoadWidgetControl();

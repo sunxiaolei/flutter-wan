@@ -66,8 +66,8 @@ class RequestImpl extends Request {
   }
 
   @override
-  Future<ArticleDatasDTO> getSubscriptionsHis() async {
-    Response response = await _dio.get(Api.subscriptionsHis);
+  Future<ArticleDatasDTO> getSubscriptionsHis(int page, int id) async {
+    Response response = await _dio.get('${Api.subscriptionsHis}$id/$page/json');
     return ArticleDatasDTO.fromJson(response.data);
   }
 }
