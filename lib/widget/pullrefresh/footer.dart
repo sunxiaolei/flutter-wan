@@ -112,12 +112,6 @@ class ClassicsFooter extends RefreshFooter {
   // 刷新完成文字
   final String loadedText;
 
-  // 背景颜色
-  final Color bgColor;
-
-  // 字体颜色
-  final Color textColor;
-
   // 触发加载的高度
   final double loadHeight;
 
@@ -130,20 +124,14 @@ class ClassicsFooter extends RefreshFooter {
   // 更多信息
   final String moreInfo;
 
-  // 更多信息文字颜色
-  final Color moreInfoColor;
-
   // 构造函数
   ClassicsFooter(
       {GlobalKey<RefreshFooterState> key,
-      this.loadText: "Push to load",
-      this.loadReadyText: "Release to load",
-      this.loadingText: "Loading...",
-      this.loadedText: "Load finished",
-      this.noMoreText: "No more",
-      this.bgColor: Colors.blue,
-      this.textColor: Colors.white,
-      this.moreInfoColor: Colors.white,
+      this.loadText: "上拉加载",
+      this.loadReadyText: "准备加载",
+      this.loadingText: "正在加载",
+      this.loadedText: "完成",
+      this.noMoreText: "没有更多数据",
       this.loadHeight: 70.0,
       this.isFloat: false,
       this.showMore: false,
@@ -236,7 +224,7 @@ class ClassicsFooterState extends RefreshFooterState<ClassicsFooter> {
   Widget build(BuildContext context) {
     return new Container(
       //上拉加载布局
-      color: widget.bgColor,
+      color: Theme.of(context).primaryColor,
       height: this.height,
       child: SingleChildScrollView(
           child: Container(
@@ -254,7 +242,7 @@ class ClassicsFooterState extends RefreshFooterState<ClassicsFooter> {
                     this.refreshFooterStatus == RefreshFooterStatus.NO_LOAD
                         ? Icon(
                             Icons.arrow_upward,
-                            color: widget.textColor,
+                            color: Colors.white,
                           )
                         : Container(),
                     this.refreshFooterStatus == RefreshFooterStatus.LOADING
@@ -266,7 +254,7 @@ class ClassicsFooterState extends RefreshFooterState<ClassicsFooter> {
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.0,
                                 valueColor:
-                                    AlwaysStoppedAnimation(widget.textColor),
+                                    AlwaysStoppedAnimation(Colors.white),
                               ),
                             ),
                           )
@@ -274,13 +262,13 @@ class ClassicsFooterState extends RefreshFooterState<ClassicsFooter> {
                     this.refreshFooterStatus == RefreshFooterStatus.LOAD_READY
                         ? Icon(
                             Icons.arrow_downward,
-                            color: widget.textColor,
+                            color: Colors.white,
                           )
                         : Container(),
                     this.refreshFooterStatus == RefreshFooterStatus.LOADED
                         ? Icon(
                             Icons.done,
-                            color: widget.textColor,
+                            color: Colors.white,
                           )
                         : Container(),
                   ],
@@ -295,8 +283,7 @@ class ClassicsFooterState extends RefreshFooterState<ClassicsFooter> {
                   children: <Widget>[
                     new Text(
                       _showText,
-                      style: new TextStyle(
-                          color: widget.textColor, fontSize: 16.0),
+                      style: new TextStyle(color: Colors.white, fontSize: 16.0),
                     ),
                     Container(
                       height: 2.0,
@@ -305,7 +292,7 @@ class ClassicsFooterState extends RefreshFooterState<ClassicsFooter> {
                         ? new Text(
                             _getMoreInfo(),
                             style: new TextStyle(
-                                color: widget.moreInfoColor, fontSize: 12.0),
+                                color: Colors.white, fontSize: 12.0),
                           )
                         : Container(),
                   ],

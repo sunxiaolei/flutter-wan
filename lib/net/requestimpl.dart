@@ -66,8 +66,10 @@ class RequestImpl extends Request {
   }
 
   @override
-  Future<ArticleDatasDTO> getSubscriptionsHis(int page, int id) async {
-    Response response = await _dio.get('${Api.subscriptionsHis}$id/$page/json');
+  Future<ArticleDatasDTO> getSubscriptionsHis(
+      int page, int id, String keyword) async {
+    Response response = await _dio
+        .get('${Api.subscriptionsHis}$id/$page/json', data: {'k': '$keyword'});
     return ArticleDatasDTO.fromJson(response.data);
   }
 }

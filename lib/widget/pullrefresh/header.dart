@@ -103,12 +103,6 @@ class ClassicsHeader extends RefreshHeader {
   // 刷新完成文字
   final String refreshedText;
 
-  // 背景颜色
-  final Color bgColor;
-
-  // 字体颜色
-  final Color textColor;
-
   // 触发刷新的高度
   final double refreshHeight;
 
@@ -121,19 +115,13 @@ class ClassicsHeader extends RefreshHeader {
   // 更多信息
   final String moreInfo;
 
-  // 更多信息文字颜色
-  final Color moreInfoColor;
-
   // 构造函数
   ClassicsHeader(
       {@required GlobalKey<RefreshHeaderState> key,
-      this.refreshText: "Pull to refresh",
-      this.refreshReadyText: "Release to refresh",
-      this.refreshingText: "Refreshing...",
-      this.refreshedText: "Refresh finished",
-      this.bgColor: Colors.blue,
-      this.textColor: Colors.white,
-      this.moreInfoColor: Colors.white,
+      this.refreshText: "下拉刷新",
+      this.refreshReadyText: "释放刷新",
+      this.refreshingText: "正在刷新",
+      this.refreshedText: "完成",
       this.refreshHeight: 70.0,
       this.isFloat: false,
       this.showMore: false,
@@ -216,7 +204,7 @@ class ClassicsHeaderState extends RefreshHeaderState<ClassicsHeader> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      color: widget.bgColor,
+      color: Theme.of(context).primaryColor,
       height: this.height,
       child: SingleChildScrollView(
           child: Container(
@@ -234,7 +222,7 @@ class ClassicsHeaderState extends RefreshHeaderState<ClassicsHeader> {
                     this.refreshHeaderStatus == RefreshHeaderStatus.NO_REFRESH
                         ? Icon(
                             Icons.arrow_downward,
-                            color: widget.textColor,
+                            color: Colors.white,
                           )
                         : Container(),
                     this.refreshHeaderStatus == RefreshHeaderStatus.REFRESHING
@@ -246,7 +234,7 @@ class ClassicsHeaderState extends RefreshHeaderState<ClassicsHeader> {
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.0,
                                 valueColor:
-                                    AlwaysStoppedAnimation(widget.textColor),
+                                    AlwaysStoppedAnimation(Colors.white),
                               ),
                             ),
                           )
@@ -255,13 +243,13 @@ class ClassicsHeaderState extends RefreshHeaderState<ClassicsHeader> {
                             RefreshHeaderStatus.REFRESH_READY
                         ? Icon(
                             Icons.arrow_upward,
-                            color: widget.textColor,
+                            color: Colors.white,
                           )
                         : Container(),
                     this.refreshHeaderStatus == RefreshHeaderStatus.REFRESHED
                         ? Icon(
                             Icons.done,
-                            color: widget.textColor,
+                            color: Colors.white,
                           )
                         : Container(),
                   ],
@@ -276,8 +264,7 @@ class ClassicsHeaderState extends RefreshHeaderState<ClassicsHeader> {
                   children: <Widget>[
                     new Text(
                       _showText,
-                      style: new TextStyle(
-                          color: widget.textColor, fontSize: 16.0),
+                      style: new TextStyle(color: Colors.white, fontSize: 16.0),
                     ),
                     Container(
                       height: 2.0,
@@ -286,7 +273,7 @@ class ClassicsHeaderState extends RefreshHeaderState<ClassicsHeader> {
                         ? new Text(
                             _getMoreInfo(),
                             style: new TextStyle(
-                                color: widget.moreInfoColor, fontSize: 12.0),
+                                color: Colors.white, fontSize: 12.0),
                           )
                         : Container(),
                   ],

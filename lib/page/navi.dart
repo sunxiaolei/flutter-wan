@@ -3,7 +3,6 @@ import 'package:wan/model/navi_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
-import 'package:wan/page/search.dart';
 import 'package:wan/widget/flowitems.dart';
 import 'package:wan/widget/loading.dart';
 
@@ -75,19 +74,6 @@ class _NaviState extends State<_NaviWidget>
       return Scaffold(
         appBar: AppBar(
           title: Text('WanFlutter'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SearchPage()));
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {},
-            ),
-          ],
         ),
         body: Center(
           // Loading
@@ -99,19 +85,6 @@ class _NaviState extends State<_NaviWidget>
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text('WanFlutter'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SearchPage()));
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {},
-            ),
-          ],
           bottom: TabBar(
             tabs: _tabs,
             controller: _controller,

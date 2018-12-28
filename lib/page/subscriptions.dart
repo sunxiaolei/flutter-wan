@@ -3,7 +3,6 @@ import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/page/subscription_list.dart';
-import 'package:wan/widget/articlelist.dart';
 import 'package:wan/widget/loading.dart';
 
 ///微信公众号
@@ -27,6 +26,7 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
 
   TabController _tabController;
   List<Tab> _tabs;
+  int _currentIndex;
 
   List<SubscriptionList> _tabpages;
 
@@ -36,15 +36,12 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
     getData();
   }
 
-  _handleTabSelection() {
-//    setState(() {
-//      _selectedPage = _tabpages.elementAt(index);
-//    });
-  }
-
   Future<Null> getData() async {
     return Request().getSubscriptions().then((data) {
       _tabController = TabController(length: data.data.length, vsync: this);
+      _tabController.addListener(() {
+        _currentIndex = _tabpages[_tabController.index].id;
+      });
       SubscriptionsList subscriptions = data;
       _tabs = subscriptions.data
           .map<Tab>((Data d) => Tab(
@@ -74,7 +71,12 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
           icon: Icon(Icons.search),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SearchPage()));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SearchWidget(
+                          1,
+                          sId: _currentIndex,
+                        )));
           },
         ),
         IconButton(

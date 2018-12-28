@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:wan/model/articledatas_dto.dart';
 import 'package:wan/model/hotkey_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
-import 'package:wan/page/article.dart';
-import 'package:wan/widget/articlelist.dart';
-import 'package:wan/utils/toastutils.dart';
+import 'package:wan/page/article_list.dart';
+import 'package:wan/page/subscription_list.dart';
 import 'package:wan/widget/flowitems.dart';
 
 ///搜索页
-class SearchPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _SearchWidget();
-  }
-}
+class SearchWidget extends StatefulWidget {
+  final int type; //0:文章 1:公众号
+  final int sId; //公众号id
 
-class _SearchWidget extends StatefulWidget {
+  const SearchWidget(this.type, {Key key, this.sId}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _SearchState();
   }
 }
 
-class _SearchState extends State<_SearchWidget> {
+class _SearchState extends State<SearchWidget> {
   List<FlowItemVO> _hotkeys = List();
   FlowItemsWidget _hotkeyWidget;
-  ArticleListWidget _alist;
-  GlobalKey<ArticleListWidgetState> _listKey = GlobalKey();
-  int index = 1;
+  GlobalKey<SubscriptionListState> _sKey = GlobalKey();
+  GlobalKey<ArticleListState> _aKey = GlobalKey();
   String _keyword;
 
   @override
@@ -57,83 +52,74 @@ class _SearchState extends State<_SearchWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _alist = ArticleListWidget(
-      hasBanner: false,
-      key: _listKey,
-      onLoadRefresh: (refresh) {
-        if (refresh) {
-          _refresh(_keyword);
-        } else {
-          _loadMore(_keyword);
-        }
-      },
-    );
     return Scaffold(
         //搜索栏
-        appBar: AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.maybePop(context);
-              }),
-          title: Theme(
-              data: Theme.of(context).copyWith(
-                  hintColor: Colors.white70,
-                  textTheme:
-                      TextTheme(subhead: TextStyle(color: Colors.white))),
-              child: TextField(
-                autofocus: true,
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                    hintText: '搜索',
-                    border: InputBorder.none,
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        if (_keyword != null && _keyword.isNotEmpty) {
-                          search(_keyword);
-                        }
-                      },
-                      color: Colors.white,
-                    )),
-                onChanged: (str) {
-                  _keyword = str;
-                },
-              )),
-        ),
+        appBar: _buildAppbar(),
         //搜索热词 搜索结果
-        body: _keyword == null || _keyword.isEmpty ? _hotkeyWidget : _alist);
+        body: _buildBody());
+  }
+
+  _buildAppbar() {
+    return AppBar(
+      leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.maybePop(context);
+          }),
+      title: Theme(
+          data: Theme.of(context).copyWith(
+              hintColor: Colors.white70,
+              textTheme: TextTheme(subhead: TextStyle(color: Colors.white))),
+          child: TextField(
+            autofocus: true,
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+                hintText: '搜索',
+                border: InputBorder.none,
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    if (_keyword != null && _keyword.isNotEmpty) {
+                      search(_keyword);
+                    }
+                  },
+                  color: Colors.white,
+                )),
+            onChanged: (str) {
+              _keyword = str;
+            },
+          )),
+    );
+  }
+
+  _buildBody() {
+    if (widget.type == 0) {
+      return _keyword == null || _keyword.isEmpty
+          ? _hotkeyWidget
+          : ArticleList(
+              key: _aKey,
+              keyword: _keyword,
+            );
+    } else {
+      return _keyword == null || _keyword.isEmpty
+          ? Center(
+              child: Text('搜索'),
+            )
+          : SubscriptionList(
+              key: _sKey,
+              id: widget.sId,
+              keyword: _keyword,
+            );
+    }
   }
 
   ///搜索
   Future<Null> search(keyword) async {
     FocusScope.of(context).requestFocus(FocusNode());
-    index = 0;
-    Request().search(index, keyword).then((data) {
-      ArticleDatasDTO d = data;
-      _listKey.currentState.setData(d.data.datas);
-    });
-    setState(() {});
-  }
-
-  //刷新
-  Future<Null> _refresh(String keyword) async {
-    index = 0;
-    Request().search(index, keyword).then((data) {
-      _listKey.currentState.setData(data.data.datas);
-    }).catchError((e) {
-      debugPrint('error::' + e.toString());
-      ToastUtils.showShort("获取数据失败，请检查网路");
-    });
-    setState(() {});
-  }
-
-  //加载数据
-  Future<Null> _loadMore(String keyword) async {
-    Request().search(index, keyword).then((data) {
-      _listKey.currentState.addData(data.data.datas);
-      index++;
-    });
-    setState(() {});
+    if (widget.type == 0) {
+      _aKey.currentState.setState(() {});
+    } else {
+      _sKey.currentState.setState(() {});
+    }
   }
 }

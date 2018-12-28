@@ -6,21 +6,20 @@ import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/pullrefresh/pullrefresh.dart';
 
-///公众号文章列表
-class SubscriptionList extends StatefulWidget {
+///文章列表
+class ArticleList extends StatefulWidget {
   final id;
   final String keyword;
 
-  const SubscriptionList({Key key, this.id, this.keyword: ''})
-      : super(key: key);
+  const ArticleList({Key key, this.id, this.keyword: ''}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return SubscriptionListState();
+    return ArticleListState();
   }
 }
 
-class SubscriptionListState extends State<SubscriptionList>
+class ArticleListState extends State<ArticleList>
     with AutomaticKeepAliveClientMixin {
   GlobalKey<PullRefreshState> _key = GlobalKey();
   int index = 1;
@@ -34,9 +33,7 @@ class SubscriptionListState extends State<SubscriptionList>
 
   Future<Null> _refresh() async {
     index = 1;
-    Request()
-        .getSubscriptionsHis(index, widget.id, widget.keyword)
-        .then((data) {
+    Request().search(index, widget.keyword).then((data) {
       setState(() {
         _listDatas = data.data.datas;
         index++;
@@ -49,9 +46,7 @@ class SubscriptionListState extends State<SubscriptionList>
 
   //加载数据
   Future<Null> _loadMore() async {
-    Request()
-        .getSubscriptionsHis(index, widget.id, widget.keyword)
-        .then((data) {
+    Request().search(index, widget.keyword).then((data) {
       setState(() {
         _listDatas.addAll(data.data.datas);
         index++;

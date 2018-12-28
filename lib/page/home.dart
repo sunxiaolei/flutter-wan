@@ -26,7 +26,7 @@ class _HomeWidget extends StatefulWidget {
 
 class _HomeState extends State<_HomeWidget> {
   GlobalKey<PullRefreshState> _key = GlobalKey();
-  int index = 0;
+  int index = 1;
   List<BannerData> _listBanners;
   PageView _bannerViews;
   List<Datas> _listDatas;
@@ -39,7 +39,7 @@ class _HomeState extends State<_HomeWidget> {
 
   //刷新
   Future<Null> _refresh() async {
-    index = 0;
+    index = 1;
     Request().getHomeBanner().then((data) {
       _listBanners = data.data;
       setState(() {});
@@ -87,7 +87,7 @@ class _HomeState extends State<_HomeWidget> {
             icon: Icon(Icons.search),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchPage()));
+                  MaterialPageRoute(builder: (context) => SearchWidget(0)));
             },
           ),
           IconButton(

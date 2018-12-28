@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:wan/widget/pullrefresh/ball_pulse_footer.dart';
 import 'package:wan/widget/pullrefresh/behavior.dart';
+import 'package:wan/widget/pullrefresh/bezier_bounce_footer.dart';
 import 'package:wan/widget/pullrefresh/footer.dart';
 import 'package:wan/widget/pullrefresh/header.dart';
 import 'package:wan/widget/pullrefresh/scroll_physics.dart';
@@ -97,7 +99,7 @@ class PullRefreshState extends State<PullRefresh>
     key: new GlobalKey<RefreshHeaderState>(),
   );
   RefreshFooter _defaultFooter =
-      ClassicsFooter(key: new GlobalKey<RefreshFooterState>());
+      BallPulseFooter(key: new GlobalKey<RefreshFooterState>());
 
   // 滑动速度(ms)为单位
   double scrollSpeed = 0;
@@ -158,45 +160,7 @@ class PullRefreshState extends State<PullRefresh>
   // 底部超出边界
   Future bottomOver() async {
     if (_isRefresh) return;
-    // 判断是否滑动到底部并自动加载
-//    if (widget.autoLoad) {
     callLoadMore();
-    return;
-//    }
-    if (!_isPushBottom && widget.behavior is ScrollOverBehavior) {
-      int time = (_loadHeight * 0.9 / (-scrollSpeed)).floor();
-      if (time > 150) return;
-      time = time > 20 ? time : 20;
-      _scrollOverAnimationController = new AnimationController(
-          duration: Duration(milliseconds: time), vsync: this);
-      _scrollOverAnimation = new Tween(begin: 0.0, end: _loadHeight * 0.9)
-          .animate(_scrollOverAnimationController)
-            ..addListener(() {
-              if (_scrollOverAnimation.value == 0.0) return;
-              _scrollController
-                  .jumpTo(_scrollController.position.maxScrollExtent);
-              setState(() {
-                _bottomItemHeight = _scrollOverAnimation.value;
-              });
-              _scrollController
-                  .jumpTo(_scrollController.position.maxScrollExtent);
-            });
-      _scrollOverAnimation.addStatusListener((animationStatus) {
-        if (animationStatus == AnimationStatus.completed) {
-          setState(() {
-            _scrollController
-                .jumpTo(_scrollController.position.maxScrollExtent);
-            _bottomItemHeight = _loadHeight * 0.9;
-            _scrollController
-                .jumpTo(_scrollController.position.maxScrollExtent);
-            _scrollPhysics = _neverScrollableScrollPhysics;
-          });
-          _shrinkageDistance = _refreshHeight * 0.9;
-          _animationController.forward();
-        }
-      });
-      _scrollOverAnimationController.forward();
-    }
   }
 
   @override
