@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/conf/themes.dart';
+import 'package:wan/net/api.dart';
 import 'package:wan/page/subscriptions.dart';
 import 'package:wan/page/home.dart';
 import 'package:wan/page/mine.dart';
@@ -10,7 +12,6 @@ import 'package:wan/utils/sputils.dart';
 
 ///主页
 class WanApp extends StatefulWidget {
-
   static bool isLogin = false;
 
   @override
@@ -26,6 +27,10 @@ class _WanAppState extends State<WanApp> {
   @override
   void initState() {
     super.initState();
+    if (Dio().cookieJar.loadForRequest(Uri.parse(Api.baseUrl + Api.login)) !=
+        null) {
+      WanApp.isLogin = true;
+    }
     _getTheme(null);
     bus.on<ThemeEvent>().listen((event) {
       _getTheme(event);

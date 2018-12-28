@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wan/app.dart';
+import 'package:wan/conf/constant.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/registry.dart';
+import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/arc_clipper.dart';
 import 'package:wan/widget/loading.dart';
@@ -101,12 +103,17 @@ class LoginState extends State<LoginPage> {
       if (dto.errorCode == 0) {
         ToastUtils.showShort('登陆成功');
         WanApp.isLogin = true;
+        _setUser(dto);
         bus.fire(LoginEvent(dto.data));
         Navigator.pop(context);
       } else {
         ToastUtils.showShort(dto.errorMsg);
       }
     });
+  }
+
+  void _setUser(LoginDTO user) async {
+    SpUtils.setString(Constant.spUserName, user.data.username);
   }
 
   _buildLoginCard(BuildContext context) {

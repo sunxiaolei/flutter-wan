@@ -11,7 +11,9 @@ dependencies:
 
 dev_dependencies:
 
-  flutter_webview_plugin: ^0.2.1+2
+  #webview
+  flutter_webview_plugin: ^0.3.0+2
+  #toast
   fluttertoast: ^2.0.9
   #网络
   dio: ^1.0.9
@@ -19,6 +21,8 @@ dev_dependencies:
   event_bus: ^1.0.1
   #本地存储
   shared_preferences: ^0.4.3
+  #获取存储路径
+  path_provider: ^0.4.1
   #loading indicators
   flutter_spinkit: ^3.0.0
 

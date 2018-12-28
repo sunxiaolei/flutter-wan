@@ -61,7 +61,10 @@ class ArticleListItemState extends State<ArticleListItemWidget> {
           //点击跳转详情
           Navigator.of(context)
               .push(MaterialPageRoute<Null>(builder: (context) {
-            return ArticlePage(widget.data.link);
+            return ArticlePage(
+              widget.data.link,
+              fav: widget.data.collect,
+            );
           }));
         },
         contentPadding:

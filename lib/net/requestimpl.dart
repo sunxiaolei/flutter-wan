@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
@@ -21,8 +24,14 @@ class RequestImpl extends Request {
     _dio.interceptor.request.onSend = interceptor.onSend;
     _dio.interceptor.response.onSuccess = interceptor.onSuccess;
     _dio.interceptor.response.onError = interceptor.onError;
-    _dio.cookieJar = CookieJar();
-//    _dio.cookieJar = PersistCookieJar("./cookies");
+
+    _setPersistCookieJar();
+  }
+
+  _setPersistCookieJar() async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    String path = dir.path;
+    _dio.cookieJar = new PersistCookieJar(path);
   }
 
   //获取首页列表

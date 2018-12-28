@@ -31,10 +31,20 @@ class _Mine extends State<_MineState> {
   void initState() {
     super.initState();
     _getTheme();
+    if (WanApp.isLogin) {
+      _getUser();
+    }
     bus.on<LoginEvent>().listen((event) {
       setState(() {
         _name = event.data.username;
       });
+    });
+  }
+
+  void _getUser() async {
+    SpUtils.getString(Constant.spUserName).then((str) {
+      _name = str;
+      setState(() {});
     });
   }
 
@@ -87,9 +97,12 @@ class _Mine extends State<_MineState> {
               'images/avatar.png',
               width: 80,
             ),
+            SizedBox(
+              height: 8,
+            ),
             Text(
               _name == null ? '未登录' : _name,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white, fontSize: 16),
             )
           ],
         ),
