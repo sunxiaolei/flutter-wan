@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/conf/themes.dart';
 import 'package:wan/net/api.dart';
@@ -27,14 +31,22 @@ class _WanAppState extends State<WanApp> {
   @override
   void initState() {
     super.initState();
-    if (Dio().cookieJar.loadForRequest(Uri.parse(Api.baseUrl + Api.login)) !=
-        null) {
-      WanApp.isLogin = true;
-    }
+    _getPersistCookieJar();
     _getTheme(null);
     bus.on<ThemeEvent>().listen((event) {
       _getTheme(event);
     });
+  }
+
+  _getPersistCookieJar() async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    String path = dir.path;
+    PersistCookieJar pcj = new PersistCookieJar(path);
+    List<Cookie> cs = pcj.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
+    if (cs != null && cs.length > 0) {
+      WanApp.isLogin = true;
+      bus.fire(LoginEvent());
+    }
   }
 
   void _getTheme(ThemeEvent event) async {

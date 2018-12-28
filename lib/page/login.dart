@@ -8,7 +8,6 @@ import 'package:wan/page/registry.dart';
 import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/arc_clipper.dart';
-import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/pwdfield.dart';
 
 ///登录
@@ -104,7 +103,7 @@ class LoginState extends State<LoginPage> {
         ToastUtils.showShort('登陆成功');
         WanApp.isLogin = true;
         _setUser(dto);
-        bus.fire(LoginEvent(dto.data));
+        bus.fire(LoginEvent(data: dto.data));
         Navigator.pop(context);
       } else {
         ToastUtils.showShort(dto.errorMsg);

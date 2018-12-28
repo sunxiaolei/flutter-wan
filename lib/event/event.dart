@@ -13,5 +13,5 @@ class ThemeEvent {
 class LoginEvent {
   LoginData data;
 
-  LoginEvent(this.data);
+  LoginEvent({this.data});
 }
