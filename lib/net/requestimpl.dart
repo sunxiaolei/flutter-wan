@@ -85,4 +85,13 @@ class RequestImpl extends Request {
         data: FormData.from({'username': username, 'password': password}));
     return LoginDTO.fromJson(response.data);
   }
+
+  //收藏
+  @override
+  Future<ArticleDatasDTO> getFavorite(int page) async {
+    String reqAPi = '${Api.favorite}$page/json';
+    _dio.cookieJar.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
+    Response response = await _dio.get(reqAPi);
+    return ArticleDatasDTO.fromJson(response.data);
+  }
 }

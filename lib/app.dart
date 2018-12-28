@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/constant.dart';
-import 'package:wan/page/search.dart';
 import 'package:wan/conf/themes.dart';
 import 'package:wan/page/subscriptions.dart';
 import 'package:wan/page/home.dart';
@@ -11,6 +10,9 @@ import 'package:wan/utils/sputils.dart';
 
 ///主页
 class WanApp extends StatefulWidget {
+
+  static bool isLogin = false;
+
   @override
   State<StatefulWidget> createState() {
     return _WanAppState();

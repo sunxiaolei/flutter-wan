@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wan/app.dart';
 import 'package:wan/conf/constant.dart';
+import 'package:wan/page/favorite.dart';
 import 'package:wan/page/login.dart';
 import 'package:wan/conf/themes.dart';
 import 'package:wan/utils/sputils.dart';
@@ -92,8 +94,10 @@ class _Mine extends State<_MineState> {
           ],
         ),
         onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
+          if (!WanApp.isLogin) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
+          }
         },
       )),
       padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -169,7 +173,12 @@ class _Mine extends State<_MineState> {
         Divider(),
         GestureDetector(
           onTap: () {
-            ToastUtils.showShort('收藏');
+            if (WanApp.isLogin) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => FavoritePage()));
+            } else {
+              ToastUtils.showShort('请先登录');
+            }
           },
           child: Container(
             child: Row(

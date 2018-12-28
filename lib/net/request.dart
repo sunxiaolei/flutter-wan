@@ -41,4 +41,7 @@ abstract class Request {
 
   //登录
   Future<LoginDTO> login(String username, String password);
+
+  //获取收藏列表
+  Future<ArticleDatasDTO> getFavorite(int index);
 }

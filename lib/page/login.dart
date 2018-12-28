@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan/app.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/net/request.dart';
@@ -99,6 +100,7 @@ class LoginState extends State<LoginPage> {
       LoginDTO dto = result;
       if (dto.errorCode == 0) {
         ToastUtils.showShort('登陆成功');
+        WanApp.isLogin = true;
         bus.fire(LoginEvent(dto.data));
         Navigator.pop(context);
       } else {

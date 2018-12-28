@@ -26,4 +26,7 @@ class Api {
 
   //登录
   static String login = 'user/login';
+
+  //收藏文章
+  static String favorite = 'lg/collect/list/';
 }
