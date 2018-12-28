@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wan/model/navi_dto.dart';
+import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';

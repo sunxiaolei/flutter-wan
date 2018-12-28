@@ -23,11 +23,17 @@ class _MineState extends StatefulWidget {
 
 class _Mine extends State<_MineState> {
   bool _switchValue = false;
+  String _name;
 
   @override
   void initState() {
     super.initState();
     _getTheme();
+    bus.on<LoginEvent>().listen((event) {
+      setState(() {
+        _name = event.data.username;
+      });
+    });
   }
 
   void _getTheme() async {
@@ -80,7 +86,7 @@ class _Mine extends State<_MineState> {
               width: 80,
             ),
             Text(
-              '未登录',
+              _name == null ? '未登录' : _name,
               style: TextStyle(color: Colors.white),
             )
           ],

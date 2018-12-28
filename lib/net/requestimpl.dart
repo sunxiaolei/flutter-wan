@@ -1,10 +1,11 @@
-import 'package:wan/model/dto/subscriptions_dto.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
-import 'package:wan/model/homebanner_dto.dart';
-import 'package:wan/model/articledatas_dto.dart';
+import 'package:wan/model/dto/homebanner_dto.dart';
+import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:dio/dio.dart';
-import 'package:wan/model/hotkey_dto.dart';
-import 'package:wan/model/navi_dto.dart';
+import 'package:wan/model/dto/hotkey_dto.dart';
+import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/net/api.dart';
 import 'package:wan/net/interceptor.dart';
 import 'package:wan/net/request.dart';
@@ -20,6 +21,8 @@ class RequestImpl extends Request {
     _dio.interceptor.request.onSend = interceptor.onSend;
     _dio.interceptor.response.onSuccess = interceptor.onSuccess;
     _dio.interceptor.response.onError = interceptor.onError;
+    _dio.cookieJar = CookieJar();
+//    _dio.cookieJar = PersistCookieJar("./cookies");
   }
 
   //获取首页列表
@@ -59,17 +62,27 @@ class RequestImpl extends Request {
     return ArticleDatasDTO.fromJson(response.data);
   }
 
+  //获取公众号列表
   @override
   Future<SubscriptionsList> getSubscriptions() async {
     Response response = await _dio.get(Api.subscriptions);
     return SubscriptionsList.fromJson(response.data);
   }
 
+  //获取公众号文章
   @override
   Future<ArticleDatasDTO> getSubscriptionsHis(
       int page, int id, String keyword) async {
     Response response = await _dio
         .get('${Api.subscriptionsHis}$id/$page/json', data: {'k': '$keyword'});
     return ArticleDatasDTO.fromJson(response.data);
+  }
+
+  //登录
+  @override
+  Future<LoginDTO> login(String username, String password) async {
+    Response response = await _dio.post(Api.login,
+        data: FormData.from({'username': username, 'password': password}));
+    return LoginDTO.fromJson(response.data);
   }
 }

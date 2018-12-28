@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wan/model/articledatas_dto.dart';
+import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article_list_item.dart';
 import 'package:wan/utils/toastutils.dart';

@@ -1,9 +1,9 @@
-import 'package:wan/model/dto/subscriptions_dto.dart';
+import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
-import 'package:wan/model/homebanner_dto.dart';
-import 'package:wan/model/articledatas_dto.dart';
-import 'package:wan/model/hotkey_dto.dart';
-import 'package:wan/model/navi_dto.dart';
+import 'package:wan/model/dto/homebanner_dto.dart';
+import 'package:wan/model/dto/articledatas_dto.dart';
+import 'package:wan/model/dto/hotkey_dto.dart';
+import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/net/requestimpl.dart';
 
 abstract class Request {
@@ -38,4 +38,7 @@ abstract class Request {
 
   //获取某个公众号历史文章
   Future<ArticleDatasDTO> getSubscriptionsHis(int page, int id, String keyword);
+
+  //登录
+  Future<LoginDTO> login(String username, String password);
 }

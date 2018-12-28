@@ -23,4 +23,7 @@ class Api {
 
   //查看某个公众号历史数据
   static String subscriptionsHis = 'wxarticle/list/';
+
+  //登录
+  static String login = 'user/login';
 }

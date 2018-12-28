@@ -1,4 +1,4 @@
-import 'package:wan/model/tags_dto.dart';
+import 'package:wan/model/dto/tags_dto.dart';
 
 ///导航
 class Navi {
