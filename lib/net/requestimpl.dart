@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:wan/model/dto/articles_dto.dart';
 import 'package:wan/model/dto/base_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
@@ -37,7 +36,7 @@ class RequestImpl extends Request {
   }
 
   _handleRes(Response response) {
-    BaseDTO<ArticlesData> base = BaseDTO.fromJson(response.data);
+    BaseDTO base = BaseDTO.fromJson(response.data);
     if (base.errorCode == 0) {
       return base.data;
     } else {

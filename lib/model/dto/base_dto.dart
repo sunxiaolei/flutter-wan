@@ -1,4 +1,4 @@
-class BaseDTO<T> {
+class BaseDTO {
   int errorCode;
   String errorMsg;
   dynamic data;
