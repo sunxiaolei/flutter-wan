@@ -1,43 +1,14 @@
 ///搜索热词
 class HotKeyDTO {
-  List<Data> data;
-  int errorCode;
-  String errorMsg;
-
-  HotKeyDTO({this.data, this.errorCode, this.errorMsg});
-
-  HotKeyDTO.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = new List<Data>();
-      json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
-      });
-    }
-    errorCode = json['errorCode'];
-    errorMsg = json['errorMsg'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    data['errorCode'] = this.errorCode;
-    data['errorMsg'] = this.errorMsg;
-    return data;
-  }
-}
-
-class Data {
   int id;
   String link;
   String name;
   int order;
   int visible;
 
-  Data({this.id, this.link, this.name, this.order, this.visible});
+  HotKeyDTO({this.id, this.link, this.name, this.order, this.visible});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  HotKeyDTO.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     link = json['link'];
     name = json['name'];

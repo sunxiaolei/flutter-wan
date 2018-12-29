@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:wan/model/dto/articles_dto.dart';
+import 'package:wan/model/dto/base_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
-import 'package:wan/model/dto/logout_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
@@ -35,33 +36,54 @@ class RequestImpl extends Request {
     _dio.cookieJar = new PersistCookieJar(path);
   }
 
+  _handleRes(Response response) {
+    BaseDTO<ArticlesData> base = BaseDTO.fromJson(response.data);
+    if (base.errorCode == 0) {
+      return base.data;
+    } else {
+      throw DioError(message: base.errorMsg);
+    }
+  }
+
   //获取首页列表
   @override
   Future<ArticleDatasDTO> getHomeList(int page) async {
     String reqAPi = '${Api.homelist}$page/json';
     Response response = await _dio.get(reqAPi);
-    return ArticleDatasDTO.fromJson(response.data);
+    return ArticleDatasDTO.fromJson(_handleRes(response));
   }
 
   //获取banner
   @override
-  Future<HomeBannerDTO> getHomeBanner() async {
+  Future<List<BannerDataDTO>> getHomeBanner() async {
     Response response = await _dio.get(Api.homebanner);
-    return HomeBannerDTO.fromJson(response.data);
+    List<BannerDataDTO> data = new List<BannerDataDTO>();
+    _handleRes(response).forEach((v) {
+      data.add(new BannerDataDTO.fromJson(v));
+    });
+    return data;
   }
 
   //获取导航数据
   @override
-  Future<Navi> getNavi() async {
+  Future<List<NaviDTO>> getNavi() async {
     Response response = await _dio.get(Api.navi);
-    return Navi.fromJson(response.data);
+    List<NaviDTO> data = new List<NaviDTO>();
+    _handleRes(response).forEach((v) {
+      data.add(new NaviDTO.fromJson(v));
+    });
+    return data;
   }
 
   //获取搜索热词
   @override
-  Future<HotKeyDTO> getHotKey() async {
+  Future<List<HotKeyDTO>> getHotKey() async {
     Response response = await _dio.get(Api.hotkey);
-    return HotKeyDTO.fromJson(response.data);
+    List<HotKeyDTO> data = new List<HotKeyDTO>();
+    _handleRes(response).forEach((v) {
+      data.add(new HotKeyDTO.fromJson(v));
+    });
+    return data;
   }
 
   //搜索
@@ -69,14 +91,18 @@ class RequestImpl extends Request {
   Future<ArticleDatasDTO> search(int page, String keyword) async {
     Response response = await _dio.post('${Api.search}$page/json',
         data: FormData.from({'k': keyword}));
-    return ArticleDatasDTO.fromJson(response.data);
+    return ArticleDatasDTO.fromJson(_handleRes(response));
   }
 
   //获取公众号列表
   @override
-  Future<SubscriptionsList> getSubscriptions() async {
+  Future<List<SubscriptionsDTO>> getSubscriptions() async {
     Response response = await _dio.get(Api.subscriptions);
-    return SubscriptionsList.fromJson(response.data);
+    List<SubscriptionsDTO> data = new List<SubscriptionsDTO>();
+    _handleRes(response).forEach((v) {
+      data.add(new SubscriptionsDTO.fromJson(v));
+    });
+    return data;
   }
 
   //获取公众号文章
@@ -85,7 +111,7 @@ class RequestImpl extends Request {
       int page, int id, String keyword) async {
     Response response = await _dio
         .get('${Api.subscriptionsHis}$id/$page/json', data: {'k': '$keyword'});
-    return ArticleDatasDTO.fromJson(response.data);
+    return ArticleDatasDTO.fromJson(_handleRes(response));
   }
 
   //登录
@@ -102,13 +128,13 @@ class RequestImpl extends Request {
     String reqAPi = '${Api.favorite}$page/json';
     _dio.cookieJar.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
     Response response = await _dio.get(reqAPi);
-    return ArticleDatasDTO.fromJson(response.data);
+    return ArticleDatasDTO.fromJson(_handleRes(response));
   }
 
   //登出
   @override
-  Future<LogoutDTO> logout() async {
+  Future<Null> logout() async {
     Response response = await _dio.get(Api.logout);
-    return LogoutDTO.fromJson(response.data);
+    return _handleRes(response);
   }
 }

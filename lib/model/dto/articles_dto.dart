@@ -42,7 +42,8 @@ import 'package:wan/model/dto/tags_dto.dart';
 //    "errorMsg":""
 //}
 ///文章列表
-class ArticleDatasDTO {
+
+class ArticlesData {
   int curPage;
   List<Datas> datas;
   int offset;
@@ -51,7 +52,7 @@ class ArticleDatasDTO {
   int size;
   int total;
 
-  ArticleDatasDTO(
+  ArticlesData(
       {this.curPage,
       this.datas,
       this.offset,
@@ -60,7 +61,7 @@ class ArticleDatasDTO {
       this.size,
       this.total});
 
-  ArticleDatasDTO.fromJson(Map<String, dynamic> json) {
+  ArticlesData.fromJson(Map<String, dynamic> json) {
     curPage = json['curPage'];
     if (json['datas'] != null) {
       datas = new List<Datas>();

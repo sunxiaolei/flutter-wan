@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan/app.dart';
 import 'package:wan/conf/constant.dart';
-import 'package:wan/model/dto/logout_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/favorite.dart';
 import 'package:wan/page/login.dart';
@@ -144,13 +143,12 @@ class _Mine extends State<_MineState> {
 
   _logout() {
     Request().logout().then((res) {
-      LogoutDTO dto = res;
-      if (dto.errorCode == 0) {
-        setState(() {
-          WanApp.isLogin = false;
-          _name = '未登录';
-        });
-      }
+      setState(() {
+        WanApp.isLogin = false;
+        _name = '未登录';
+      });
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
     });
   }
 

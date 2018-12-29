@@ -1,18 +1,21 @@
-class LogoutDTO {
+class BaseDTO<T> {
   int errorCode;
   String errorMsg;
+  dynamic data;
 
-  LogoutDTO({this.errorCode, this.errorMsg});
+  BaseDTO({this.errorCode, this.errorMsg, this.data});
 
-  LogoutDTO.fromJson(Map<String, dynamic> json) {
+  BaseDTO.fromJson(Map<String, dynamic> json) {
     errorCode = json['errorCode'];
     errorMsg = json['errorMsg'];
+    data = json['data'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['errorCode'] = this.errorCode;
     data['errorMsg'] = this.errorMsg;
+    data['data'] = this.data;
     return data;
   }
 }

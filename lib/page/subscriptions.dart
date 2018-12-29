@@ -37,19 +37,18 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
   }
 
   Future<Null> getData() async {
-    return Request().getSubscriptions().then((data) {
-      _tabController = TabController(length: data.data.length, vsync: this);
+    return Request().getSubscriptions().then((datas) {
+      _tabController = TabController(length: datas.length, vsync: this);
       _tabController.addListener(() {
         _currentIndex = _tabpages[_tabController.index].id;
       });
-      SubscriptionsList subscriptions = data;
-      _tabs = subscriptions.data
-          .map<Tab>((Data d) => Tab(
+      _tabs = datas
+          .map<Tab>((SubscriptionsDTO d) => Tab(
                 text: d.name,
               ))
           .toList();
-      _tabpages = subscriptions.data
-          .map<SubscriptionList>((Data d) => SubscriptionList(
+      _tabpages = datas
+          .map<SubscriptionList>((SubscriptionsDTO d) => SubscriptionList(
                 id: d.id,
               ))
           .toList();

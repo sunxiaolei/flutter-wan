@@ -27,7 +27,7 @@ class _HomeWidget extends StatefulWidget {
 class _HomeState extends State<_HomeWidget> {
   GlobalKey<PullRefreshState> _key = GlobalKey();
   int index = 1;
-  List<BannerData> _listBanners;
+  List<BannerDataDTO> _listBanners;
   PageView _bannerViews;
   List<Datas> _listDatas;
 
@@ -41,7 +41,7 @@ class _HomeState extends State<_HomeWidget> {
   Future<Null> _refresh() async {
     index = 1;
     Request().getHomeBanner().then((data) {
-      _listBanners = data.data;
+      _listBanners = data;
       setState(() {});
     }).catchError((e) {
       print(e.toString());
@@ -49,12 +49,11 @@ class _HomeState extends State<_HomeWidget> {
     setState(() {});
     Request().getHomeList(0).then((data) {
       setState(() {
-        _listDatas = data.data.datas;
+        _listDatas = data.datas;
         index++;
       });
     }).catchError((e) {
-      debugPrint('error::' + e.toString());
-      ToastUtils.showShort("获取数据失败，请检查网路");
+      ToastUtils.showShort(e.message);
     });
   }
 
@@ -62,9 +61,11 @@ class _HomeState extends State<_HomeWidget> {
   Future<Null> _loadMore() async {
     Request().getHomeList(index).then((data) {
       setState(() {
-        _listDatas.addAll(data.data.datas);
+        _listDatas.addAll(data.datas);
         index++;
       });
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
     });
   }
 

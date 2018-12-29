@@ -1,34 +1,5 @@
 ///主页banner
-class HomeBannerDTO {
-  List<BannerData> data;
-  int errorCode;
-  String errorMsg;
-
-  HomeBannerDTO({this.data, this.errorCode, this.errorMsg});
-
-  HomeBannerDTO.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = new List<BannerData>();
-      json['data'].forEach((v) {
-        data.add(new BannerData.fromJson(v));
-      });
-    }
-    errorCode = json['errorCode'];
-    errorMsg = json['errorMsg'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    data['errorCode'] = this.errorCode;
-    data['errorMsg'] = this.errorMsg;
-    return data;
-  }
-}
-
-class BannerData {
+class BannerDataDTO {
   String desc;
   int id;
   String imagePath;
@@ -38,7 +9,7 @@ class BannerData {
   int type;
   String url;
 
-  BannerData(
+  BannerDataDTO(
       {this.desc,
       this.id,
       this.imagePath,
@@ -48,7 +19,7 @@ class BannerData {
       this.type,
       this.url});
 
-  BannerData.fromJson(Map<String, dynamic> json) {
+  BannerDataDTO.fromJson(Map<String, dynamic> json) {
     desc = json['desc'];
     id = json['id'];
     imagePath = json['imagePath'];

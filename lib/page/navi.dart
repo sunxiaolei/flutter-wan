@@ -38,16 +38,15 @@ class _NaviState extends State<_NaviWidget>
   }
 
   Future<Null> getData() async {
-    return Request().getNavi().then((data) {
-      Navi navi = data;
-      _controller = TabController(length: navi.data.length, vsync: this);
-      _tabs = navi.data
-          .map<Tab>((Data d) => Tab(
+    return Request().getNavi().then((datas) {
+      _controller = TabController(length: datas.length, vsync: this);
+      _tabs = datas
+          .map<Tab>((NaviDTO d) => Tab(
                 text: d.name,
               ))
           .toList();
-      _tabpages = navi.data
-          .map<FlowItemsWidget>((Data d) => FlowItemsWidget(
+      _tabpages = datas
+          .map<FlowItemsWidget>((NaviDTO d) => FlowItemsWidget(
               items: d.articles
                   .map((a) => FlowItemVO(a.id, a.title, a.link))
                   .toList(),

@@ -44,8 +44,8 @@ class _WanAppState extends State<WanApp> {
     PersistCookieJar pcj = new PersistCookieJar(path);
     List<Cookie> cs = pcj.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
     if (cs != null && cs.length > 0) {
-      cs.every((e) {
-        if (e.name == 'token_pass') {
+      cs.forEach((cookie) {
+        if (cookie.name == 'token_pass') {
           WanApp.isLogin = true;
           bus.fire(LoginEvent());
         }

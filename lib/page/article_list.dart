@@ -35,12 +35,11 @@ class ArticleListState extends State<ArticleList>
     index = 1;
     Request().search(index, widget.keyword).then((data) {
       setState(() {
-        _listDatas = data.data.datas;
+        _listDatas = data.datas;
         index++;
       });
     }).catchError((e) {
-      debugPrint('error::' + e.toString());
-      ToastUtils.showShort("获取数据失败，请检查网路");
+      ToastUtils.showShort(e.message);
     });
   }
 
@@ -48,9 +47,11 @@ class ArticleListState extends State<ArticleList>
   Future<Null> _loadMore() async {
     Request().search(index, widget.keyword).then((data) {
       setState(() {
-        _listDatas.addAll(data.data.datas);
+        _listDatas.addAll(data.datas);
         index++;
       });
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
     });
   }
 

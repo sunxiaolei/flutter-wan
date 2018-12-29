@@ -38,12 +38,11 @@ class SubscriptionListState extends State<SubscriptionList>
         .getSubscriptionsHis(index, widget.id, widget.keyword)
         .then((data) {
       setState(() {
-        _listDatas = data.data.datas;
+        _listDatas = data.datas;
         index++;
       });
     }).catchError((e) {
-      debugPrint('error::' + e.toString());
-      ToastUtils.showShort("获取数据失败，请检查网路");
+      ToastUtils.showShort(e.message);
     });
   }
 
@@ -53,9 +52,11 @@ class SubscriptionListState extends State<SubscriptionList>
         .getSubscriptionsHis(index, widget.id, widget.keyword)
         .then((data) {
       setState(() {
-        _listDatas.addAll(data.data.datas);
+        _listDatas.addAll(data.datas);
         index++;
       });
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
     });
   }
 

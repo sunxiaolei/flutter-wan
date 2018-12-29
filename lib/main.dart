@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wan/app.dart';
+import 'package:wan/test.dart';
 
 ///程序入口
 void main() =>

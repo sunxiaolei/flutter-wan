@@ -1,7 +1,5 @@
 import 'package:wan/model/dto/tags_dto.dart';
 
-///导航
-class Navi {
   ///{
   //    "data":[
   //        {
@@ -102,42 +100,14 @@ class Navi {
   //    "errorMsg":""
   //}
 
-  List<Data> data;
-  int errorCode;
-  String errorMsg;
-
-  Navi({this.data, this.errorCode, this.errorMsg});
-
-  Navi.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = new List<Data>();
-      json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
-      });
-    }
-    errorCode = json['errorCode'];
-    errorMsg = json['errorMsg'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    data['errorCode'] = this.errorCode;
-    data['errorMsg'] = this.errorMsg;
-    return data;
-  }
-}
-
-class Data {
+class NaviDTO {
   List<Articles> articles;
   int cid;
   String name;
 
-  Data({this.articles, this.cid, this.name});
+  NaviDTO({this.articles, this.cid, this.name});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  NaviDTO.fromJson(Map<String, dynamic> json) {
     if (json['articles'] != null) {
       articles = new List<Articles>();
       json['articles'].forEach((v) {

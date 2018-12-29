@@ -34,9 +34,8 @@ class _SearchState extends State<SearchWidget> {
 
   ///获取热词
   Future<Null> getHotKey() async {
-    return Request().getHotKey().then((data) {
-      HotKeyDTO hk = data;
-      _hotkeys = hk.data
+    return Request().getHotKey().then((datas) {
+      _hotkeys = datas
           .map((data) => FlowItemVO(data.id, data.name, data.link))
           .toList();
       _hotkeyWidget = FlowItemsWidget(

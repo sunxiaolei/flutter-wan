@@ -1,33 +1,4 @@
-class SubscriptionsList {
-  List<Data> data;
-  int errorCode;
-  String errorMsg;
-
-  SubscriptionsList({this.data, this.errorCode, this.errorMsg});
-
-  SubscriptionsList.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = new List<Data>();
-      json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
-      });
-    }
-    errorCode = json['errorCode'];
-    errorMsg = json['errorMsg'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    data['errorCode'] = this.errorCode;
-    data['errorMsg'] = this.errorMsg;
-    return data;
-  }
-}
-
-class Data {
+class SubscriptionsDTO {
 //  List<Null> children;
   int courseId;
   int id;
@@ -37,7 +8,7 @@ class Data {
   bool userControlSetTop;
   int visible;
 
-  Data(
+  SubscriptionsDTO(
       {
 //        this.children,
       this.courseId,
@@ -48,7 +19,7 @@ class Data {
       this.userControlSetTop,
       this.visible});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  SubscriptionsDTO.fromJson(Map<String, dynamic> json) {
 //    if (json['children'] != null) {
 //      children = new List<String>();
 //      json['children'].forEach((v) {

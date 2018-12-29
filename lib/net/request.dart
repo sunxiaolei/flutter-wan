@@ -1,5 +1,4 @@
 import 'package:wan/model/dto/login_dto.dart';
-import 'package:wan/model/dto/logout_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
@@ -23,19 +22,19 @@ abstract class Request {
   Future<ArticleDatasDTO> getHomeList(int index);
 
   //获取banner
-  Future<HomeBannerDTO> getHomeBanner();
+  Future<List<BannerDataDTO>> getHomeBanner();
 
   //获取导航数据
-  Future<Navi> getNavi();
+  Future<List<NaviDTO>> getNavi();
 
   //获取搜索热词
-  Future<HotKeyDTO> getHotKey();
+  Future<List<HotKeyDTO>> getHotKey();
 
   //搜索
   Future<ArticleDatasDTO> search(int page, String keyword);
 
   //获取公众号列表
-  Future<SubscriptionsList> getSubscriptions();
+  Future<List<SubscriptionsDTO>> getSubscriptions();
 
   //获取某个公众号历史文章
   Future<ArticleDatasDTO> getSubscriptionsHis(int page, int id, String keyword);
@@ -44,7 +43,7 @@ abstract class Request {
   Future<LoginDTO> login(String username, String password);
 
   //登出
-  Future<LogoutDTO> logout();
+  Future<Null> logout();
 
   //获取收藏列表
   Future<ArticleDatasDTO> getFavorite(int index);
