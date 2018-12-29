@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:wan/model/dto/login_dto.dart';
+import 'package:wan/model/dto/logout_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
@@ -102,5 +103,12 @@ class RequestImpl extends Request {
     _dio.cookieJar.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
     Response response = await _dio.get(reqAPi);
     return ArticleDatasDTO.fromJson(response.data);
+  }
+
+  //登出
+  @override
+  Future<LogoutDTO> logout() async {
+    Response response = await _dio.get(Api.logout);
+    return LogoutDTO.fromJson(response.data);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:wan/model/dto/login_dto.dart';
+import 'package:wan/model/dto/logout_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
@@ -41,6 +42,9 @@ abstract class Request {
 
   //登录
   Future<LoginDTO> login(String username, String password);
+
+  //登出
+  Future<LogoutDTO> logout();
 
   //获取收藏列表
   Future<ArticleDatasDTO> getFavorite(int index);
