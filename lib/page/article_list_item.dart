@@ -63,6 +63,7 @@ class ArticleListItemState extends State<ArticleListItemWidget> {
               .push(MaterialPageRoute<Null>(builder: (context) {
             return ArticlePage(
               widget.data.link,
+              widget.data.id,
               fav: widget.data.collect,
             );
           }));

@@ -47,4 +47,10 @@ abstract class Request {
 
   //获取收藏列表
   Future<ArticleDatasDTO> getFavorite(int index);
+
+  //收藏文章
+  Future<Null> favorite(int id);
+
+  //取消收藏
+  Future<Null> favoriteCancel(int id);
 }

@@ -53,7 +53,7 @@ class _NaviState extends State<_NaviWidget>
               onPress: (item) {
                 Navigator.of(context)
                     .push(MaterialPageRoute<Null>(builder: (context) {
-                  return ArticlePage(item.link);
+                  return ArticlePage(item.link, item.id);
                 }));
               }))
           .toList();

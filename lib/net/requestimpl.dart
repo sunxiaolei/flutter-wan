@@ -121,11 +121,10 @@ class RequestImpl extends Request {
     return LoginDTO.fromJson(response.data);
   }
 
-  //收藏
+  //收藏列表
   @override
   Future<ArticleDatasDTO> getFavorite(int page) async {
-    String reqAPi = '${Api.favorite}$page/json';
-    _dio.cookieJar.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
+    String reqAPi = '${Api.favoriteList}$page/json';
     Response response = await _dio.get(reqAPi);
     return ArticleDatasDTO.fromJson(_handleRes(response));
   }
@@ -134,6 +133,21 @@ class RequestImpl extends Request {
   @override
   Future<Null> logout() async {
     Response response = await _dio.get(Api.logout);
+    return _handleRes(response);
+  }
+
+  //收藏
+  @override
+  Future<Null> favorite(int id) async {
+    String reqAPi = '${Api.favorite}$id/json';
+    Response response = await _dio.post(reqAPi);
+    return _handleRes(response);
+  }
+
+  @override
+  Future<Null> favoriteCancel(int id) async {
+    String reqAPi = '${Api.favoriteCancel}$id/json';
+    Response response = await _dio.post(reqAPi);
     return _handleRes(response);
   }
 }

@@ -30,6 +30,12 @@ class Api {
   //登出
   static String logout = 'user/logout/json';
 
-  //收藏文章
-  static String favorite = 'lg/collect/list/';
+  //收藏文章列表
+  static String favoriteList = 'lg/collect/list/';
+
+  //收藏
+  static String favorite = 'lg/collect/';
+
+  //取消收藏
+  static String favoriteCancel = 'lg/uncollect_originId/';
 }

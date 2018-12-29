@@ -123,7 +123,8 @@ class _HomeState extends State<_HomeWidget> {
       onTap: () {
         Navigator.of(context)
             .push(new MaterialPageRoute<Null>(builder: (context) {
-          return new ArticlePage(_listBanners[index].url);
+          return new ArticlePage(
+              _listBanners[index].url, _listBanners[index].id);
         }));
       },
     );
