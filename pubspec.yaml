@@ -25,6 +25,10 @@ dev_dependencies:
   path_provider: ^0.4.1
   #loading indicators
   flutter_spinkit: ^3.0.0
+  #应用信息
+  package_info: ^0.3.2
+  #打开连接
+  url_launcher: ^4.0.3
 
 
 # For information on the generic Dart part of this file, see the
@@ -42,11 +46,12 @@ flutter:
   assets:
     - images/avatar.png
     - images/ic_dark.png
-    - images/ic_setting.png
+    - images/ic_update.png
     - images/ic_theme.png
     - images/ic_favorite.png
     - images/ic_todo.png
     - images/ic_about.png
+    - images/ic_launcher.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

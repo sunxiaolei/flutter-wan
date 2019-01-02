@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wan/app.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/net/request.dart';
+import 'package:wan/page/about.dart';
 import 'package:wan/page/favorite.dart';
 import 'package:wan/page/login.dart';
 import 'package:wan/conf/themes.dart';
@@ -68,6 +69,7 @@ class _Mine extends State<_MineState> {
     });
   }
 
+  //选择主题dialog
   _buildThemesDialogItems() {
     return themes
         .map((t) => SimpleDialogOption(
@@ -90,6 +92,7 @@ class _Mine extends State<_MineState> {
         .toList();
   }
 
+  //用户头像、用户名
   _buildHead() {
     return Container(
       child: Center(
@@ -141,6 +144,7 @@ class _Mine extends State<_MineState> {
     );
   }
 
+  //退出登录
   _logout() {
     Request().logout().then((res) {
       setState(() {
@@ -287,14 +291,14 @@ class _Mine extends State<_MineState> {
         Divider(),
         GestureDetector(
           onTap: () {
-            ToastUtils.showShort('设置');
+            ToastUtils.showShort('更新');
           },
           child: Container(
             child: Row(
               children: <Widget>[
                 Container(
                   child: Image.asset(
-                    'images/ic_setting.png',
+                    'images/ic_update.png',
                     color: Theme.of(context).primaryColorLight,
                     width: 25,
                   ),
@@ -303,7 +307,7 @@ class _Mine extends State<_MineState> {
                 Expanded(
                   child: Container(
                     child: Text(
-                      '设置',
+                      '检测更新',
                       style: TextStyle(fontSize: 16),
                     ),
                     margin: EdgeInsets.only(left: 5),
@@ -318,7 +322,8 @@ class _Mine extends State<_MineState> {
         Divider(),
         GestureDetector(
           onTap: () {
-            ToastUtils.showShort('关于');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AboutPage()));
           },
           child: Container(
             child: Row(
@@ -358,8 +363,10 @@ class _Mine extends State<_MineState> {
         title: Text('WanFlutter'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {},
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              ToastUtils.showShort('设置');
+            },
           )
         ],
         elevation: 0,
