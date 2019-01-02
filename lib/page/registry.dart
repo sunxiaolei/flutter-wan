@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/themes.dart';
 import 'package:wan/net/request.dart';
+import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/arc_clipper.dart';
 import 'package:wan/widget/pwdfield.dart';
@@ -198,10 +199,13 @@ class RegistryState extends State<RegistryPage> {
   }
 
   void _register() {
+    CommonUtils.showLoading(context);
     Request().register(_name, _password, _password).then((res) {
+      Navigator.pop(context);
       ToastUtils.showShort('注册成功');
       Navigator.pop(context, res);
     }).catchError((e) {
+      Navigator.pop(context);
       ToastUtils.showShort(e.message);
     });
   }

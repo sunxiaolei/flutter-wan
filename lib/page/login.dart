@@ -5,6 +5,7 @@ import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/registry.dart';
+import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/arc_clipper.dart';
@@ -87,6 +88,7 @@ class LoginState extends State<LoginPage> {
   String _name;
   String _pwd;
 
+  //登录
   _login() {
     _formKey.currentState.save();
     if (_name == null || _name.isEmpty) {
@@ -97,13 +99,16 @@ class LoginState extends State<LoginPage> {
       ToastUtils.showShort("请填写密码");
       return;
     }
+    CommonUtils.showLoading(context);
     Request().login(_name, _pwd).then((result) {
+      Navigator.pop(context);
       ToastUtils.showShort('登陆成功');
       WanApp.isLogin = true;
       _setUser(result);
       bus.fire(LoginEvent(data: result));
       Navigator.pop(context);
     }).catchError((e) {
+      Navigator.pop(context);
       ToastUtils.showShort(e.message);
     });
   }

@@ -6,6 +6,7 @@ import 'package:wan/page/about.dart';
 import 'package:wan/page/favorite.dart';
 import 'package:wan/page/login.dart';
 import 'package:wan/conf/themes.dart';
+import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/event/event.dart';
@@ -146,12 +147,15 @@ class _Mine extends State<_MineState> {
 
   //退出登录
   _logout() {
+    CommonUtils.showLoading(context);
     Request().logout().then((res) {
+      Navigator.pop(context);
       setState(() {
         WanApp.isLogin = false;
         _name = '未登录';
       });
     }).catchError((e) {
+      Navigator.pop(context);
       ToastUtils.showShort(e.message);
     });
   }
@@ -291,7 +295,7 @@ class _Mine extends State<_MineState> {
         Divider(),
         GestureDetector(
           onTap: () {
-            ToastUtils.showShort('更新');
+            _checkUpdate();
           },
           child: Container(
             child: Row(
@@ -354,6 +358,14 @@ class _Mine extends State<_MineState> {
         Divider(),
       ],
     );
+  }
+
+  _checkUpdate() {
+    CommonUtils.showLoading(context);
+    new Future.delayed(new Duration(seconds: 3), () {
+      Navigator.pop(context); //pop dialog
+      ToastUtils.showShort('当前已是最新版本');
+    });
   }
 
   @override
