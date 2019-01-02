@@ -118,7 +118,20 @@ class RequestImpl extends Request {
   Future<LoginDTO> login(String username, String password) async {
     Response response = await _dio.post(Api.login,
         data: FormData.from({'username': username, 'password': password}));
-    return LoginDTO.fromJson(response.data);
+    return LoginDTO.fromJson(_handleRes(response));
+  }
+
+  //注册
+  @override
+  Future<LoginDTO> register(
+      String username, String password, String repassword) async {
+    Response response = await _dio.post(Api.register,
+        data: FormData.from({
+          'username': username,
+          'password': password,
+          'repassword': repassword
+        }));
+    return LoginDTO.fromJson(_handleRes(response));
   }
 
   //收藏列表
@@ -144,6 +157,7 @@ class RequestImpl extends Request {
     return _handleRes(response);
   }
 
+  //取消收藏
   @override
   Future<Null> favoriteCancel(int id) async {
     String reqAPi = '${Api.favoriteCancel}$id/json';

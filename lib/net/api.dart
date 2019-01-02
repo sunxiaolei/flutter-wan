@@ -27,6 +27,9 @@ class Api {
   //登录
   static String login = 'user/login';
 
+  //注册
+  static String register = 'user/register';
+
   //登出
   static String logout = 'user/logout/json';
 

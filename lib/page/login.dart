@@ -98,21 +98,18 @@ class LoginState extends State<LoginPage> {
       return;
     }
     Request().login(_name, _pwd).then((result) {
-      LoginDTO dto = result;
-      if (dto.errorCode == 0) {
-        ToastUtils.showShort('登陆成功');
-        WanApp.isLogin = true;
-        _setUser(dto);
-        bus.fire(LoginEvent(data: dto.data));
-        Navigator.pop(context);
-      } else {
-        ToastUtils.showShort(dto.errorMsg);
-      }
+      ToastUtils.showShort('登陆成功');
+      WanApp.isLogin = true;
+      _setUser(result);
+      bus.fire(LoginEvent(data: result));
+      Navigator.pop(context);
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
     });
   }
 
   void _setUser(LoginDTO user) async {
-    SpUtils.setString(Constant.spUserName, user.data.username);
+    SpUtils.setString(Constant.spUserName, user.username);
   }
 
   _buildLoginCard(BuildContext context) {
@@ -185,11 +182,21 @@ class LoginState extends State<LoginPage> {
                               FlatButton(
                                   onPressed: () {
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegistryPage(),
-                                            fullscreenDialog: true));
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RegistryPage(),
+                                                fullscreenDialog: true))
+                                        .then((dto) {
+                                      if (dto != null) {
+                                        //注册成功
+                                        ToastUtils.showShort('注册成功');
+                                        WanApp.isLogin = true;
+                                        _setUser(dto);
+                                        bus.fire(LoginEvent(data: dto));
+                                        Navigator.pop(context);
+                                      }
+                                    });
                                   },
                                   child: Text(
                                     '新用户注册',

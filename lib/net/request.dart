@@ -42,6 +42,10 @@ abstract class Request {
   //登录
   Future<LoginDTO> login(String username, String password);
 
+  //注册
+  Future<LoginDTO> register(
+      String username, String password, String repassword);
+
   //登出
   Future<Null> logout();
 

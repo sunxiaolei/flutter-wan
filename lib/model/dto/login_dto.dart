@@ -1,28 +1,4 @@
 class LoginDTO {
-  LoginData data;
-  int errorCode;
-  String errorMsg;
-
-  LoginDTO({this.data, this.errorCode, this.errorMsg});
-
-  LoginDTO.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
-    errorCode = json['errorCode'];
-    errorMsg = json['errorMsg'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
-    data['errorCode'] = this.errorCode;
-    data['errorMsg'] = this.errorMsg;
-    return data;
-  }
-}
-
-class LoginData {
   List<String> chapterTops;
   List<int> collectIds;
   String email;
@@ -33,7 +9,7 @@ class LoginData {
   int type;
   String username;
 
-  LoginData(
+  LoginDTO(
       {this.chapterTops,
         this.collectIds,
         this.email,
@@ -44,7 +20,7 @@ class LoginData {
         this.type,
         this.username});
 
-  LoginData.fromJson(Map<String, dynamic> json) {
+  LoginDTO.fromJson(Map<String, dynamic> json) {
     chapterTops = json['chapterTops'].cast<String>();
     collectIds = json['collectIds'].cast<int>();
     email = json['email'];
