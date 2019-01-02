@@ -13,6 +13,7 @@ import 'package:wan/page/mine.dart';
 import 'package:wan/page/navi.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/utils/sputils.dart';
+import 'package:wan/utils/toastutils.dart';
 
 ///主页
 class WanApp extends StatefulWidget {
@@ -84,46 +85,51 @@ class _WanAppState extends State<WanApp> {
     }
   }
 
+  _buildBody() {
+    return Scaffold(
+      //底部导航栏
+      bottomNavigationBar: BottomNavigationBar(
+        //导航栏元素
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: _getNavText(_titles[0])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category), title: _getNavText(_titles[1])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat), title: _getNavText(_titles[2])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_box), title: _getNavText(_titles[3])),
+        ],
+        type: BottomNavigationBarType.fixed, //显示方式
+        currentIndex: _tabIndex,
+        //点击切换页面
+        onTap: (index) {
+          setState(() {
+            _tabIndex = index;
+          });
+        },
+      ),
+      //界面
+      body: IndexedStack(
+        children: <Widget>[
+          HomePage(),
+          NaviPage(),
+          SubscriptionsPage(),
+          MinePage()
+        ],
+        index: _tabIndex,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: _setTheme(),
       // Scaffold:Material Design布局结构的基本实现。
       // 此类提供了用于显示drawer、snackbar和底部sheet的API
-      home: Scaffold(
-        //底部导航栏
-        bottomNavigationBar: BottomNavigationBar(
-          //导航栏元素
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: _getNavText(_titles[0])),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.category), title: _getNavText(_titles[1])),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.chat), title: _getNavText(_titles[2])),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.account_box), title: _getNavText(_titles[3])),
-          ],
-          type: BottomNavigationBarType.fixed, //显示方式
-          currentIndex: _tabIndex,
-          //点击切换页面
-          onTap: (index) {
-            setState(() {
-              _tabIndex = index;
-            });
-          },
-        ),
-        //界面
-        body: IndexedStack(
-          children: <Widget>[
-            HomePage(),
-            NaviPage(),
-            SubscriptionsPage(),
-            MinePage()
-          ],
-          index: _tabIndex,
-        ),
-      ),
+      theme: _setTheme(),
+      home: WillPopScope(
+          child: _buildBody(), onWillPop: () => _clickBack(context)),
     );
   }
 
@@ -132,5 +138,18 @@ class _WanAppState extends State<WanApp> {
       text,
       style: TextStyle(fontSize: 16),
     );
+  }
+
+  var last = 0;
+
+  Future<bool> _clickBack(BuildContext context) {
+    int now = DateTime.now().millisecondsSinceEpoch;
+    if (now - last > 1000) {
+      last = DateTime.now().millisecondsSinceEpoch;
+      ToastUtils.showShort('再按一次退出');
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
   }
 }
