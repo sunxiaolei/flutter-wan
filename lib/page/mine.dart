@@ -8,6 +8,7 @@ import 'package:wan/page/about.dart';
 import 'package:wan/page/favorite.dart';
 import 'package:wan/page/login.dart';
 import 'package:wan/conf/themes.dart';
+import 'package:wan/page/todo.dart';
 import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
@@ -266,7 +267,8 @@ class _Mine extends State<_MineState> {
         Divider(),
         GestureDetector(
           onTap: () {
-            ToastUtils.showShort('TODO');
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => TodoPage()));
           },
           child: Container(
             child: Row(
