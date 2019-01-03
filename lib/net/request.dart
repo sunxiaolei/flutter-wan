@@ -4,6 +4,7 @@ import 'package:wan/model/dto/homebanner_dto.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/model/dto/hotkey_dto.dart';
 import 'package:wan/model/dto/navi_dto.dart';
+import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/requestimpl.dart';
 
 abstract class Request {
@@ -57,4 +58,7 @@ abstract class Request {
 
   //取消收藏
   Future<Null> favoriteCancel(int id);
+
+  //检测更新
+  Future<UpdateDTO> checkUpdate();
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wan/app.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/net/request.dart';
@@ -360,11 +362,38 @@ class _Mine extends State<_MineState> {
     );
   }
 
-  _checkUpdate() {
+  //检测更新
+  _checkUpdate() async {
     CommonUtils.showLoading(context);
-    new Future.delayed(new Duration(seconds: 3), () {
-      Navigator.pop(context); //pop dialog
-      ToastUtils.showShort('当前已是最新版本');
+    Request().checkUpdate().then((dto) {
+      PackageInfo.fromPlatform().then((info) {
+        Navigator.pop(context);
+        if (dto.version > int.parse(info.buildNumber)) {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    content: Text('发现新版本' + dto.versionName + '，去更新？'),
+                    actions: <Widget>[
+                      FlatButton(
+                          child: const Text('取消'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      FlatButton(
+                          child: const Text('确定'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            launch(dto.downloadUrl);
+                          })
+                    ],
+                  ));
+        } else {
+          ToastUtils.showShort('当前已是最新版本');
+        }
+      });
+    }).catchError((e) {
+      Navigator.pop(context);
+      ToastUtils.showShort(e.message);
     });
   }
 

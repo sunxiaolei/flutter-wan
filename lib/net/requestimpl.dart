@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
@@ -10,6 +11,7 @@ import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:wan/model/dto/hotkey_dto.dart';
 import 'package:wan/model/dto/navi_dto.dart';
+import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/api.dart';
 import 'package:wan/net/interceptor.dart';
 import 'package:wan/net/request.dart';
@@ -163,5 +165,18 @@ class RequestImpl extends Request {
     String reqAPi = '${Api.favoriteCancel}$id/json';
     Response response = await _dio.post(reqAPi);
     return _handleRes(response);
+  }
+
+  //检测更新
+  @override
+  Future<UpdateDTO> checkUpdate() async {
+    String reqAPi = Api.checkUpdate;
+    Dio _dio = Dio();
+    LogInterceptor interceptor = LogInterceptor();
+    _dio.interceptor.request.onSend = interceptor.onSend;
+    _dio.interceptor.response.onSuccess = interceptor.onSuccess;
+    _dio.interceptor.response.onError = interceptor.onError;
+    Response response = await _dio.get(reqAPi);
+    return UpdateDTO.fromJson(json.decode(response.data));
   }
 }

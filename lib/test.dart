@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:wan/net/interceptor.dart';
 import 'package:wan/net/request.dart';
 
 class Test extends StatefulWidget {
@@ -32,5 +34,17 @@ class TestState extends State<Test> {
   }
 
   Future<Null> _refresh() async {
+    String reqAPi =
+        'https://raw.githubusercontent.com/sunxiaolei/test/master/update.cong';
+    Dio _dio = Dio();
+    LogInterceptor interceptor = LogInterceptor();
+    _dio.interceptor.request.onSend = interceptor.onSend;
+    _dio.interceptor.response.onSuccess = interceptor.onSuccess;
+    _dio.interceptor.response.onError = interceptor.onError;
+    Response response = await _dio.get(reqAPi).then((res) {
+      setState(() {
+        _data = res.data;
+      });
+    });
   }
 }

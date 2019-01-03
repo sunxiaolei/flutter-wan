@@ -41,4 +41,8 @@ class Api {
 
   //取消收藏
   static String favoriteCancel = 'lg/uncollect_originId/';
+
+  //检测更新
+  static String checkUpdate =
+      'https://raw.githubusercontent.com/sunxiaolei/flutter-wan/master/update.conf';
 }
