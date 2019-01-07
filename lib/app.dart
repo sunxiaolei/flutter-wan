@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wan/conf/constant.dart';
@@ -14,6 +13,7 @@ import 'package:wan/page/navi.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 ///主页
 class WanApp extends StatefulWidget {
@@ -128,6 +128,15 @@ class _WanAppState extends State<WanApp> {
       // Scaffold:Material Design布局结构的基本实现。
       // 此类提供了用于显示drawer、snackbar和底部sheet的API
       theme: _setTheme(),
+      //国际化
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('zh', 'CH'),
+        const Locale('en', 'US'),
+      ],
       home: WillPopScope(
           child: _buildBody(), onWillPop: () => _clickBack(context)),
     );

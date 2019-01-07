@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wan/model/dto/todo_dto.dart';
 import 'package:wan/model/vo/todolist_vo.dart';
 import 'package:wan/net/request.dart';
+import 'package:wan/page/addtodo.dart';
 import 'package:wan/page/todo_item.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/loading.dart';
@@ -63,6 +64,17 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
         appBar: AppBar(
           title: Text(widget.vo.name),
           elevation: 0,
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddTodoPage(),
+                          fullscreenDialog: true));
+                })
+          ],
         ),
         body: Container(
           color: Theme.of(context).cardColor,

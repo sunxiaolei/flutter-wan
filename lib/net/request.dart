@@ -1,3 +1,4 @@
+import 'package:wan/model/dto/addtodo_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
@@ -74,4 +75,7 @@ abstract class Request {
 
   //更新Todo状态
   Future<TodoDTO> updateTodoStatus(int id, int status);
+
+  //新增TODO
+  Future<TodoDTO> addTodo(AddTodoDTO param);
 }

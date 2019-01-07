@@ -51,4 +51,7 @@ class Api {
 
   //更新TODO状态
   static String updateTodoStatus = 'lg/todo/done/';
+
+  //新增TODO
+  static String addTodo = 'lg/todo/add/json';
 }

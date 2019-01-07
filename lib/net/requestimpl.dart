@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:wan/model/dto/addtodo_dto.dart';
 import 'package:wan/model/dto/base_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
@@ -206,6 +207,15 @@ class RequestImpl extends Request {
         data: FormData.from({
           'status': status,
         }));
+    return TodoDTO.fromJson(_handleRes(response));
+  }
+
+  //新增TODO
+  @override
+  Future<TodoDTO> addTodo(AddTodoDTO param) async {
+    String reqAPi = Api.addTodo;
+    Response response =
+        await _dio.post(reqAPi, data: json.encode(param.toJson()));
     return TodoDTO.fromJson(_handleRes(response));
   }
 }

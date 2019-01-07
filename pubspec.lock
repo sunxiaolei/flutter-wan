@@ -41,6 +41,11 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_spinkit:
     dependency: "direct dev"
     description:
@@ -62,6 +67,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.5"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.15.7"
   meta:
     dependency: transitive
     description:
@@ -76,6 +88,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.2"
+  path:
+    dependency: transitive
+    description:
+      name: path
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.6.2"
   path_provider:
     dependency: "direct dev"
     description:
