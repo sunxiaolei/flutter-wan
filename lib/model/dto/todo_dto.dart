@@ -12,7 +12,7 @@ class TodoDTO {
   //                "type": 0,
   //                "userId": 15345
   //            }
-  Null completeDate;
+  String completeDate;
   String completeDateStr;
   String content;
   int date;

@@ -11,6 +11,7 @@ import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:wan/model/dto/hotkey_dto.dart';
 import 'package:wan/model/dto/navi_dto.dart';
+import 'package:wan/model/dto/todolist_dto.dart';
 import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/api.dart';
 import 'package:wan/net/interceptor.dart';
@@ -38,7 +39,15 @@ class RequestImpl extends Request {
   }
 
   _handleRes(Response response) {
-    BaseDTO base = BaseDTO.fromJson(response.data);
+    Map<String, dynamic> resJson;
+    if (response.data is String) {
+      resJson = json.decode(response.data);
+    } else if (response.data is Map<String, dynamic>) {
+      resJson = response.data;
+    } else {
+      throw DioError(message: '数据解析错误');
+    }
+    BaseDTO base = BaseDTO.fromJson(resJson);
     if (base.errorCode == 0) {
       return base.data;
     } else {
@@ -178,5 +187,13 @@ class RequestImpl extends Request {
     _dio.interceptor.response.onError = interceptor.onError;
     Response response = await _dio.get(reqAPi);
     return UpdateDTO.fromJson(json.decode(response.data));
+  }
+
+  //获取todo列表
+  @override
+  Future<TodoListDTO> getTodoList(int index, int type) async {
+    String reqAPi = '${Api.todoList}$index/json';
+    Response response = await _dio.get(reqAPi, data: {'type': type});
+    return TodoListDTO.fromJson(_handleRes(response));
   }
 }

@@ -92,7 +92,7 @@ class TodoState extends State<TodoPage> {
                       pageBuilder: (BuildContext context,
                           Animation<double> animation,
                           Animation<double> secondaryAnimation) {
-                        return TodoListPage(vos[index]);
+                        return TodoListPage(index + 1, vos[index]);
                       },
                       transitionDuration: Duration(milliseconds: 500)),
                 ),

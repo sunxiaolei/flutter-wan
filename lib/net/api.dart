@@ -45,4 +45,7 @@ class Api {
   //检测更新
   static String checkUpdate =
       'https://raw.githubusercontent.com/sunxiaolei/flutter-wan/master/update.conf';
+
+  //TODO列表
+  static String todoList = 'lg/todo/v2/list/';
 }
