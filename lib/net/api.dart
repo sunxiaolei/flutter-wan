@@ -48,4 +48,7 @@ class Api {
 
   //TODO列表
   static String todoList = 'lg/todo/v2/list/';
+
+  //更新TODO状态
+  static String updateTodoStatus = 'lg/todo/done/';
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wan/conf/constant.dart';
 import 'package:wan/model/vo/todolist_vo.dart';
 import 'package:wan/page/todo_list.dart';
+import 'package:wan/utils/sputils.dart';
 
 ///TODO页面
 class TodoPage extends StatefulWidget {
@@ -15,6 +17,18 @@ class TodoState extends State<TodoPage> {
   double _height;
   List<TodoListVO> vos;
   List<IconData> ics;
+
+  String _name;
+
+  @override
+  void initState() {
+    super.initState();
+    SpUtils.getString(Constant.spUserName).then((str) {
+      setState(() {
+        _name = str;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +68,7 @@ class TodoState extends State<TodoPage> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10.0),
                             child: new Text(
-                              "嗨,username",
+                              _name == null ? '嗨' : '嗨,' + _name,
                               style: new TextStyle(
                                   color: Colors.white, fontSize: 30.0),
                             ),

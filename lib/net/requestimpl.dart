@@ -11,6 +11,7 @@ import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:wan/model/dto/hotkey_dto.dart';
 import 'package:wan/model/dto/navi_dto.dart';
+import 'package:wan/model/dto/todo_dto.dart';
 import 'package:wan/model/dto/todolist_dto.dart';
 import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/api.dart';
@@ -195,5 +196,16 @@ class RequestImpl extends Request {
     String reqAPi = '${Api.todoList}$index/json';
     Response response = await _dio.get(reqAPi, data: {'type': type});
     return TodoListDTO.fromJson(_handleRes(response));
+  }
+
+  //更新todo状态
+  @override
+  Future<TodoDTO> updateTodoStatus(int id, int status) async {
+    String reqAPi = '${Api.updateTodoStatus}$id/json';
+    Response response = await _dio.post(reqAPi,
+        data: FormData.from({
+          'status': status,
+        }));
+    return TodoDTO.fromJson(_handleRes(response));
   }
 }

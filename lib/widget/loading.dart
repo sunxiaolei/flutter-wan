@@ -12,7 +12,6 @@ class LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).backgroundColor,
       child: Container(
         child: SpinKitCircle(
           size: 50.0,
