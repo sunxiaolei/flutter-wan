@@ -214,8 +214,8 @@ class RequestImpl extends Request {
   @override
   Future<TodoDTO> addTodo(AddTodoDTO param) async {
     String reqAPi = Api.addTodo;
-    Response response =
-        await _dio.post(reqAPi, data: json.encode(param.toJson()));
+    Response response = await _dio.post(reqAPi,
+        data: FormData.from(param.toJson()));
     return TodoDTO.fromJson(_handleRes(response));
   }
 }

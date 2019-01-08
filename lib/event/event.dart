@@ -15,3 +15,7 @@ class LoginEvent {
 
   LoginEvent({this.data});
 }
+
+class AddTodoEvent {
+  AddTodoEvent();
+}

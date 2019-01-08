@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/todo_dto.dart';
 import 'package:wan/model/vo/todolist_vo.dart';
 import 'package:wan/net/request.dart';
@@ -30,6 +31,9 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _refresh();
+    bus.on<AddTodoEvent>().listen((e) {
+      _refresh();
+    });
   }
 
   Future<Null> _refresh() async {
@@ -71,7 +75,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddTodoPage(),
+                          builder: (context) => AddTodoPage(widget.type),
                           fullscreenDialog: true));
                 })
           ],
