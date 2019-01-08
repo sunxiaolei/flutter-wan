@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan/event/event.dart';
-import 'package:wan/model/dto/addtodo_dto.dart';
+import 'package:wan/model/dto/todo_add_dto.dart';
 import 'package:wan/model/dto/todo_dto.dart';
 import 'package:wan/model/dto/todo_update_dto.dart';
 import 'package:wan/net/request.dart';

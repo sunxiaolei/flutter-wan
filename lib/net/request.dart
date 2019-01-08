@@ -1,4 +1,4 @@
-import 'package:wan/model/dto/addtodo_dto.dart';
+import 'package:wan/model/dto/todo_add_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:wan/model/dto/addtodo_dto.dart';
+import 'package:wan/model/dto/todo_add_dto.dart';
 import 'package:wan/model/dto/base_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
