@@ -48,7 +48,6 @@ class _WanAppState extends State<WanApp> {
       cs.forEach((cookie) {
         if (cookie.name == 'token_pass') {
           WanApp.isLogin = true;
-          bus.fire(LoginEvent());
         }
       });
     }

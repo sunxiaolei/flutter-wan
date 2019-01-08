@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
 import 'package:wan/net/request.dart';
@@ -35,6 +36,9 @@ class _HomeState extends State<_HomeWidget> {
   void initState() {
     super.initState();
     _refresh();
+    bus.on<LoginEvent>().listen((event) {
+      _refresh();
+    });
   }
 
   //刷新

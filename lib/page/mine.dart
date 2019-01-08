@@ -193,6 +193,7 @@ class _Mine extends State<_MineState> {
                         SpUtils.setInt(Constant.spCurTheme, value).then((v) {
                           bus.fire(new ThemeEvent(value, false));
                         });
+                        _switchValue = false;
                       });
                     }
                   });
@@ -236,6 +237,8 @@ class _Mine extends State<_MineState> {
                   MaterialPageRoute(builder: (context) => FavoritePage()));
             } else {
               ToastUtils.showShort('请先登录');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             }
           },
           child: Container(
@@ -267,8 +270,14 @@ class _Mine extends State<_MineState> {
         Divider(),
         GestureDetector(
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => TodoPage()));
+            if (WanApp.isLogin) {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => TodoPage()));
+            } else {
+              ToastUtils.showShort('请先登录');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+            }
           },
           child: Container(
             child: Row(

@@ -22,14 +22,15 @@ class TodoDetailPage extends StatefulWidget {
 
 class AddTodoState extends State<TodoDetailPage> {
   GlobalKey<FormState> _form = GlobalKey();
-  DateTime _fromDateTime = DateTime.now();
-  String _title;
-  String _content;
+  DateTime _fromDateTime = DateTime.now(); //计划完成时间
+  String _title; //标题
+  String _content; //详情
 
   bool _isAdd = false; //是否是新增
   bool _isEdit = false; //是否是编辑
   TextEditingController _controllerTitle = TextEditingController();
   TextEditingController _controllerContent = TextEditingController();
+  bool _checked = false;
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class AddTodoState extends State<TodoDetailPage> {
       setState(() {
         _controllerTitle.text = widget.dto.title;
         _controllerContent.text = widget.dto.content;
+        _checked = widget.dto.status == 1;
       });
     }
   }
@@ -150,48 +152,69 @@ class AddTodoState extends State<TodoDetailPage> {
               )
             ],
           )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        : Column(
             children: <Widget>[
-              RaisedButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            content: Text('确定删除这条待办事项？'),
-                            actions: <Widget>[
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('取消'),
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  _deleteTodo();
-                                },
-                                child: Text('确定'),
-                              )
-                            ],
-                          ));
-                },
-                child: Text('删除'),
-                color: Colors.grey,
+              Row(
+                children: <Widget>[
+                  Checkbox(
+                    value: _isEdit ? _checked : widget.dto.status == 1,
+                    onChanged: (bool) {
+                      if (_isEdit) {
+                        setState(() {
+                          _checked = bool;
+                        });
+                      }
+                    },
+                  ),
+                  Text(_isEdit
+                      ? _checked ? '已完成' : '未完成'
+                      : widget.dto.status == 1 ? '已完成' : '未完成')
+                ],
               ),
-              RaisedButton(
-                onPressed: () {
-                  setState(() {
-                    _isEdit = !_isEdit;
-                  });
-                },
-                child: Text(_isEdit ? '取消' : '编辑'),
-              ),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(_isEdit ? '更新' : '返回'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                content: Text('确定删除这条待办事项？'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('取消'),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      _deleteTodo();
+                                    },
+                                    child: Text('确定'),
+                                  )
+                                ],
+                              ));
+                    },
+                    child: Text('删除'),
+                    color: Colors.grey,
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        _isEdit = !_isEdit;
+                      });
+                    },
+                    child: Text(_isEdit ? '取消' : '编辑'),
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(_isEdit ? '更新' : '返回'),
+                  )
+                ],
               )
             ],
           );

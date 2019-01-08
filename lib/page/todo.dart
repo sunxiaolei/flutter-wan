@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/model/vo/todolist_vo.dart';
+import 'package:wan/page/todo_detail.dart';
 import 'package:wan/page/todo_list.dart';
 import 'package:wan/utils/sputils.dart';
 
@@ -145,7 +146,14 @@ class TodoState extends State<TodoPage> {
                               ),
                               IconButton(
                                 icon: Icon(Icons.add),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => TodoDetailPage(
+                                                type: index + 1,
+                                              )));
+                                },
                               ),
                             ],
                           ),
