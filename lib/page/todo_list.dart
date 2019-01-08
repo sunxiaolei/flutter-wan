@@ -32,7 +32,11 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
     super.initState();
     _refresh();
     bus.on<AddTodoEvent>().listen((e) {
-      _refresh();
+      if (e.type == widget.type) {
+        setState(() {
+          _refresh();
+        });
+      }
     });
   }
 

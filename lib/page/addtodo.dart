@@ -133,7 +133,7 @@ class AddTodoState extends State<AddTodoPage> {
     Request().addTodo(dto).then((todo) {
       Navigator.pop(context);
       Navigator.pop(context);
-      bus.fire(AddTodoEvent());
+      bus.fire(AddTodoEvent(widget.type));
     }).catchError((e) {
       Navigator.pop(context);
       ToastUtils.showShort(e.message);

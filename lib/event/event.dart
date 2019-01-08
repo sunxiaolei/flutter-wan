@@ -17,5 +17,7 @@ class LoginEvent {
 }
 
 class AddTodoEvent {
-  AddTodoEvent();
+  int type;
+
+  AddTodoEvent(this.type);
 }
