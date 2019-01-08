@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/addtodo_dto.dart';
 import 'package:wan/model/dto/todo_dto.dart';
+import 'package:wan/model/dto/todo_update_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/toastutils.dart';
@@ -42,6 +43,7 @@ class AddTodoState extends State<TodoDetailPage> {
         _controllerTitle.text = widget.dto.title;
         _controllerContent.text = widget.dto.content;
         _checked = widget.dto.status == 1;
+        _fromDateTime = DateTime.fromMillisecondsSinceEpoch(widget.dto.date);
       });
     }
   }
@@ -210,7 +212,7 @@ class AddTodoState extends State<TodoDetailPage> {
                   ),
                   RaisedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      _updateTodo();
                     },
                     child: Text(_isEdit ? '更新' : '返回'),
                   )
@@ -252,6 +254,38 @@ class AddTodoState extends State<TodoDetailPage> {
     Request().deleteTodo(widget.dto.id).then((todo) {
       bus.fire(EditTodoEvent(widget.dto.type));
       ToastUtils.showShort('删除成功');
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }).catchError((e) {
+      Navigator.pop(context);
+      ToastUtils.showShort(e.message);
+    });
+  }
+
+  //更新待办事项
+  _updateTodo() {
+    _form.currentState.save();
+    if (_title == null || _title.isEmpty) {
+      ToastUtils.showShort('请填写标题');
+      return;
+    }
+    CommonUtils.showLoading(context);
+    String date = _fromDateTime.year.toString() +
+        '-' +
+        _fromDateTime.month.toString() +
+        '-' +
+        _fromDateTime.day.toString();
+    TodoUpdateDTO dto = TodoUpdateDTO(
+        title: _title,
+        date: date,
+        type: widget.dto.type,
+        content: _content == null || _content.isEmpty ? '' : _content,
+        priority: 0,
+        id: widget.dto.id,
+        status: _checked ? 1 : 0);
+    Request().updateTodo(dto).then((todo) {
+      bus.fire(EditTodoEvent(widget.dto.type));
+      ToastUtils.showShort('更新成功');
       Navigator.pop(context);
       Navigator.pop(context);
     }).catchError((e) {

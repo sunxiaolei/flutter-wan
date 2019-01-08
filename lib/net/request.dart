@@ -6,6 +6,7 @@ import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/model/dto/hotkey_dto.dart';
 import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/model/dto/todo_dto.dart';
+import 'package:wan/model/dto/todo_update_dto.dart';
 import 'package:wan/model/dto/todolist_dto.dart';
 import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/requestimpl.dart';
@@ -81,4 +82,7 @@ abstract class Request {
 
   //删除TODO
   Future<Null> deleteTodo(int id);
+
+  //新增TODO
+  Future<TodoDTO> updateTodo(TodoUpdateDTO param);
 }

@@ -13,6 +13,7 @@ import 'package:dio/dio.dart';
 import 'package:wan/model/dto/hotkey_dto.dart';
 import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/model/dto/todo_dto.dart';
+import 'package:wan/model/dto/todo_update_dto.dart';
 import 'package:wan/model/dto/todolist_dto.dart';
 import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/api.dart';
@@ -225,5 +226,15 @@ class RequestImpl extends Request {
     String reqAPi = '${Api.deleteTodo}$id/json';
     Response response = await _dio.post(reqAPi);
     return _handleRes(response);
+  }
+
+  //更新
+  @override
+  Future<TodoDTO> updateTodo(TodoUpdateDTO param) async {
+    int id = param.id;
+    String reqAPi = '${Api.updateTodo}$id/json';
+    Response response =
+        await _dio.post(reqAPi, data: FormData.from(param.toJson()));
+    return TodoDTO.fromJson(_handleRes(response));
   }
 }

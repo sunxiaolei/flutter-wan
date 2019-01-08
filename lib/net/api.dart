@@ -57,4 +57,7 @@ class Api {
 
   //删除TODO
   static String deleteTodo = 'lg/todo/delete/';
+
+  //更新TODO
+  static String updateTodo = 'lg/todo/update/';
 }
