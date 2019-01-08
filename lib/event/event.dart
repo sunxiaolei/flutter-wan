@@ -16,8 +16,8 @@ class LoginEvent {
   LoginEvent({this.data});
 }
 
-class AddTodoEvent {
+class EditTodoEvent {
   int type;
 
-  AddTodoEvent(this.type);
+  EditTodoEvent(this.type);
 }

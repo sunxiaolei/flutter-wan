@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/addtodo_dto.dart';
+import 'package:wan/model/dto/todo_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/date.dart';
 
-class AddTodoPage extends StatefulWidget {
+//待办详情
+class TodoDetailPage extends StatefulWidget {
   final int type;
+  final TodoDTO dto;
 
-  const AddTodoPage(
-    this.type, {
-    Key key,
-  }) : super(key: key);
+  const TodoDetailPage({Key key, this.type, this.dto}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,98 +20,181 @@ class AddTodoPage extends StatefulWidget {
   }
 }
 
-class AddTodoState extends State<AddTodoPage> {
+class AddTodoState extends State<TodoDetailPage> {
   GlobalKey<FormState> _form = GlobalKey();
   DateTime _fromDateTime = DateTime.now();
   String _title;
   String _content;
 
+  bool _isAdd = false; //是否是新增
+  bool _isEdit = false; //是否是编辑
+  TextEditingController _controllerTitle = TextEditingController();
+  TextEditingController _controllerContent = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _isAdd = widget.dto == null;
+    _controllerTitle.addListener(() {});
+    if (!_isAdd) {
+      setState(() {
+        _controllerTitle.text = widget.dto.title;
+        _controllerContent.text = widget.dto.content;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controllerTitle.dispose();
+    _controllerContent.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('添加待办清单'),
+        title: Text(_isAdd ? '添加待办清单' : '待办事项'),
       ),
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: SingleChildScrollView(
-            child: Form(
-                key: _form,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      '标题',
-                      style: TextStyle(fontSize: 18),
+      body: _buildAdd(),
+    );
+  }
+
+  _buildAdd() {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.all(15),
+        child: SingleChildScrollView(
+          child: Form(
+              key: _form,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '标题',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      hintText: '必填',
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.transparent,
-                        hintText: '必填',
-                      ),
-                      onSaved: (str) {
-                        _title = str;
-                      },
+                    onSaved: (str) {
+                      _title = str;
+                    },
+                    controller: _controllerTitle,
+                    enabled: _isAdd || _isEdit,
+                  ),
+                  Divider(),
+                  Text(
+                    '详情',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      hintText: '非必填',
                     ),
-                    Divider(),
-                    Text(
-                      '详情',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.transparent,
-                        hintText: '非必填',
-                      ),
-                      maxLines: 5,
-                      onSaved: (str) {
-                        _content = str;
-                      },
-                    ),
-                    Divider(),
-                    Text(
-                      '计划完成时间',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    DateItem(
-                        dateTime: _fromDateTime,
-                        onChanged: (DateTime value) {
-                          setState(() {
-                            _fromDateTime = value;
-                          });
-                        }),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        RaisedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('取消'),
-                          color: Colors.grey,
-                        ),
-                        RaisedButton(
-                          onPressed: () {
-                            _addTodo();
-                          },
-                          child: Text('确定'),
-                        )
-                      ],
-                    )
-                  ],
-                )),
-          ),
+                    maxLines: 5,
+                    onSaved: (str) {
+                      _content = str;
+                    },
+                    controller: _controllerContent,
+                    enabled: _isAdd || _isEdit,
+                  ),
+                  Divider(),
+                  Text(
+                    '计划完成时间',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  DateItem(
+                      dateTime: _fromDateTime,
+                      onChanged: (DateTime value) {
+                        setState(() {
+                          _fromDateTime = value;
+                        });
+                      }),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  _buildBtns()
+                ],
+              )),
         ),
       ),
     );
+  }
+
+  _buildBtns() {
+    return _isAdd
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('取消'),
+                color: Colors.grey,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  _addTodo();
+                },
+                child: Text('确定'),
+              )
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            content: Text('确定删除这条待办事项？'),
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('取消'),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  _deleteTodo();
+                                },
+                                child: Text('确定'),
+                              )
+                            ],
+                          ));
+                },
+                child: Text('删除'),
+                color: Colors.grey,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  setState(() {
+                    _isEdit = !_isEdit;
+                  });
+                },
+                child: Text(_isEdit ? '取消' : '编辑'),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(_isEdit ? '更新' : '返回'),
+              )
+            ],
+          );
   }
 
   //新增待办事项
@@ -131,9 +214,23 @@ class AddTodoState extends State<AddTodoPage> {
         content: _content == null || _content.isEmpty ? '' : _content,
         priority: 0);
     Request().addTodo(dto).then((todo) {
+      bus.fire(EditTodoEvent(widget.type));
       Navigator.pop(context);
       Navigator.pop(context);
-      bus.fire(AddTodoEvent(widget.type));
+    }).catchError((e) {
+      Navigator.pop(context);
+      ToastUtils.showShort(e.message);
+    });
+  }
+
+  //删除待办事项
+  _deleteTodo() {
+    CommonUtils.showLoading(context);
+    Request().deleteTodo(widget.dto.id).then((todo) {
+      bus.fire(EditTodoEvent(widget.dto.type));
+      ToastUtils.showShort('删除成功');
+      Navigator.pop(context);
+      Navigator.pop(context);
     }).catchError((e) {
       Navigator.pop(context);
       ToastUtils.showShort(e.message);

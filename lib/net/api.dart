@@ -54,4 +54,7 @@ class Api {
 
   //新增TODO
   static String addTodo = 'lg/todo/add/json';
+
+  //删除TODO
+  static String deleteTodo = 'lg/todo/delete/';
 }

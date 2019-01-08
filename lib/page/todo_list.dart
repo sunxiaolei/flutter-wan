@@ -31,11 +31,9 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _refresh();
-    bus.on<AddTodoEvent>().listen((e) {
+    bus.on<EditTodoEvent>().listen((e) {
       if (e.type == widget.type) {
-        setState(() {
-          _refresh();
-        });
+        _refresh();
       }
     });
   }
@@ -79,7 +77,9 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddTodoPage(widget.type),
+                          builder: (context) => TodoDetailPage(
+                                type: widget.type,
+                              ),
                           fullscreenDialog: true));
                 })
           ],

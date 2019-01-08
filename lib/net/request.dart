@@ -78,4 +78,7 @@ abstract class Request {
 
   //新增TODO
   Future<TodoDTO> addTodo(AddTodoDTO param);
+
+  //删除TODO
+  Future<Null> deleteTodo(int id);
 }
