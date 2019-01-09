@@ -11,16 +11,18 @@ class Loading extends StatefulWidget {
 class LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        child: SpinKitCircle(
-          size: 50.0,
-          color: Theme.of(context).primaryColor,
+    return Center(
+      child: Card(
+        child: Container(
+          child: SpinKitCircle(
+            size: 50.0,
+            color: Theme.of(context).primaryColor,
+          ),
+          width: 70,
+          height: 70,
         ),
-        width: 70,
-        height: 70,
+        elevation: 5,
       ),
-      elevation: 5,
     );
   }
 }

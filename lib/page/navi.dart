@@ -3,6 +3,8 @@ import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
+import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/flowitems.dart';
 import 'package:wan/widget/loading.dart';
 
@@ -23,22 +25,26 @@ class _NaviWidget extends StatefulWidget {
 
 class _NaviState extends State<_NaviWidget>
     with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
   TabController _controller;
 
   List<Tab> _tabs = List();
   List<FlowItemsWidget> _tabpages = List();
-  FlowItemsWidget _selectedPage;
+
+  Widget _appbar;
+  Widget _body;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    _appbar = AppBar(
+      title: Text('WanFlutter'),
+    );
+    _body = Loading();
+    _getData();
   }
 
-  Future<Null> getData() async {
-    return Request().getNavi().then((datas) {
+  _getData() async {
+    Request().getNavi().then((datas) {
       _controller = TabController(length: datas.length, vsync: this);
       _tabs = datas
           .map<Tab>((NaviDTO d) => Tab(
@@ -57,7 +63,28 @@ class _NaviState extends State<_NaviWidget>
                 }));
               }))
           .toList();
+      _appbar = AppBar(
+        title: Text('WanFlutter'),
+        bottom: TabBar(
+          tabs: _tabs,
+          controller: _controller,
+          isScrollable: true,
+        ),
+      );
+      _body = TabBarView(
+        children: _tabpages,
+        controller: _controller,
+      );
       setState(() {});
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
+      setState(() {
+        _body = ErrorView(
+          onClick: () {
+            _getData();
+          },
+        );
+      });
     });
   }
 
@@ -69,32 +96,9 @@ class _NaviState extends State<_NaviWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (_tabs.length == 0) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('WanFlutter'),
-        ),
-        body: Center(
-          // Loading
-          child: Loading(),
-        ),
-      );
-    } else {
-      return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: Text('WanFlutter'),
-          bottom: TabBar(
-            tabs: _tabs,
-            controller: _controller,
-            isScrollable: true,
-          ),
-        ),
-        body: TabBarView(
-          children: _tabpages,
-          controller: _controller,
-        ),
-      );
-    }
+    return Scaffold(
+      appBar: _appbar,
+      body: _body,
+    );
   }
 }

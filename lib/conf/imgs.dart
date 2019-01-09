@@ -5,4 +5,5 @@ class ImagePath {
   static String bgCardWork = 'images/card_w.jpg';
   static String bgCardStudy = 'images/card_s.jpg';
   static String bgCardLife = 'images/card_l.jpg';
+  static String icError = 'images/ic_error.png';
 }

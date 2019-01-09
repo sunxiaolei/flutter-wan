@@ -45,7 +45,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
     });
   }
 
-  Future<Null> _refresh() async {
+  _refresh() async {
     index = 1;
     Request().getTodoList(index, _dto).then((data) {
       if (data.datas != null) {
@@ -67,7 +67,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
   }
 
   //加载数据
-  Future<Null> _loadMore() async {
+  _loadMore() async {
     Request().getTodoList(index, _dto).then((data) {
       setState(() {
         _listItems.addAll(data.datas.map((dto) => TodoItem(dto)).toList());

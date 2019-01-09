@@ -785,8 +785,8 @@ class PullRefreshState extends State<PullRefresh>
   }
 }
 
-typedef Future OnRefresh();
-typedef Future OnLoadmore();
+typedef OnRefresh();
+typedef OnLoadmore();
 typedef AnimationStateChanged(AnimationStates animationStates,
     RefreshBoxDirectionStatus refreshBoxDirectionStatus);
 

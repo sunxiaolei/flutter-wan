@@ -3,6 +3,8 @@ import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/page/subscription_list.dart';
+import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';
 
 ///微信公众号
@@ -22,22 +24,27 @@ class _SubscriptionsWidget extends StatefulWidget {
 
 class _SubscriptionsState extends State<_SubscriptionsWidget>
     with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
   TabController _tabController;
   List<Tab> _tabs;
   int _currentIndex;
 
   List<SubscriptionList> _tabpages;
 
+  Widget _appbar;
+  Widget _body;
+
   @override
   void initState() {
     super.initState();
-    getData();
+    _appbar = AppBar(
+      title: Text('WanFlutter'),
+    );
+    _body = Loading();
+    _getData();
   }
 
-  Future<Null> getData() async {
-    return Request().getSubscriptions().then((datas) {
+  _getData() async {
+    Request().getSubscriptions().then((datas) {
       _tabController = TabController(length: datas.length, vsync: this);
       _tabController.addListener(() {
         _currentIndex = _tabpages[_tabController.index].id;
@@ -52,7 +59,21 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
                 id: d.id,
               ))
           .toList();
+      _appbar = _buildAppBar();
+      _body = TabBarView(
+        children: _tabpages,
+        controller: _tabController,
+      );
       setState(() {});
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
+      setState(() {
+        _body = ErrorView(
+          onClick: () {
+            _getData();
+          },
+        );
+      });
     });
   }
 
@@ -93,25 +114,9 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (_tabs == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('WanFlutter'),
-        ),
-        body: Center(
-          // Loading
-          child: Loading(),
-        ),
-      );
-    } else {
-      return Scaffold(
-        key: _scaffoldKey,
-        appBar: _buildAppBar(),
-        body: TabBarView(
-          children: _tabpages,
-          controller: _tabController,
-        ),
-      );
-    }
+    return Scaffold(
+      appBar: _appbar,
+      body: _body,
+    );
   }
 }

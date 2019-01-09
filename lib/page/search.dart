@@ -29,11 +29,11 @@ class _SearchState extends State<SearchWidget> {
   @override
   void initState() {
     super.initState();
-    getHotKey();
+    _getHotKey();
   }
 
   ///获取热词
-  Future<Null> getHotKey() async {
+  _getHotKey() async {
     return Request().getHotKey().then((datas) {
       _hotkeys = datas
           .map((data) => FlowItemVO(data.id, data.name, data.link))
@@ -42,7 +42,7 @@ class _SearchState extends State<SearchWidget> {
         items: _hotkeys,
         onPress: (item) {
           _keyword = item.name;
-          search(_keyword);
+          _search(_keyword);
         },
       );
       setState(() {});
@@ -79,7 +79,7 @@ class _SearchState extends State<SearchWidget> {
                   icon: Icon(Icons.search),
                   onPressed: () {
                     if (_keyword != null && _keyword.isNotEmpty) {
-                      search(_keyword);
+                      _search(_keyword);
                     }
                   },
                   color: Colors.white,
@@ -113,7 +113,7 @@ class _SearchState extends State<SearchWidget> {
   }
 
   ///搜索
-  Future<Null> search(keyword) async {
+  _search(keyword) async {
     FocusScope.of(context).requestFocus(FocusNode());
     if (widget.type == 0) {
       _aKey.currentState.setState(() {});

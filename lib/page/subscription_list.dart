@@ -32,7 +32,7 @@ class SubscriptionListState extends State<SubscriptionList>
     _refresh();
   } //刷新
 
-  Future<Null> _refresh() async {
+  _refresh() async {
     index = 1;
     Request()
         .getSubscriptionsHis(index, widget.id, widget.keyword)
@@ -47,7 +47,7 @@ class SubscriptionListState extends State<SubscriptionList>
   }
 
   //加载数据
-  Future<Null> _loadMore() async {
+  _loadMore() async {
     Request()
         .getSubscriptionsHis(index, widget.id, widget.keyword)
         .then((data) {

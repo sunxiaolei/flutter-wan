@@ -13,6 +13,7 @@ import 'package:wan/page/article.dart';
 import 'package:wan/page/article_list_item.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/pullrefresh/pullrefresh.dart';
 
@@ -38,6 +39,8 @@ class _HomeState extends State<_HomeWidget> {
   PageView _bannerViews;
   List<Datas> _listDatas;
 
+  Widget _body;
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +48,7 @@ class _HomeState extends State<_HomeWidget> {
     bus.on<LoginEvent>().listen((event) {
       _refresh();
     });
+    _body = Loading();
   }
 
   _getPersistCookieJar() async {
@@ -66,27 +70,45 @@ class _HomeState extends State<_HomeWidget> {
   }
 
   //刷新
-  Future<Null> _refresh() async {
+  _refresh() async {
     index = 1;
     Request().getHomeBanner().then((data) {
-      _listBanners = data;
-      setState(() {});
+      setState(() {
+        _listBanners = data;
+      });
     }).catchError((e) {
       print(e.toString());
     });
-    setState(() {});
     Request().getHomeList(0).then((data) {
       setState(() {
         _listDatas = data.datas;
         index++;
+        _body = PullRefresh(
+          key: _key,
+          onRefresh: _refresh,
+          onLoadmore: _loadMore,
+          scrollView: ListView.builder(
+            itemBuilder: (context, index) {
+              return _buildItem(index);
+            },
+            itemCount: _listDatas.length,
+          ),
+        );
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
+      setState(() {
+        _body = ErrorView(
+          onClick: () {
+            _refresh();
+          },
+        );
+      });
     });
   }
 
   //加载数据
-  Future<Null> _loadMore() async {
+  _loadMore() async {
     Request().getHomeList(index).then((data) {
       setState(() {
         _listDatas.addAll(data.datas);
@@ -125,21 +147,7 @@ class _HomeState extends State<_HomeWidget> {
           ),
         ],
       ),
-      body: _listDatas == null
-          ? Center(
-              child: Loading(),
-            )
-          : PullRefresh(
-              key: _key,
-              onRefresh: _refresh,
-              onLoadmore: _loadMore,
-              scrollView: ListView.builder(
-                itemBuilder: (context, index) {
-                  return _buildItem(index);
-                },
-                itemCount: _listDatas.length,
-              ),
-            ),
+      body: _body,
     );
   }
 

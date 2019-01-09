@@ -56,6 +56,8 @@ flutter:
     - images/ic_about.png
     - images/ic_launcher.png
     - images/img_card_def.png
+    - images/ic_error.png
+
     - images/card_w.jpg
     - images/card_s.jpg
     - images/card_l.jpg
