@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wan/conf/imgs.dart';
 import 'package:wan/event/event.dart';
-import 'package:wan/model/dto/todo_dto.dart';
 import 'package:wan/model/dto/todolist_get_dto.dart';
 import 'package:wan/model/vo/todolist_vo.dart';
 import 'package:wan/net/request.dart';
@@ -30,7 +30,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
 
   GetTodoListDTO _dto = GetTodoListDTO();
 
-  int _status;
+  int _status = -1;
 
   @override
   void initState() {
@@ -51,12 +51,12 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
       if (data.datas != null) {
         if (this.mounted) {
           setState(() {
-            _listItems = List.from(data.datas
+            _listItems = data.datas
                 .map((dto) => TodoItem(
                       dto,
                       key: ObjectKey(dto.status),
                     ))
-                .toList());
+                .toList();
             index++;
           });
         }
@@ -105,21 +105,44 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
           PopupMenuButton<int>(
             icon: Icon(Icons.equalizer),
             onSelected: (value) {
-              _status = value;
-              _dto.status = value;
-              _refresh();
+              if (_status != value) {
+                _status = value;
+                _dto.status = value;
+                _refresh();
+              }
             },
             itemBuilder: (context) => <PopupMenuItem<int>>[
                   PopupMenuItem(
-                    child: Text('全部'),
+                    child: _status == -1
+                        ? Row(
+                            children: <Widget>[
+                              Text('全部    '),
+                              Icon(Icons.check),
+                            ],
+                          )
+                        : Text('全部    '),
                     value: -1,
                   ),
                   PopupMenuItem(
-                    child: Text('未完成'),
+                    child: _status == 0
+                        ? Row(
+                            children: <Widget>[
+                              Text('未完成'),
+                              Icon(Icons.check),
+                            ],
+                          )
+                        : Text('未完成'),
                     value: 0,
                   ),
                   PopupMenuItem(
-                    child: Text('已完成'),
+                    child: _status == 1
+                        ? Row(
+                            children: <Widget>[
+                              Text('已完成'),
+                              Icon(Icons.check),
+                            ],
+                          )
+                        : Text('已完成'),
                     value: 1,
                   ),
                 ],
@@ -127,7 +150,9 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
         ],
       ),
       body: Container(
-        color: Theme.of(context).cardColor,
+//        decoration: BoxDecoration(
+//            image: DecorationImage(
+//                image: AssetImage(bgs[widget.type - 1]), fit: BoxFit.fill)),
         child: Hero(
             tag: widget.vo.name,
             child: _listItems == null

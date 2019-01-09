@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/constant.dart';
+import 'package:wan/conf/imgs.dart';
 import 'package:wan/model/vo/todolist_vo.dart';
 import 'package:wan/page/todo_detail.dart';
 import 'package:wan/page/todo_list.dart';
@@ -97,6 +98,8 @@ class TodoState extends State<TodoPage> {
     );
   }
 
+  var bgs = [ImagePath.bgCardWork, ImagePath.bgCardStudy, ImagePath.bgCardLife];
+
   _buildTodoList() {
     return ListView.builder(
       itemBuilder: (context, index) {
@@ -157,6 +160,10 @@ class TodoState extends State<TodoPage> {
                               ),
                             ],
                           ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Image.asset(bgs[index]),
+                          )
                         ],
                       ),
                     ),
