@@ -32,26 +32,13 @@ class _WanAppState extends State<WanApp> {
   @override
   void initState() {
     super.initState();
-    _getPersistCookieJar();
     _getTheme(null);
     bus.on<ThemeEvent>().listen((event) {
       _getTheme(event);
     });
   }
 
-  _getPersistCookieJar() async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    String path = dir.path;
-    PersistCookieJar pcj = new PersistCookieJar(path);
-    List<Cookie> cs = pcj.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
-    if (cs != null && cs.length > 0) {
-      cs.forEach((cookie) {
-        if (cookie.name == 'token_pass') {
-          WanApp.isLogin = true;
-        }
-      });
-    }
-  }
+
 
   void _getTheme(ThemeEvent event) async {
     if (event != null) {

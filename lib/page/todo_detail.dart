@@ -212,7 +212,11 @@ class AddTodoState extends State<TodoDetailPage> {
                   ),
                   RaisedButton(
                     onPressed: () {
-                      _updateTodo();
+                      if (_isEdit) {
+                        _updateTodo();
+                      } else {
+                        Navigator.pop(context);
+                      }
                     },
                     child: Text(_isEdit ? '更新' : '返回'),
                   )

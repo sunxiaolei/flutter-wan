@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:wan/app.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
+import 'package:wan/net/api.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/page/article_list_item.dart';
@@ -35,10 +41,28 @@ class _HomeState extends State<_HomeWidget> {
   @override
   void initState() {
     super.initState();
-    _refresh();
+    _getPersistCookieJar();
     bus.on<LoginEvent>().listen((event) {
       _refresh();
     });
+  }
+
+  _getPersistCookieJar() async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    String path = dir.path;
+    PersistCookieJar pcj = new PersistCookieJar(path);
+    List<Cookie> cs = pcj.loadForRequest(Uri.parse(Api.baseUrl + Api.login));
+    if (cs != null && cs.length > 0) {
+      cs.forEach((cookie) {
+        if (cookie.name == 'token_pass') {
+          WanApp.isLogin = true;
+          bus.fire(LoginEvent());
+        }
+      });
+      if (!WanApp.isLogin) {
+        _refresh();
+      }
+    }
   }
 
   //刷新

@@ -15,6 +15,7 @@ import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/model/dto/todo_dto.dart';
 import 'package:wan/model/dto/todo_update_dto.dart';
 import 'package:wan/model/dto/todolist_dto.dart';
+import 'package:wan/model/dto/todolist_get_dto.dart';
 import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/api.dart';
 import 'package:wan/net/interceptor.dart';
@@ -194,9 +195,9 @@ class RequestImpl extends Request {
 
   //获取todo列表
   @override
-  Future<TodoListDTO> getTodoList(int index, int type) async {
+  Future<TodoListDTO> getTodoList(int index, GetTodoListDTO dto) async {
     String reqAPi = '${Api.todoList}$index/json';
-    Response response = await _dio.get(reqAPi, data: {'type': type});
+    Response response = await _dio.get(reqAPi, data: dto.toJson());
     return TodoListDTO.fromJson(_handleRes(response));
   }
 
