@@ -3,6 +3,7 @@ import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article_list_item.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/pullrefresh/pullrefresh.dart';
 
@@ -22,13 +23,15 @@ class SubscriptionList extends StatefulWidget {
 
 class SubscriptionListState extends State<SubscriptionList>
     with AutomaticKeepAliveClientMixin {
-  GlobalKey<PullRefreshState> _key = GlobalKey();
   int index = 1;
   List<Datas> _listDatas;
+
+  Widget _body;
 
   @override
   void initState() {
     super.initState();
+    _body = Loading();
     _refresh();
   } //刷新
 
@@ -40,9 +43,26 @@ class SubscriptionListState extends State<SubscriptionList>
       setState(() {
         _listDatas = data.datas;
         index++;
+        _body = PullRefresh(
+          onRefresh: _refresh,
+          onLoadmore: _loadMore,
+          scrollView: ListView.builder(
+            itemBuilder: (context, index) {
+              return _buildItem(index);
+            },
+            itemCount: _listDatas.length,
+          ),
+        );
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
+      setState(() {
+        _body = ErrorView(
+          onClick: () {
+            _refresh();
+          },
+        );
+      });
     });
   }
 
@@ -62,21 +82,7 @@ class SubscriptionListState extends State<SubscriptionList>
 
   @override
   Widget build(BuildContext context) {
-    return _listDatas == null
-        ? Center(
-            child: Loading(),
-          )
-        : PullRefresh(
-            key: _key,
-            onRefresh: _refresh,
-            onLoadmore: _loadMore,
-            scrollView: ListView.builder(
-              itemBuilder: (context, index) {
-                return _buildItem(index);
-              },
-              itemCount: _listDatas.length,
-            ),
-          );
+    return _body;
   }
 
   //创建item
