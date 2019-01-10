@@ -9,6 +9,8 @@ For help getting started with Flutter, view our online
 
 
 ## Version
+**v1.2** Bug修复，细节优化
+
 **v1.1** Bug修复，增加TODO
 
 **v1.0** 基本功能，凑合能跑
