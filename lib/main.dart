@@ -7,5 +7,5 @@ import 'package:wan/test.dart';
 void main() =>
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]) //竖屏
         .then((_) {
-      runApp(new Test());
+      runApp(new WanApp());
     });
