@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:install_plugin/install_plugin.dart';
 import 'package:package_info/package_info.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wan/app.dart';
 import 'package:wan/conf/constant.dart';
+import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/about.dart';
 import 'package:wan/page/favorite.dart';
@@ -13,6 +18,7 @@ import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/sputils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/event/event.dart';
+import 'package:wan/widget/progress_loading.dart';
 
 ///我的
 class MinePage extends StatelessWidget {
@@ -394,7 +400,8 @@ class _Mine extends State<_MineState> {
                           child: const Text('确定'),
                           onPressed: () {
                             Navigator.pop(context);
-                            launch(dto.downloadUrl);
+//                            launch(dto.downloadUrl);
+                            _downloadApk(dto);
                           })
                     ],
                   ));
@@ -405,6 +412,45 @@ class _Mine extends State<_MineState> {
     }).catchError((e) {
       Navigator.pop(context);
       ToastUtils.showShort(e.message);
+    });
+  }
+
+  GlobalKey<ProgressLoadingState> _downloadKey = GlobalKey();
+
+  //下载新版本apk
+  _downloadApk(UpdateDTO dto) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return ProgressLoading(
+            key: _downloadKey,
+          );
+        });
+    Request().downloadApk(dto.apkUrl, (int received, int total) {
+      setState(() {
+        int p = received * 100 ~/ total;
+        _downloadKey.currentState.setProgress(p);
+      });
+      if (received == total) {
+        Navigator.pop(context);
+        _install();
+      }
+    }).catchError((e) {
+      ToastUtils.showShort(e.message);
+      Navigator.pop(context);
+    });
+  }
+
+  //安装应用
+  _install() async {
+    Directory dir = await getExternalStorageDirectory();
+    String path = dir.path + '/wanflutter.apk';
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String pkgName = packageInfo.packageName;
+    InstallPlugin.installApk(path, pkgName).then((result) {
+      ToastUtils.showShort('安装成功');
+    }).catchError((error) {
+      ToastUtils.showShort('安装失败' + error.toString());
     });
   }
 

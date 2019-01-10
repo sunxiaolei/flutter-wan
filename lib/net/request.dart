@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:wan/model/dto/todo_add_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
@@ -81,4 +82,7 @@ abstract class Request {
 
   //新增TODO
   Future<TodoDTO> updateTodo(TodoUpdateDTO param);
+
+  //下载apk
+  Future<Null> downloadApk(String url, OnDownloadProgress progress);
 }

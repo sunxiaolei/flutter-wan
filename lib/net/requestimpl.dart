@@ -238,4 +238,20 @@ class RequestImpl extends Request {
         await _dio.post(reqAPi, data: FormData.from(param.toJson()));
     return TodoDTO.fromJson(_handleRes(response));
   }
+
+  @override
+  Future<Null> downloadApk(String url, OnDownloadProgress progress) async {
+    Directory dir = await getExternalStorageDirectory();
+    String path = dir.path + '/wanflutter.apk';
+    Dio _dio = Dio();
+    LogInterceptor interceptor = LogInterceptor();
+    _dio.interceptor.request.onSend = interceptor.onSend;
+    _dio.interceptor.response.onSuccess = interceptor.onSuccess;
+    _dio.interceptor.response.onError = interceptor.onError;
+    Response response = await _dio.download(
+      url,
+      path,
+      onProgress: progress,
+    );
+  }
 }

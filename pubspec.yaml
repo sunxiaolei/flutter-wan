@@ -34,6 +34,8 @@ dev_dependencies:
   url_launcher: ^4.0.3
   #image cache
   cached_network_image: ^0.5.1
+  #安装
+  install_plugin: ^1.0.0
 
 
 # For information on the generic Dart part of this file, see the
