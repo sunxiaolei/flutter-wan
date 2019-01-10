@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wan/conf/imgs.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article_list_item.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/empty_view.dart';
 import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/pullrefresh/pullrefresh.dart';
@@ -43,16 +45,24 @@ class SubscriptionListState extends State<SubscriptionList>
       setState(() {
         _listDatas = data.datas;
         index++;
-        _body = PullRefresh(
-          onRefresh: _refresh,
-          onLoadmore: _loadMore,
-          scrollView: ListView.builder(
-            itemBuilder: (context, index) {
-              return _buildItem(index);
-            },
-            itemCount: _listDatas.length,
-          ),
-        );
+        _body = _listDatas.length == 0
+            ? EmptyView(
+                iconPath: ImagePath.icEmpty,
+                hint: '暂无内容，点击重试',
+                onClick: () {
+                  _refresh();
+                },
+              )
+            : PullRefresh(
+                onRefresh: _refresh,
+                onLoadmore: _loadMore,
+                scrollView: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return _buildItem(index);
+                  },
+                  itemCount: _listDatas.length,
+                ),
+              );
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);

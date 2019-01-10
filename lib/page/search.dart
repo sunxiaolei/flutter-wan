@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wan/conf/imgs.dart';
 import 'package:wan/model/dto/hotkey_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article_list.dart';
 import 'package:wan/page/subscription_list.dart';
+import 'package:wan/widget/empty_view.dart';
 import 'package:wan/widget/flowitems.dart';
 
 ///搜索页
@@ -102,7 +104,7 @@ class _SearchState extends State<SearchWidget> {
     } else {
       return _keyword == null || _keyword.isEmpty
           ? Center(
-              child: Text('搜索'),
+              child: Image.asset(ImagePath.icEmpty),
             )
           : SubscriptionList(
               key: _sKey,

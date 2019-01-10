@@ -6,4 +6,6 @@ class ImagePath {
   static String bgCardStudy = 'images/card_s.jpg';
   static String bgCardLife = 'images/card_l.jpg';
   static String icError = 'images/ic_error.png';
+  static String icEmpty = 'images/ic_empty.png';
+  static String icTodoEmpty = 'images/ic_todo_empty.png';
 }

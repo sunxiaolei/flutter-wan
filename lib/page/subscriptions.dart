@@ -59,12 +59,15 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
                 id: d.id,
               ))
           .toList();
-      _appbar = _buildAppBar();
-      _body = TabBarView(
-        children: _tabpages,
-        controller: _tabController,
-      );
-      setState(() {});
+
+      setState(() {
+        _currentIndex = _tabpages[_tabController.index].id;
+        _appbar = _buildAppBar();
+        _body = TabBarView(
+          children: _tabpages,
+          controller: _tabController,
+        );
+      });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
       setState(() {

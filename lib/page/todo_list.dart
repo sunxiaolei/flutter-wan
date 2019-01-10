@@ -7,8 +7,10 @@ import 'package:wan/net/request.dart';
 import 'package:wan/page/todo_detail.dart';
 import 'package:wan/page/todo_item.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/pullrefresh/pullrefresh.dart';
+import 'package:wan/widget/empty_view.dart';
 
 //待办事项列表
 class TodoListPage extends StatefulWidget {
@@ -30,12 +32,15 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
 
   GetTodoListDTO _dto = GetTodoListDTO();
 
-  int _status = -1;
+  int _status = -1; //默认全部，0：未完成，1：已完成
+
+  Widget _body;
 
   @override
   void initState() {
     super.initState();
     _dto.type = widget.type;
+    _body = Loading();
     _refresh();
     bus.on<EditTodoEvent>().listen((e) {
       if (e.type == widget.type) {
@@ -58,11 +63,44 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
                     ))
                 .toList();
             index++;
+            _body = Container(
+              child: Hero(
+                  tag: widget.vo.name,
+                  child: _listItems.length == 0
+                      ? EmptyView(
+                          iconPath: ImagePath.icTodoEmpty,
+                          hint: '暂无待办事项',
+                          onClick: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TodoDetailPage(
+                                          type: widget.type,
+                                        ),
+                                    fullscreenDialog: true));
+                          },
+                        )
+                      : Container(
+                          child: PullRefresh(
+                            key: _key,
+                            onRefresh: _refresh,
+                            onLoadmore: _loadMore,
+                            scrollView: ListView(
+                              children: _listItems,
+                            ),
+                          ),
+                        )),
+            );
           });
         }
       }
     }).catchError((e) {
       ToastUtils.showShort(e.message);
+      _body = ErrorView(
+        onClick: () {
+          _refresh();
+        },
+      );
     });
   }
 
@@ -149,27 +187,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
           )
         ],
       ),
-      body: Container(
-//        decoration: BoxDecoration(
-//            image: DecorationImage(
-//                image: AssetImage(bgs[widget.type - 1]), fit: BoxFit.fill)),
-        child: Hero(
-            tag: widget.vo.name,
-            child: _listItems == null
-                ? Center(
-                    child: Loading(),
-                  )
-                : Container(
-                    child: PullRefresh(
-                      key: _key,
-                      onRefresh: _refresh,
-                      onLoadmore: _loadMore,
-                      scrollView: ListView(
-                        children: _listItems,
-                      ),
-                    ),
-                  )),
-      ),
+      body: _body,
       floatingActionButton: FloatingActionButton(
         //新增
         onPressed: () {
