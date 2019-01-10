@@ -29,5 +29,19 @@ class LogInterceptor {
 
   onError(DioError error) {
     Log.i(":::error:" + error.toString());
+    switch (error.type) {
+      case DioErrorType.DEFAULT:
+        throw DioError(message: '网络错误');
+        break;
+      case DioErrorType.CONNECT_TIMEOUT:
+      case DioErrorType.RECEIVE_TIMEOUT:
+        throw DioError(message: '连接超时');
+        break;
+      case DioErrorType.RESPONSE:
+        throw DioError(message: '网络错误：' + error.response.statusCode.toString());
+        break;
+      case DioErrorType.CANCEL:
+        break;
+    }
   }
 }
