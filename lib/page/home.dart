@@ -4,6 +4,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wan/app.dart';
+import 'package:wan/conf/pagestatus.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/model/dto/homebanner_dto.dart';
@@ -35,12 +36,11 @@ class _HomeWidget extends StatefulWidget {
 }
 
 class _HomeState extends State<_HomeWidget> {
-  GlobalKey<PullRefreshState> _key = GlobalKey();
   int index = 1;
   List<BannerDataDTO> _listBanners;
   List<Datas> _listDatas;
 
-  Widget _body;
+  PageStatus status = PageStatus.LOADING;
 
   @override
   void initState() {
@@ -49,7 +49,6 @@ class _HomeState extends State<_HomeWidget> {
     bus.on<LoginEvent>().listen((event) {
       _refresh();
     });
-    _body = Loading();
   }
 
   _getPersistCookieJar() async {
@@ -84,26 +83,12 @@ class _HomeState extends State<_HomeWidget> {
       setState(() {
         _listDatas = data.datas;
         index++;
-        _body = PullRefresh(
-          key: _key,
-          onRefresh: _refresh,
-          onLoadmore: _loadMore,
-          scrollView: ListView.builder(
-            itemBuilder: (context, index) {
-              return _buildItem(index);
-            },
-            itemCount: _listDatas.length,
-          ),
-        );
+        status = PageStatus.DATA;
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
       setState(() {
-        _body = ErrorView(
-          onClick: () {
-            _refresh();
-          },
-        );
+        status = PageStatus.ERROR;
       });
     });
   }
@@ -140,8 +125,35 @@ class _HomeState extends State<_HomeWidget> {
           ),
         ],
       ),
-      body: _body,
+      body: _buildBody(),
     );
+  }
+
+  Widget _buildBody() {
+    switch (status) {
+      case PageStatus.LOADING:
+        return Loading();
+        break;
+      case PageStatus.DATA:
+        return PullRefresh(
+          onRefresh: _refresh,
+          onLoadmore: _loadMore,
+          scrollView: ListView.builder(
+            itemBuilder: (context, index) {
+              return _buildItem(index);
+            },
+            itemCount: _listDatas.length,
+          ),
+        );
+        break;
+      case PageStatus.ERROR:
+      default:
+        return ErrorView(
+          onClick: () {
+            _refresh();
+          },
+        );
+    }
   }
 
   ///创建banner

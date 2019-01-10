@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan/conf/pagestatus.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/search.dart';
@@ -31,7 +32,7 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
   List<SubscriptionList> _tabpages;
 
   Widget _appbar;
-  Widget _body;
+  PageStatus status = PageStatus.LOADING;
 
   @override
   void initState() {
@@ -39,7 +40,6 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
     _appbar = AppBar(
       title: Text('WanFlutter'),
     );
-    _body = Loading();
     _getData();
   }
 
@@ -63,19 +63,12 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
       setState(() {
         _currentIndex = _tabpages[_tabController.index].id;
         _appbar = _buildAppBar();
-        _body = TabBarView(
-          children: _tabpages,
-          controller: _tabController,
-        );
+        status = PageStatus.DATA;
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
       setState(() {
-        _body = ErrorView(
-          onClick: () {
-            _getData();
-          },
-        );
+        status = PageStatus.ERROR;
       });
     });
   }
@@ -115,11 +108,32 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
     );
   }
 
+  _buildBody() {
+    switch (status) {
+      case PageStatus.LOADING:
+        return Loading();
+        break;
+      case PageStatus.DATA:
+        return TabBarView(
+          children: _tabpages,
+          controller: _tabController,
+        );
+        break;
+      case PageStatus.ERROR:
+      default:
+        return ErrorView(
+          onClick: () {
+            _getData();
+          },
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appbar,
-      body: _body,
+      body: _buildBody(),
     );
   }
 }

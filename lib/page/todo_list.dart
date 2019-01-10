@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/imgs.dart';
+import 'package:wan/conf/pagestatus.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/todolist_get_dto.dart';
 import 'package:wan/model/vo/todolist_vo.dart';
@@ -34,13 +35,12 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
 
   int _status = -1; //默认全部，0：未完成，1：已完成
 
-  Widget _body;
+  PageStatus status = PageStatus.LOADING;
 
   @override
   void initState() {
     super.initState();
     _dto.type = widget.type;
-    _body = Loading();
     _refresh();
     bus.on<EditTodoEvent>().listen((e) {
       if (e.type == widget.type) {
@@ -63,44 +63,14 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
                     ))
                 .toList();
             index++;
-            _body = Container(
-              child: Hero(
-                  tag: widget.vo.name,
-                  child: _listItems.length == 0
-                      ? EmptyView(
-                          iconPath: ImagePath.icTodoEmpty,
-                          hint: '暂无待办事项',
-                          onClick: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TodoDetailPage(
-                                          type: widget.type,
-                                        ),
-                                    fullscreenDialog: true));
-                          },
-                        )
-                      : Container(
-                          child: PullRefresh(
-                            key: _key,
-                            onRefresh: _refresh,
-                            onLoadmore: _loadMore,
-                            scrollView: ListView(
-                              children: _listItems,
-                            ),
-                          ),
-                        )),
-            );
+            status =
+                _listItems.length == 0 ? PageStatus.EMPTY : PageStatus.DATA;
           });
         }
       }
     }).catchError((e) {
       ToastUtils.showShort(e.message);
-      _body = ErrorView(
-        onClick: () {
-          _refresh();
-        },
-      );
+      status = PageStatus.ERROR;
     });
   }
 
@@ -187,7 +157,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
           )
         ],
       ),
-      body: _body,
+      body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         //新增
         onPressed: () {
@@ -202,5 +172,54 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  _buildBody() {
+    switch (status) {
+      case PageStatus.LOADING:
+        return Loading();
+        break;
+      case PageStatus.DATA:
+        return Container(
+          child: Hero(
+              tag: widget.vo.name,
+              child: Container(
+                child: PullRefresh(
+                  key: _key,
+                  onRefresh: _refresh,
+                  onLoadmore: _loadMore,
+                  scrollView: ListView(
+                    children: _listItems,
+                  ),
+                ),
+              )),
+        );
+        break;
+      case PageStatus.ERROR:
+        return ErrorView(
+          onClick: () {
+            _refresh();
+          },
+        );
+      case PageStatus.EMPTY:
+      default:
+        return Container(
+          child: Hero(
+              tag: widget.vo.name,
+              child: EmptyView(
+                iconPath: ImagePath.icTodoEmpty,
+                hint: '暂无待办事项',
+                onClick: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TodoDetailPage(
+                                type: widget.type,
+                              ),
+                          fullscreenDialog: true));
+                },
+              )),
+        );
+    }
   }
 }

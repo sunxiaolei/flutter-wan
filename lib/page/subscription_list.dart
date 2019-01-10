@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/imgs.dart';
+import 'package:wan/conf/pagestatus.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article_list_item.dart';
@@ -28,12 +29,11 @@ class SubscriptionListState extends State<SubscriptionList>
   int index = 1;
   List<Datas> _listDatas;
 
-  Widget _body;
+  PageStatus status = PageStatus.LOADING;
 
   @override
   void initState() {
     super.initState();
-    _body = Loading();
     _refresh();
   } //刷新
 
@@ -45,33 +45,12 @@ class SubscriptionListState extends State<SubscriptionList>
       setState(() {
         _listDatas = data.datas;
         index++;
-        _body = _listDatas.length == 0
-            ? EmptyView(
-                iconPath: ImagePath.icEmpty,
-                hint: '暂无内容，点击重试',
-                onClick: () {
-                  _refresh();
-                },
-              )
-            : PullRefresh(
-                onRefresh: _refresh,
-                onLoadmore: _loadMore,
-                scrollView: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return _buildItem(index);
-                  },
-                  itemCount: _listDatas.length,
-                ),
-              );
+        status = _listDatas.length == 0 ? PageStatus.EMPTY : PageStatus.DATA;
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
       setState(() {
-        _body = ErrorView(
-          onClick: () {
-            _refresh();
-          },
-        );
+        status = PageStatus.ERROR;
       });
     });
   }
@@ -92,7 +71,42 @@ class SubscriptionListState extends State<SubscriptionList>
 
   @override
   Widget build(BuildContext context) {
-    return _body;
+    return _buildBody();
+  }
+
+  _buildBody() {
+    switch (status) {
+      case PageStatus.LOADING:
+        return Loading();
+        break;
+      case PageStatus.DATA:
+        return PullRefresh(
+          onRefresh: _refresh,
+          onLoadmore: _loadMore,
+          scrollView: ListView.builder(
+            itemBuilder: (context, index) {
+              return _buildItem(index);
+            },
+            itemCount: _listDatas.length,
+          ),
+        );
+        break;
+      case PageStatus.ERROR:
+        return ErrorView(
+          onClick: () {
+            _refresh();
+          },
+        );
+      case PageStatus.EMPTY:
+      default:
+        return EmptyView(
+          iconPath: ImagePath.icEmpty,
+          hint: '暂无内容，点击重试',
+          onClick: () {
+            _refresh();
+          },
+        );
+    }
   }
 
   //创建item
