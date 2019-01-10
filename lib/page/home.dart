@@ -13,9 +13,11 @@ import 'package:wan/page/article.dart';
 import 'package:wan/page/article_list_item.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/utils/toastutils.dart';
+import 'package:wan/widget/cardviewpager.dart';
 import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';
 import 'package:wan/widget/pullrefresh/pullrefresh.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 ///首页列表
 class HomePage extends StatelessWidget {
@@ -36,7 +38,6 @@ class _HomeState extends State<_HomeWidget> {
   GlobalKey<PullRefreshState> _key = GlobalKey();
   int index = 1;
   List<BannerDataDTO> _listBanners;
-  PageView _bannerViews;
   List<Datas> _listDatas;
 
   Widget _body;
@@ -121,14 +122,6 @@ class _HomeState extends State<_HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_listBanners != null) {
-      _bannerViews = PageView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return _buildBanner(index);
-        },
-        itemCount: _listBanners.length,
-      );
-    }
     return Scaffold(
       //标题栏
       appBar: AppBar(
@@ -152,15 +145,22 @@ class _HomeState extends State<_HomeWidget> {
   }
 
   ///创建banner
-  Widget _buildBanner(int index) {
+  Widget _buildBanner(BannerDataDTO dto) {
     return GestureDetector(
       //可以处理手势事件
-      child: Image.network(_listBanners[index].imagePath),
+      child: Card(
+        elevation: 3,
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            margin: new EdgeInsets.symmetric(horizontal: 10.0),
+            child: CachedNetworkImage(
+              imageUrl: dto.imagePath,
+            )),
+      ),
       onTap: () {
         Navigator.of(context)
             .push(new MaterialPageRoute<Null>(builder: (context) {
-          return new ArticlePage(
-              _listBanners[index].url, _listBanners[index].id);
+          return new ArticlePage(dto.url, dto.id);
         }));
       },
     );
@@ -170,10 +170,12 @@ class _HomeState extends State<_HomeWidget> {
   Widget _buildItem(int index) {
     if (_listBanners != null) {
       if (index == 0) {
-        return Container(
-          height: 200.0,
-          child: _bannerViews,
-        );
+        return CardViewPager(
+            items: _listBanners.map((dto) {
+              return _buildBanner(dto);
+            }).toList(),
+            height: 200.0,
+            autoPlay: true);
       } else {
         Datas data = _listDatas[index - 1];
         return ArticleListItemWidget(data);

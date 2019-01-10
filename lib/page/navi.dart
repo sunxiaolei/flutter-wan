@@ -90,7 +90,7 @@ class _NaviState extends State<_NaviWidget>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 

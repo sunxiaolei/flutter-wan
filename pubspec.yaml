@@ -32,6 +32,8 @@ dev_dependencies:
   package_info: ^0.3.2
   #打开连接
   url_launcher: ^4.0.3
+  #image cache
+  cached_network_image: ^0.5.1
 
 
 # For information on the generic Dart part of this file, see the

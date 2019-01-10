@@ -82,7 +82,7 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController?.dispose();
     super.dispose();
   }
 

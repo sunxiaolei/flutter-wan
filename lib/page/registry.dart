@@ -20,7 +20,6 @@ class RegistryState extends State<RegistryPage> {
 
   String _name;
   String _password;
-  String _repassword;
 
   var deviceSize;
 
