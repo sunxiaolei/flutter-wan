@@ -6,6 +6,7 @@ import 'package:wan/widget/pullrefresh/bezier_bounce_footer.dart';
 import 'package:wan/widget/pullrefresh/footer.dart';
 import 'package:wan/widget/pullrefresh/header.dart';
 import 'package:wan/widget/pullrefresh/scroll_physics.dart';
+import 'package:wan/widget/totop_button.dart';
 
 ///下拉刷新 上拉加载
 class PullRefresh extends StatefulWidget {
@@ -24,6 +25,8 @@ class PullRefresh extends StatefulWidget {
   // 状态改变回调
   final AnimationStateChanged animationStateChangedCallback;
 
+  final bool showToTopBtn;
+
   const PullRefresh(
       {Key key,
       this.onRefresh,
@@ -32,7 +35,8 @@ class PullRefresh extends StatefulWidget {
       this.behavior,
       this.refreshHeader,
       this.refreshFooter,
-      this.animationStateChangedCallback})
+      this.animationStateChangedCallback,
+      this.showToTopBtn: true})
       : super(key: key);
 
   @override
@@ -162,6 +166,8 @@ class PullRefreshState extends State<PullRefresh>
     if (_isRefresh) return;
     callLoadMore();
   }
+
+  GlobalKey<ToTopFloatBtnState> _toTopBtnKey = GlobalKey();
 
   @override
   void initState() {
@@ -427,11 +433,19 @@ class PullRefreshState extends State<PullRefresh>
                       _handleScrollUpdateNotification(notification);
                     } else if (notification is ScrollEndNotification) {
                       _handleScrollEndNotification();
+                      if (widget.showToTopBtn) {
+                        _toTopBtnKey.currentState.refreshVisible(true);
+                      }
                     } else if (notification is UserScrollNotification) {
                       _handleUserScrollNotification(notification);
 //                    } else if (metrics.atEdge && notification is OverscrollNotification) { // 加上metrics.atEdge验证，多次滑动会导致加载卡住
                     } else if (notification is OverscrollNotification) {
                       _handleOverScrollNotification(notification);
+                    }
+                    if (notification.metrics.extentBefore == 0.0) {
+                      if (widget.showToTopBtn) {
+                        _toTopBtnKey.currentState.refreshVisible(false);
+                      }
                     }
                     return true;
                   },
@@ -465,6 +479,14 @@ class PullRefreshState extends State<PullRefresh>
                 ? _getFooter()
                 : new Container(),
           ),
+          ToTopFloatBtn(
+            key: _toTopBtnKey,
+            onPressed: () {
+              _scrollController?.animateTo(0.0,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn);
+            },
+          )
         ],
       ),
     );

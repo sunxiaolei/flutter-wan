@@ -46,13 +46,13 @@ class _HomeState extends State<_HomeWidget> {
   @override
   void initState() {
     super.initState();
-    _getPersistCookieJar();
     bus.on<LoginEvent>().listen((event) {
       _refresh();
     });
     bus.on<FavoriteEvent>().listen((event) {
       _refresh();
     });
+    _getPersistCookieJar();
   }
 
   _getPersistCookieJar() async {
