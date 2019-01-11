@@ -13,6 +13,7 @@ import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/page/article_list_item.dart';
 import 'package:wan/page/search.dart';
+import 'package:wan/utils/shareutils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/cardviewpager.dart';
 import 'package:wan/widget/error_view.dart';
@@ -49,6 +50,9 @@ class _HomeState extends State<_HomeWidget> {
     bus.on<LoginEvent>().listen((event) {
       _refresh();
     });
+    bus.on<FavoriteEvent>().listen((event) {
+      _refresh();
+    });
   }
 
   _getPersistCookieJar() async {
@@ -73,18 +77,22 @@ class _HomeState extends State<_HomeWidget> {
   _refresh() async {
     index = 1;
     Request().getHomeBanner().then((data) {
-      setState(() {
-        _listBanners = data;
-      });
+      if (this.mounted) {
+        setState(() {
+          _listBanners = data;
+        });
+      }
     }).catchError((e) {
       print(e.toString());
     });
     Request().getHomeList(0).then((data) {
-      setState(() {
-        _listDatas = data.datas;
-        index++;
-        status = PageStatus.DATA;
-      });
+      if (this.mounted) {
+        setState(() {
+          _listDatas = data.datas;
+          index++;
+          status = PageStatus.DATA;
+        });
+      }
     }).catchError((e) {
       ToastUtils.showShort(e.message);
       setState(() {
@@ -118,10 +126,6 @@ class _HomeState extends State<_HomeWidget> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SearchWidget(0)));
             },
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {},
           ),
         ],
       ),

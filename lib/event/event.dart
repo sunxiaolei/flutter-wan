@@ -21,3 +21,7 @@ class EditTodoEvent {
 
   EditTodoEvent(this.type);
 }
+
+class FavoriteEvent {
+  FavoriteEvent();
+}

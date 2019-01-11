@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:wan/model/dto/favoritedatas_dto.dart';
 import 'package:wan/model/dto/todo_add_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
 import 'package:wan/model/dto/subscriptionslist_dto.dart';
@@ -57,7 +58,7 @@ abstract class Request {
   Future<Null> logout();
 
   //获取收藏列表
-  Future<ArticleDatasDTO> getFavorite(int index);
+  Future<FavoriteDatasDTO> getFavorite(int index);
 
   //收藏文章
   Future<Null> favorite(int id);

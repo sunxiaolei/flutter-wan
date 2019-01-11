@@ -95,10 +95,6 @@ class _SubscriptionsState extends State<_SubscriptionsWidget>
                         )));
           },
         ),
-        IconButton(
-          icon: Icon(Icons.more_vert),
-          onPressed: () {},
-        ),
       ],
       bottom: TabBar(
         tabs: _tabs,

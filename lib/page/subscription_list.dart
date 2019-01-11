@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wan/conf/imgs.dart';
 import 'package:wan/conf/pagestatus.dart';
+import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/articledatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article_list_item.dart';
@@ -35,18 +36,24 @@ class SubscriptionListState extends State<SubscriptionList>
   void initState() {
     super.initState();
     _refresh();
-  } //刷新
+    bus.on<FavoriteEvent>().listen((event) {
+      _refresh();
+    });
+  }
 
+  //刷新
   _refresh() async {
     index = 1;
     Request()
         .getSubscriptionsHis(index, widget.id, widget.keyword)
         .then((data) {
-      setState(() {
-        _listDatas = data.datas;
-        index++;
-        status = _listDatas.length == 0 ? PageStatus.EMPTY : PageStatus.DATA;
-      });
+      if (this.mounted) {
+        setState(() {
+          _listDatas = data.datas;
+          index++;
+          status = _listDatas.length == 0 ? PageStatus.EMPTY : PageStatus.DATA;
+        });
+      }
     }).catchError((e) {
       ToastUtils.showShort(e.message);
       setState(() {

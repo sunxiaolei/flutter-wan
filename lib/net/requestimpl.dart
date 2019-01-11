@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:wan/model/dto/favoritedatas_dto.dart';
 import 'package:wan/model/dto/todo_add_dto.dart';
 import 'package:wan/model/dto/base_dto.dart';
 import 'package:wan/model/dto/login_dto.dart';
@@ -151,10 +152,10 @@ class RequestImpl extends Request {
 
   //收藏列表
   @override
-  Future<ArticleDatasDTO> getFavorite(int page) async {
+  Future<FavoriteDatasDTO> getFavorite(int page) async {
     String reqAPi = '${Api.favoriteList}$page/json';
     Response response = await _dio.get(reqAPi);
-    return ArticleDatasDTO.fromJson(_handleRes(response));
+    return FavoriteDatasDTO.fromJson(_handleRes(response));
   }
 
   //登出

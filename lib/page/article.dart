@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:wan/app.dart';
+import 'package:wan/event/event.dart';
 import 'package:wan/net/request.dart';
+import 'package:wan/utils/shareutils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/loading.dart';
 
@@ -40,6 +42,7 @@ class Article extends State<ArticlePage> {
     Request().favorite(widget.id).then((res) {
       setState(() {
         _fav = true;
+        bus.fire(FavoriteEvent());
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
@@ -50,6 +53,7 @@ class Article extends State<ArticlePage> {
     Request().favoriteCancel(widget.id).then((res) {
       setState(() {
         _fav = false;
+        bus.fire(FavoriteEvent());
       });
     }).catchError((e) {
       ToastUtils.showShort(e.message);
@@ -79,7 +83,13 @@ class Article extends State<ArticlePage> {
                 ToastUtils.showShort('请先登录');
               }
             },
-          )
+          ),
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () {
+              ShareUtils.share(widget.url);
+            },
+          ),
         ],
       );
     }
