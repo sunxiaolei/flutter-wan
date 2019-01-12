@@ -78,7 +78,12 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
   _loadMore() async {
     Request().getTodoList(index, _dto).then((data) {
       setState(() {
-        _listItems.addAll(data.datas.map((dto) => TodoItem(dto)).toList());
+        _listItems.addAll(data.datas
+            .map((dto) => TodoItem(
+                  dto,
+                  key: ObjectKey(dto.status),
+                ))
+            .toList());
         index++;
       });
     }).catchError((e) {
@@ -186,10 +191,14 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
               child: Container(
                 child: PullRefresh(
                   key: _key,
+                  showToTopBtn: false,
                   onRefresh: _refresh,
                   onLoadmore: _loadMore,
-                  scrollView: ListView(
-                    children: _listItems,
+                  scrollView: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return _listItems[index];
+                    },
+                    itemCount: _listItems.length,
                   ),
                 ),
               )),
