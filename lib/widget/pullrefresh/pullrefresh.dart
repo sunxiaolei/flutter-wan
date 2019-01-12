@@ -433,16 +433,21 @@ class PullRefreshState extends State<PullRefresh>
                       _handleScrollUpdateNotification(notification);
                     } else if (notification is ScrollEndNotification) {
                       _handleScrollEndNotification();
-                      if (widget.showToTopBtn) {
-                        _toTopBtnKey.currentState.refreshVisible(true);
-                      }
                     } else if (notification is UserScrollNotification) {
                       _handleUserScrollNotification(notification);
 //                    } else if (metrics.atEdge && notification is OverscrollNotification) { // 加上metrics.atEdge验证，多次滑动会导致加载卡住
                     } else if (notification is OverscrollNotification) {
                       _handleOverScrollNotification(notification);
                     }
-                    if (notification.metrics.extentBefore == 0.0) {
+                    num _screenHeight = MediaQuery.of(context).size.height;
+                    if (notification.metrics.axisDirection ==
+                            AxisDirection.down &&
+                        _screenHeight >= 10 &&
+                        notification.metrics.pixels >= _screenHeight) {
+                      if (widget.showToTopBtn) {
+                        _toTopBtnKey.currentState.refreshVisible(true);
+                      }
+                    } else {
                       if (widget.showToTopBtn) {
                         _toTopBtnKey.currentState.refreshVisible(false);
                       }

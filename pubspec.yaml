@@ -58,6 +58,9 @@ flutter:
     - images/ic_favorite.png
     - images/ic_todo.png
     - images/ic_about.png
+    - images/ic_feedback.png
+    - images/ic_wechat.png
+    - images/ic_mail.png
     - images/ic_launcher.png
     - images/img_card_def.png
     - images/ic_error.png

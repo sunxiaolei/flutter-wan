@@ -7,10 +7,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wan/app.dart';
 import 'package:wan/conf/constant.dart';
+import 'package:wan/conf/imgs.dart';
 import 'package:wan/model/dto/update_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/about.dart';
 import 'package:wan/page/favorite.dart';
+import 'package:wan/page/feedback.dart';
 import 'package:wan/page/login.dart';
 import 'package:wan/conf/themes.dart';
 import 'package:wan/page/todo.dart';
@@ -180,7 +182,7 @@ class _Mine extends State<_MineState> {
             children: <Widget>[
               Container(
                 child: Image.asset(
-                  'images/ic_theme.png',
+                  ImagePath.icTheme,
                   color: Theme.of(context).primaryColorLight,
                   width: 25,
                 ),
@@ -236,7 +238,7 @@ class _Mine extends State<_MineState> {
           height: 40,
         ),
         Divider(),
-        GestureDetector(
+        InkWell(
           onTap: () {
             if (WanApp.isLogin) {
               Navigator.push(context,
@@ -252,7 +254,7 @@ class _Mine extends State<_MineState> {
               children: <Widget>[
                 Container(
                   child: Image.asset(
-                    'images/ic_favorite.png',
+                    ImagePath.icFavotite,
                     color: Theme.of(context).primaryColorLight,
                     width: 25,
                   ),
@@ -274,7 +276,7 @@ class _Mine extends State<_MineState> {
           ),
         ),
         Divider(),
-        GestureDetector(
+        InkWell(
           onTap: () {
             if (WanApp.isLogin) {
               Navigator.push(
@@ -290,7 +292,7 @@ class _Mine extends State<_MineState> {
               children: <Widget>[
                 Container(
                   child: Image.asset(
-                    'images/ic_todo.png',
+                    ImagePath.icTodo,
                     color: Theme.of(context).primaryColorLight,
                     width: 25,
                   ),
@@ -312,7 +314,7 @@ class _Mine extends State<_MineState> {
           ),
         ),
         Divider(),
-        GestureDetector(
+        InkWell(
           onTap: () {
             _checkUpdate();
           },
@@ -321,7 +323,7 @@ class _Mine extends State<_MineState> {
               children: <Widget>[
                 Container(
                   child: Image.asset(
-                    'images/ic_update.png',
+                    ImagePath.icUpdate,
                     color: Theme.of(context).primaryColorLight,
                     width: 25,
                   ),
@@ -343,7 +345,39 @@ class _Mine extends State<_MineState> {
           ),
         ),
         Divider(),
-        GestureDetector(
+        InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => FeedbackPage()));
+          },
+          child: Container(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: Image.asset(
+                    ImagePath.icFeedback,
+                    color: Theme.of(context).primaryColorLight,
+                    width: 25,
+                  ),
+                  margin: EdgeInsets.only(left: 15),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Text(
+                      '建议与反馈',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    margin: EdgeInsets.only(left: 5),
+                  ),
+//                  margin: EdgeInsets.only(left: 5),
+                ),
+              ],
+            ),
+            height: 40,
+          ),
+        ),
+        Divider(),
+        InkWell(
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => AboutPage()));
@@ -353,7 +387,7 @@ class _Mine extends State<_MineState> {
               children: <Widget>[
                 Container(
                   child: Image.asset(
-                    'images/ic_about.png',
+                    ImagePath.icAbout,
                     color: Theme.of(context).primaryColorLight,
                     width: 25,
                   ),

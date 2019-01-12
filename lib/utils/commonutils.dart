@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CommonUtils {
+  static const String CHANNEL_NATIVE = "channel_native";
+  static const String METHOD_SHARE = "method_share";
+  static const String METHOD_COPY = "method_copy";
+
+  static void share(String msg) {
+    MethodChannel(CHANNEL_NATIVE).invokeMethod(METHOD_SHARE, msg);
+  }
+
+  static void copy(String msg, String toast) {
+    MethodChannel(CHANNEL_NATIVE).invokeMethod(METHOD_COPY, [msg, toast]);
+  }
+
   static void showLoading(BuildContext context) {
     showDialog(
         context: context,

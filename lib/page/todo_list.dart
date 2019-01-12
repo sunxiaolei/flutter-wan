@@ -33,7 +33,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
 
   GetTodoListDTO _dto = GetTodoListDTO();
 
-  int _status = -1; //默认全部，0：未完成，1：已完成
+  int _status = 0; //-1全部，默认0：未完成，1：已完成
 
   PageStatus status = PageStatus.LOADING;
 
@@ -41,6 +41,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _dto.type = widget.type;
+    _dto.status = _status;
     _refresh();
     bus.on<EditTodoEvent>().listen((e) {
       if (e.type == widget.type) {
@@ -106,12 +107,12 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
             },
             itemBuilder: (context) => <PopupMenuItem<int>>[
                   PopupMenuItem(
-                    child: Text('日期顺序'),
-                    value: _status == 1 ? 1 : 3,
-                  ),
-                  PopupMenuItem(
                     child: Text('日期逆序'),
                     value: _status == 1 ? 2 : 4,
+                  ),
+                  PopupMenuItem(
+                    child: Text('日期顺序'),
+                    value: _status == 1 ? 1 : 3,
                   ),
                 ],
           ),
@@ -125,17 +126,6 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
               }
             },
             itemBuilder: (context) => <PopupMenuItem<int>>[
-                  PopupMenuItem(
-                    child: _status == -1
-                        ? Row(
-                            children: <Widget>[
-                              Text('全部    '),
-                              Icon(Icons.check),
-                            ],
-                          )
-                        : Text('全部    '),
-                    value: -1,
-                  ),
                   PopupMenuItem(
                     child: _status == 0
                         ? Row(
@@ -157,6 +147,17 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
                           )
                         : Text('已完成'),
                     value: 1,
+                  ),
+                  PopupMenuItem(
+                    child: _status == -1
+                        ? Row(
+                            children: <Widget>[
+                              Text('全部    '),
+                              Icon(Icons.check),
+                            ],
+                          )
+                        : Text('全部    '),
+                    value: -1,
                   ),
                 ],
           )
