@@ -70,6 +70,8 @@ class _HomeState extends State<_HomeWidget> {
       if (!WanApp.isLogin) {
         _refresh();
       }
+    }else{
+      _refresh();
     }
   }
 
