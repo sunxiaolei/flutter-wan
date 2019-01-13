@@ -4,8 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wan/conf/imgs.dart';
 import 'package:wan/net/interceptor.dart';
 import 'package:wan/privateIds.dart';
-import 'package:wan/utils/commonutils.dart';
-import 'package:wan/utils/toastutils.dart';
+import 'package:wan/utils/common_utils.dart';
+import 'package:wan/utils/toast_utils.dart';
 
 //建议与反馈
 class FeedbackPage extends StatefulWidget {

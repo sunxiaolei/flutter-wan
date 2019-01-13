@@ -3,7 +3,7 @@ import 'package:wan/model/dto/navi_dto.dart';
 import 'package:wan/model/vo/flowitem_vo.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
-import 'package:wan/utils/toastutils.dart';
+import 'package:wan/utils/toast_utils.dart';
 import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/flowitems.dart';
 import 'package:wan/widget/loading.dart';

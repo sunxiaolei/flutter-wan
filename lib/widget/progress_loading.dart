@@ -45,5 +45,3 @@ class ProgressLoadingState extends State<ProgressLoading> {
     );
   }
 }
-
-typedef ProgressCallBack = int Function(int received, int total);

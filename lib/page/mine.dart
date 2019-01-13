@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:install_plugin/install_plugin.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:wan/app.dart';
 import 'package:wan/conf/constant.dart';
 import 'package:wan/conf/imgs.dart';
@@ -16,9 +15,10 @@ import 'package:wan/page/feedback.dart';
 import 'package:wan/page/login.dart';
 import 'package:wan/conf/themes.dart';
 import 'package:wan/page/todo.dart';
-import 'package:wan/utils/commonutils.dart';
-import 'package:wan/utils/sputils.dart';
-import 'package:wan/utils/toastutils.dart';
+import 'package:wan/utils/common_utils.dart';
+import 'package:wan/utils/permission_utils.dart';
+import 'package:wan/utils/sp_utils.dart';
+import 'package:wan/utils/toast_utils.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/widget/progress_loading.dart';
 
@@ -453,25 +453,48 @@ class _Mine extends State<_MineState> {
 
   //下载新版本apk
   _downloadApk(UpdateDTO dto) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return ProgressLoading(
-            key: _downloadKey,
-          );
+    PermissionUtils.getPermission(FlutterPermissionGroup.storage, (granted) {
+      if (granted) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return ProgressLoading(
+                key: _downloadKey,
+              );
+            });
+        Request().downloadApk(dto.apkUrl, (int received, int total) {
+          setState(() {
+            int p = received * 100 ~/ total;
+            _downloadKey.currentState.setProgress(p);
+          });
+          if (received == total) {
+            Navigator.pop(context);
+            _install();
+          }
+        }).catchError((e) {
+          ToastUtils.showShort(e.message);
+          Navigator.pop(context);
         });
-    Request().downloadApk(dto.apkUrl, (int received, int total) {
-      setState(() {
-        int p = received * 100 ~/ total;
-        _downloadKey.currentState.setProgress(p);
-      });
-      if (received == total) {
-        Navigator.pop(context);
-        _install();
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: Text('获取权限失败，请至设置授予读写存储权限'),
+                  actions: <Widget>[
+                    FlatButton(
+                        child: const Text('取消'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                    FlatButton(
+                        child: const Text('确定'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          PermissionUtils.startAppSettins();
+                        })
+                  ],
+                ));
       }
-    }).catchError((e) {
-      ToastUtils.showShort(e.message);
-      Navigator.pop(context);
     });
   }
 

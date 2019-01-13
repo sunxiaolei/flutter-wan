@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:wan/utils/logutils.dart';
+import 'package:wan/utils/log_utils.dart';
 
 ///拦截器
 class LogInterceptor {

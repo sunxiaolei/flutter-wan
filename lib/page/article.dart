@@ -3,8 +3,8 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:wan/app.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/net/request.dart';
-import 'package:wan/utils/commonutils.dart';
-import 'package:wan/utils/toastutils.dart';
+import 'package:wan/utils/common_utils.dart';
+import 'package:wan/utils/toast_utils.dart';
 import 'package:wan/widget/loading.dart';
 
 ///文章页面

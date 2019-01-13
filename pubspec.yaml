@@ -36,6 +36,8 @@ dev_dependencies:
   cached_network_image: ^0.5.1
   #安装
   install_plugin: ^1.0.0
+  #权限
+  permission_handler: ^2.1.2
 
 
 # For information on the generic Dart part of this file, see the

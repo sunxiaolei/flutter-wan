@@ -5,7 +5,7 @@ import 'package:wan/event/event.dart';
 import 'package:wan/model/dto/favoritedatas_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/favorite_list_item.dart';
-import 'package:wan/utils/toastutils.dart';
+import 'package:wan/utils/toast_utils.dart';
 import 'package:wan/widget/empty_view.dart';
 import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';

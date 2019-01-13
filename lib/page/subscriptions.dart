@@ -4,7 +4,7 @@ import 'package:wan/model/dto/subscriptionslist_dto.dart';
 import 'package:wan/net/request.dart';
 import 'package:wan/page/search.dart';
 import 'package:wan/page/subscription_list.dart';
-import 'package:wan/utils/toastutils.dart';
+import 'package:wan/utils/toast_utils.dart';
 import 'package:wan/widget/error_view.dart';
 import 'package:wan/widget/loading.dart';
 
