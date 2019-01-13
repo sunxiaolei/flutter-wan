@@ -3,7 +3,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:wan/app.dart';
 import 'package:wan/event/event.dart';
 import 'package:wan/net/request.dart';
-import 'package:wan/utils/shareutils.dart';
+import 'package:wan/utils/commonutils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/loading.dart';
 
@@ -87,7 +87,7 @@ class Article extends State<ArticlePage> {
           IconButton(
             icon: Icon(Icons.share),
             onPressed: () {
-              ShareUtils.share(widget.url);
+              CommonUtils.share(widget.url);
             },
           ),
         ],

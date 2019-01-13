@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wan/utils/shareutils.dart';
+import 'package:wan/utils/commonutils.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -46,7 +46,7 @@ class AboutState extends State<AboutPage> {
           IconButton(
               icon: Icon(Icons.share),
               onPressed: () {
-                ShareUtils.share('https://www.pgyer.com/wan_flutter');
+                CommonUtils.share('https://www.pgyer.com/wan_flutter');
               })
         ],
       ),

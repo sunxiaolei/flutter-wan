@@ -13,7 +13,6 @@ import 'package:wan/net/request.dart';
 import 'package:wan/page/article.dart';
 import 'package:wan/page/article_list_item.dart';
 import 'package:wan/page/search.dart';
-import 'package:wan/utils/shareutils.dart';
 import 'package:wan/utils/toastutils.dart';
 import 'package:wan/widget/cardviewpager.dart';
 import 'package:wan/widget/error_view.dart';
@@ -70,7 +69,7 @@ class _HomeState extends State<_HomeWidget> {
       if (!WanApp.isLogin) {
         _refresh();
       }
-    }else{
+    } else {
       _refresh();
     }
   }
