@@ -27,7 +27,6 @@
 
 ![8](./screenshots/8.jpg)
 
-<img src="https://file-1254067164.cos.ap-shanghai.myqcloud.com/git/dev190114.gif">
 
 ## 历史版本
 
