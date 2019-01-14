@@ -11,6 +11,7 @@ import 'package:wan/page/home.dart';
 import 'package:wan/page/mine.dart';
 import 'package:wan/page/navi.dart';
 import 'package:wan/event/event.dart';
+import 'package:wan/utils/permission_utils.dart';
 import 'package:wan/utils/sp_utils.dart';
 import 'package:wan/utils/toast_utils.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -36,9 +37,12 @@ class _WanAppState extends State<WanApp> {
     bus.on<ThemeEvent>().listen((event) {
       _getTheme(event);
     });
+    _initPermission();
   }
 
-
+  _initPermission() {
+    PermissionUtils.getPermission(FlutterPermissionGroup.storage, (granted) {});
+  }
 
   void _getTheme(ThemeEvent event) async {
     if (event != null) {

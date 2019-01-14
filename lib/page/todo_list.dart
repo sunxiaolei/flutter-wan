@@ -60,7 +60,7 @@ class TodoListState extends State<TodoListPage> with TickerProviderStateMixin {
             _listItems = data.datas
                 .map((dto) => TodoItem(
                       dto,
-                      key: ObjectKey(dto.status),
+                      key: ObjectKey(dto),
                     ))
                 .toList();
             index++;

@@ -47,16 +47,16 @@ class FeedbackState extends State<FeedbackPage> {
                 ),
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                color: Theme
-                    .of(context)
-                    .highlightColor,
+                color: Theme.of(context).highlightColor,
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
                   controller: _controllerContent,
                   decoration: InputDecoration(
-                      hintText: '请输入您的详细问题或建议，我将尽快解决改进。\n<(▰˘◡˘▰)>'),
+                    hintText: '请输入您的详细问题或建议，'
+                        '\n我将尽快解决改进。\n<(▰˘◡˘▰)>',
+                  ),
                   maxLines: 7,
                   maxLength: 200,
                   onSubmitted: (str) {
@@ -91,9 +91,7 @@ class FeedbackState extends State<FeedbackPage> {
                 ),
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                color: Theme
-                    .of(context)
-                    .highlightColor,
+                color: Theme.of(context).highlightColor,
               ),
               InkWell(
                 onTap: () {
@@ -142,7 +140,7 @@ class FeedbackState extends State<FeedbackPage> {
                       Expanded(
                         child: Container(
                           child: Text(
-                            '加我微信：sunxiaolei92',
+                            '加我微信',
                             style: TextStyle(fontSize: 16),
                           ),
                           margin: EdgeInsets.only(left: 5),
@@ -164,7 +162,7 @@ class FeedbackState extends State<FeedbackPage> {
   _submit() async {
     String content = _controllerContent.text;
     String contact =
-    _controllerConTact.text == null ? '' : _controllerConTact.text;
+        _controllerConTact.text == null ? '' : _controllerConTact.text;
     if (content == null || content.isEmpty) {
       ToastUtils.showShort('请输入内容');
       return;
@@ -184,7 +182,7 @@ class FeedbackState extends State<FeedbackPage> {
     _dio.interceptor.response.onSuccess = interceptor.onSuccess;
     _dio.interceptor.response.onError = interceptor.onError;
     Response response =
-    await _dio.post(reqAPi, options: Options(headers: headers), data: {
+        await _dio.post(reqAPi, options: Options(headers: headers), data: {
       'status': 'open',
       'content': content,
       'contact': contact,
